@@ -237,31 +237,30 @@
             max-width: 850px;
         }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--accent-primary);
-            margin-bottom: 2rem;
+        .hero-photo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            position: relative;
             animation: slideInUp 0.8s ease-out;
         }
 
-        .hero-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
+        .hero-photo::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
             border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            background: var(--gradient-main);
+            z-index: -1;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
         }
 
         .hero-content h1 {
@@ -407,49 +406,8 @@
 
         /* About Section */
         .about-content {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-            justify-self: center;
-        }
-
-        .about-image-wrapper {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            border-radius: 30px;
-            overflow: hidden;
-        }
-
-        .about-image-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 32px;
-            background: var(--gradient-main);
-            z-index: -1;
-            animation: rotateGradient 4s linear infinite;
-        }
-
-        @keyframes rotateGradient {
-            0% { background: linear-gradient(0deg, #00d4ff, #7c3aed, #00d4ff); }
-            25% { background: linear-gradient(90deg, #00d4ff, #7c3aed, #00d4ff); }
-            50% { background: linear-gradient(180deg, #00d4ff, #7c3aed, #00d4ff); }
-            75% { background: linear-gradient(270deg, #00d4ff, #7c3aed, #00d4ff); }
-            100% { background: linear-gradient(360deg, #00d4ff, #7c3aed, #00d4ff); }
-        }
-
-        .about-image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 28px;
-            border: 3px solid var(--bg-primary);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .about-text h3 {
@@ -1005,19 +963,11 @@
             }
 
             .about-content {
-                grid-template-columns: 1fr;
                 text-align: center;
-                gap: 2.5rem;
             }
 
             .about-location {
                 justify-content: center;
-            }
-
-            .about-image-wrapper {
-                width: 220px;
-                height: 220px;
-                margin: 0 auto;
             }
 
             .stats {
@@ -1085,10 +1035,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .about-image-wrapper {
-                width: 180px;
-                height: 180px;
-            }
 
             .section-title {
                 margin-bottom: 2.5rem;
@@ -1109,7 +1055,7 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo">Arsya.</div>
+            <div class="logo">Portfolio</div>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about" data-en="About" data-id="Tentang">Tentang</a></li>
                 <li><a href="#skills" data-en="Skills" data-id="Keahlian">Keahlian</a></li>
@@ -1130,11 +1076,10 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="dot"></span>
-                <span data-en="Available for opportunities" data-id="Terbuka untuk peluang baru">Terbuka untuk peluang baru</span>
+            <div class="hero-photo">
+                <img src="assets/img/Display(3).jpeg" alt="Muhammad Imam Arsyawalfa">
             </div>
-            <h1><span data-en="Hi, I'm" data-id="Hai, saya">Hai, saya</span><br><span class="hero-name-gradient">Imam Arsyawalfa</span></h1>
+            <h1><span class="hero-name-gradient">Muhammad Imam Arsyawalfa</span></h1>
             <p class="subtitle" data-en="I am a " data-id="Saya adalah ">Saya adalah <span class="typing-text" id="typing-text"></span></p>
             <div class="cta-buttons">
                 <a href="#projects" class="btn btn-primary">
@@ -1156,11 +1101,6 @@
             <h2><span class="title-gradient" data-en="About Me" data-id="Tentang Saya">Tentang Saya</span></h2>
         </div>
         <div class="about-content">
-            <div class="about-image">
-                <div class="about-image-wrapper">
-                    <img src="assets/img/Display(3).jpeg" alt="Muhammad Imam Arsyawalfa">
-                </div>
-            </div>
             <div class="about-text">
                 <h3 data-en="Fullstack Engineer" data-id="Fullstack Engineer">Fullstack Engineer</h3>
                 <div class="about-location">

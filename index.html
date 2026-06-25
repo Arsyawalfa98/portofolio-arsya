@@ -1081,7 +1081,7 @@
                 <img src="assets/img/Display(3).jpeg" alt="Muhammad Imam Arsyawalfa">
             </div>
             <h1><span class="hero-name-gradient">Muhammad Imam Arsyawalfa</span></h1>
-            <p class="subtitle" data-en="I am a " data-id="Saya adalah ">Saya adalah <span class="typing-text" id="typing-text"></span></p>
+            <p class="subtitle"><span data-en="I am a " data-id="Saya adalah ">Saya adalah </span><span class="typing-text" id="typing-text"></span></p>
             <div class="cta-buttons">
                 <a href="#projects" class="btn btn-primary">
                     <i class="fas fa-rocket"></i> <span data-en="View My Work" data-id="Lihat Karya Saya">Lihat Karya Saya</span>
@@ -1429,6 +1429,7 @@
         function typeText() {
             const currentText = texts[currentLang][textIndex];
             const el = document.getElementById('typing-text');
+            if (!el) return;
             if (isDeleting) {
                 el.textContent = currentText.substring(0, charIndex - 1);
                 charIndex--;

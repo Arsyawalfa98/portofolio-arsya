@@ -90,11 +90,11 @@ nav.scrolled{padding:.6rem 0;background:transparent;backdrop-filter:blur(18px);-
 
 /* ---------- Hero ---------- */
 .hero{min-height:100vh;display:flex;align-items:center;padding:7rem 0 0;position:relative;overflow:hidden}
-.hero-inner{position:relative;z-index:2;width:100%;max-width:1500px;padding-bottom:4rem}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:1500px}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:center;gap:clamp(3rem,6vw,7rem);min-height:calc(100vh - 7rem)}
 .hero-text{max-width:700px;justify-self:end}
 .hero-copy{animation:heroTextIn .82s ease .45s both}
-.hero-figure{position:relative;min-height:min(663px,73vh);display:flex;align-items:flex-end;justify-content:center;z-index:0;pointer-events:none}
+.hero-figure{position:relative;min-height:min(663px,73vh);display:flex;align-items:flex-end;justify-content:center;z-index:0;pointer-events:none;align-self:flex-end}
 .hero-figure img{position:relative;z-index:2;height:auto;max-height:76.5vh;width:auto;max-width:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 22px 45px rgba(23,32,84,.25));animation:slideInLeft 1.05s cubic-bezier(.16,.8,.3,1) .30s both}
 .hero-spot{position:absolute;left:6%;bottom:1%;width:88%;height:78%;z-index:0;pointer-events:none;background:radial-gradient(circle at 52% 46%,rgba(140,143,160,.14),rgba(140,143,160,.06) 46%,transparent 70%);filter:blur(8px);animation:glowPulse 7s ease-in-out infinite}
 @keyframes glowPulse{50%{opacity:.72;transform:scale(1.03)}}
@@ -234,8 +234,9 @@ footer .g{background:var(--grad);-webkit-background-clip:text;background-clip:te
 
 /* ---------- Responsive ---------- */
 @media(max-width:1024px){
+  .hero-inner{padding-bottom:4rem}
   .hero-grid{grid-template-columns:1fr;min-height:auto;gap:1.8rem}
-  .hero-figure{min-height:0;justify-content:center}
+  .hero-figure{min-height:0;justify-content:center;align-self:auto}
   .hero-figure img{max-height:54vh}
   .hero-spot{width:100%;left:0}
   .hero-text{max-width:680px;justify-self:center}

@@ -14,7 +14,7 @@ document.getElementById('burger').addEventListener('click',toggleMenu);
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('navLinks').classList.remove('open');document.getElementById('burger').classList.remove('open');}));
 
 /* typing */
-const roles={id:['Fullstack Engineer','Go Backend Developer','Laravel Developer','Systems Builder'],en:['Fullstack Engineer','Go Backend Developer','Laravel Developer','Systems Builder']};
+const roles={id:['Software Engineer','Web Programming','Building Scalable Web Applications'],en:['Software Engineer','Web Programming','Building Scalable Web Applications']};
 let ri=0,ci=0,del=false;
 function type(){const list=roles[lang];const t=list[ri];const el=document.getElementById('typed');if(!el)return;
   el.textContent=del?t.slice(0,ci-1):t.slice(0,ci+1);ci+=del?-1:1;let s=del?45:85;

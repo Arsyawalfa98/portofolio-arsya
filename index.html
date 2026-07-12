@@ -37,20 +37,19 @@
 
 <!-- HERO -->
 <header class="hero" id="home">
-  <div class="hero-panel" aria-hidden="true"></div>
-  <div class="wrap hero-inner">
-    <div class="hero-grid">
-      <figure class="hero-figure">
-        <span class="hero-spot" aria-hidden="true"></span>
+  <div class="hero-selector" id="heroSelector">
+    <section class="hero-choice hero-choice-a" data-index="0" tabindex="0" aria-label="Foto profil">
+      <span class="hero-spot" aria-hidden="true"></span>
+      <div class="hero-choice-content hero-choice-content--photo">
         <img src="assets/img/Display(3).png" alt="Muhammad Imam Arsyawalfa">
-      </figure>
-      <div class="hero-text">
-        <div class="hero-copy">
-          <!-- <div class="hero-eyebrow"><span class="dot"></span><span class="mono" data-id="Terbuka untuk peluang · Surabaya, ID" data-en="Open to opportunities · Surabaya, ID">Terbuka untuk peluang · Surabaya, ID</span></div> -->
-          <h1>Muhammad Imam <span class="g">Arsyawalfa</span></h1>
-          <div class="role-line"><span id="typed" class="typed"></span><span class="caret">&nbsp;</span></div>
-          <p class="hero-desc" data-id="Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun." data-en="Software Engineer with 5+ years building my career as a Fullstack Engineer, delivering web applications and systems for institutional clients on PHP (Laravel) and JavaScript. My recent focus has shifted toward Go — independently building REST APIs with clean architecture using Chi, pgx, and sqlc. I&#39;m an adaptable developer who uses AI-assisted tools to learn faster, and always takes full ownership of what I build.">Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun.</p>
-        </div>
+      </div>
+      <span class="hero-corner-label" aria-hidden="true"><i class="fas fa-image"></i></span>
+    </section>
+    <section class="hero-choice hero-choice-b" data-index="1" tabindex="0" aria-label="Tentang saya">
+      <div class="hero-choice-content">
+        <h1>Muhammad Imam <span class="g">Arsyawalfa</span></h1>
+        <div class="role-line"><span id="typed" class="typed"></span><span class="caret">&nbsp;</span></div>
+        <p class="hero-desc" data-id="Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun." data-en="Software Engineer with 5+ years building my career as a Fullstack Engineer, delivering web applications and systems for institutional clients on PHP (Laravel) and JavaScript. My recent focus has shifted toward Go — independently building REST APIs with clean architecture using Chi, pgx, and sqlc. I&#39;m an adaptable developer who uses AI-assisted tools to learn faster, and always takes full ownership of what I build.">Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun.</p>
         <div class="cta-row">
           <a href="#projects" class="btn btn-primary"><i class="fas fa-layer-group"></i><span data-id="Lihat Proyek" data-en="View Projects">Lihat Proyek</span></a>
           <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i><span data-id="Hubungi Saya" data-en="Get in touch">Hubungi Saya</span></a>
@@ -61,7 +60,8 @@
           <div class="hs"><b>5</b><span data-id="Sertifikasi" data-en="Certs">Sertifikasi</span></div>
         </div>
       </div>
-    </div>
+      <span class="hero-corner-label" aria-hidden="true"><i class="fas fa-user"></i></span>
+    </section>
   </div>
   <a href="#experience" class="scroll-cue"><span data-id="gulir" data-en="scroll">gulir</span><i class="fas fa-chevron-down"></i></a>
 </header>

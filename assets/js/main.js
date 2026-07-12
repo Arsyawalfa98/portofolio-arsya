@@ -48,7 +48,7 @@ if('IntersectionObserver' in window){
 const heroSelectorEl=document.getElementById('heroSelector');
 if(heroSelectorEl){
   const heroChoices=[...heroSelectorEl.querySelectorAll('.hero-choice')];
-  const heroMobileQuery=window.matchMedia('(max-width:768px)');
+  const heroMobileQuery=window.matchMedia('(max-width:1024px)');
   const heroMotionQuery=window.matchMedia('(prefers-reduced-motion:reduce)');
 
   let heroMobilePage=1; /* default: text panel (index 1) shown first on mobile */

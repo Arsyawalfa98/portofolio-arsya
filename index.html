@@ -1,223 +1,362 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" data-theme="light">
 <head>
-<script src="assets/js/main.js"></script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+/* pasang tema & bahasa sebelum render agar tidak berkedip */
+(function(){var d=document.documentElement,t=null,l=null;try{t=localStorage.getItem('theme');l=localStorage.getItem('lang')}catch(e){}
+d.setAttribute('data-theme',t==='dark'?'dark':'light');d.lang=l==='id'?'id':'en';d.className+=' js';
+/* bila main.js gagal dimuat, tampilkan konten tanpa animasi reveal */
+setTimeout(function(){if(!window.__appReady)d.classList.remove('js')},3000);})();
+</script>
 <title>Muhammad Imam Arsyawalfa — Software Engineer</title>
-<meta name="description" content="Muhammad Imam Arsyawalfa — Software Engineer. Building scalable web applications with Go, Laravel, and Next.js.">
+<meta name="description" content="Muhammad Imam Arsyawalfa — Software Engineer with 5+ years building web apps and systems with Go, Laravel, and Next.js. Open to work.">
+<meta name="theme-color" content="#1b1f3b">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="assets/img/ui/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Muhammad Imam Arsyawalfa — Software Engineer">
+<meta property="og:description" content="Player profile, quests, and adventure log of a Go & Laravel engineer.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Tiny5&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=4">
+<link rel="stylesheet" href="assets/css/base.css?v=4">
+<link rel="stylesheet" href="assets/css/components.css?v=4">
+<link rel="stylesheet" href="assets/css/sections.css?v=4">
+<link rel="stylesheet" href="assets/css/companion.css?v=4">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Muhammad Imam Arsyawalfa","jobTitle":"Software Engineer","email":"mailto:arsyawalfa@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Surabaya","addressCountry":"ID"},"sameAs":["https://github.com/Arsyawalfa98","https://id.linkedin.com/in/muhammad-imam-arsyawalfa-4062713a5","https://instagram.com/arsya_0"]}
+</script>
 </head>
 <body>
-<div class="aurora"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div></div>
-<div class="grid-lines"></div>
-<div class="progress" id="progress"></div>
+<a class="skip" href="#main" data-i18n="ui.skip">Skip to content</a>
+
+<!-- ikon brand resmi (SVG) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.09-.73.09-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0 0 12 .3"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2.2" y="2.2" width="19.6" height="19.6" rx="5.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.6" cy="6.4" r="1.4" fill="currentColor"/></symbol>
+  <symbol id="i-jobstreet" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path fill="var(--panel,#fff)" d="M7 7.5h10v2H7zm0 3.5h10v2H7zm0 3.5h6.5v2H7z"/></symbol>
+</svg>
+
+<!-- BOOT SCREEN (sekali per kunjungan, lihat app.js) -->
+<div class="boot" id="boot" hidden>
+  <div class="boot-in">
+    <img src="assets/img/ui/logo.png" alt="" width="96" height="96" class="boot-logo">
+    <pre class="boot-log" id="bootLog" aria-hidden="true"></pre>
+    <div class="boot-bar"><span id="bootBar"></span></div>
+    <button type="button" class="boot-start" id="bootStart">▶ PRESS START ◀</button>
+  </div>
+</div>
 
 <!-- NAV -->
-<nav id="nav">
-  <div class="nav-in">
-    <a href="#home" class="brand"><span class="mark">MA</span>Arsyawalfa</a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#experience" data-id="Pengalaman" data-en="Experience">Pengalaman</a></li>
-      <li><a href="#skills" data-id="Keahlian" data-en="Skills">Keahlian</a></li>
-      <li><a href="#projects" data-id="Proyek" data-en="Projects">Proyek</a></li>
-      <li><a href="#certs" data-id="Sertifikasi" data-en="Certifications">Sertifikasi</a></li>
-      <li><a href="#contact" data-id="Kontak" data-en="Contact">Kontak</a></li>
-    </ul>
-    <div class="nav-cta">
-      <button class="lang" id="langBtn">EN</button>
-      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+<header class="nav" id="nav">
+  <div class="nav-in wrap">
+    <a href="#home" class="brand" aria-label="Arsyawalfa — home">
+      <img src="assets/img/ui/logo.png" alt="" width="36" height="36">
+      <span>ARSYAWALFA</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="#about" data-i18n="nav.profile">Profile</a>
+      <a href="#quests" data-i18n="nav.quests">Quests</a>
+      <a href="#journey" data-i18n="nav.journey">Journey</a>
+      <a href="#party" data-i18n="nav.party">Party</a>
+    </nav>
+    <div class="nav-tools">
+      <div class="seg lang-seg" role="group" aria-label="Language">
+        <button type="button" class="seg-btn" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="seg-btn" data-lang="id" aria-pressed="false">ID</button>
+      </div>
+      <button type="button" class="seg-btn theme-btn" id="themeBtn" aria-pressed="false" aria-label="Dark mode"><span class="sun" aria-hidden="true">☀</span><span class="moon" aria-hidden="true">☾</span></button>
+      <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="navLinks" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
-</nav>
-
-<!-- HERO -->
-<header class="hero" id="home">
-  <div class="hero-selector" id="heroSelector">
-    <section class="hero-choice hero-choice-a" data-index="0" tabindex="0" aria-label="Foto profil">
-      <span class="hero-spot" aria-hidden="true"></span>
-      <div class="hero-choice-content hero-choice-content--photo">
-        <img src="assets/img/Display(3).png" alt="Muhammad Imam Arsyawalfa">
-      </div>
-      <span class="hero-corner-label" aria-hidden="true"><i class="fas fa-image"></i></span>
-    </section>
-    <section class="hero-choice hero-choice-b" data-index="1" tabindex="0" aria-label="Tentang saya">
-      <div class="hero-choice-content">
-        <h1>Muhammad Imam <span class="g">Arsyawalfa</span></h1>
-        <div class="role-line"><span id="typed" class="typed"></span><span class="caret">&nbsp;</span></div>
-        <p class="hero-desc" data-id="Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun." data-en="Software Engineer with 5+ years building my career as a Fullstack Engineer, delivering web applications and systems for institutional clients on PHP (Laravel) and JavaScript. My recent focus has shifted toward Go — independently building REST APIs with clean architecture using Chi, pgx, and sqlc. I&#39;m an adaptable developer who uses AI-assisted tools to learn faster, and always takes full ownership of what I build.">Software Engineer dengan 5+ tahun pengalaman berkarier sebagai Fullstack Engineer, membangun aplikasi web dan sistem untuk klien institusi di atas PHP (Laravel) dan JavaScript. Fokus terbaru saya bergeser ke Go — membangun secara mandiri REST API dengan clean architecture menggunakan Chi, pgx, dan sqlc. Saya developer yang adaptif, terbiasa memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan selalu mengambil full ownership atas apa yang saya bangun.</p>
-        <div class="cta-row">
-          <a href="#projects" class="btn btn-primary"><i class="fas fa-layer-group"></i><span data-id="Lihat Proyek" data-en="View Projects">Lihat Proyek</span></a>
-          <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i><span data-id="Hubungi Saya" data-en="Get in touch">Hubungi Saya</span></a>
-        </div>
-        <div class="hero-stats">
-          <div class="hs"><b>5+</b><span data-id="Tahun" data-en="Years">Tahun</span></div>
-          <div class="hs"><b>10+</b><span data-id="Sistem" data-en="Systems">Sistem</span></div>
-          <div class="hs"><b>5</b><span data-id="Sertifikasi" data-en="Certs">Sertifikasi</span></div>
-        </div>
-      </div>
-      <span class="hero-corner-label" aria-hidden="true"><i class="fas fa-user"></i></span>
-    </section>
-  </div>
-  <a href="#experience" class="scroll-cue" aria-label="Gulir ke bawah"><i class="fas fa-chevron-down"></i></a>
 </header>
 
-<!-- EXPERIENCE -->
-<section class="section wrap" id="experience">
-  <div class="reveal">
-    <!-- <span class="eyebrow" data-id="01 — Pengalaman" data-en="01 — Experience">01 — Pengalaman</span> -->
-    <div class="sec-head"><h2 data-id="Riwayat <span class='g'>karier</span>" data-en="Career <span class='g'>history</span>">Riwayat <span class="g">karier</span></h2><p data-id="Dari developer freelance hingga memimpin sistem informasi institusi." data-en="From freelance developer to leading institutional information systems.">Dari developer freelance hingga memimpin sistem informasi institusi.</p></div>
-  </div>
-  <div class="exp-grid">
-    <div class="timeline reveal">
-      <div class="tl-item">
-        <div class="tl-top">
-          <div class="tl-role" data-id="Kepala Sub Bagian Manajemen Sistem Informasi" data-en="Head of Management Information Systems">Kepala Sub Bagian Manajemen Sistem Informasi</div>
-          <div class="tl-date"><span data-id="Okt 2020" data-en="Oct 2020">Okt 2020</span> — <span data-id="Sekarang" data-en="Present">Sekarang</span></div>
+<main id="main">
+
+<!-- ═════════ ZONE: START ═════════ -->
+<section class="hero" id="home" aria-labelledby="heroName">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid wrap">
+    <article class="win hero-menu reveal">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/main-menu.png" alt="" width="26" height="26">
+        <h2 class="win-title">Main Menu</h2><span class="win-label" data-i18n="lbl.hero">Start</span>
+        <span class="win-meta"><span>ID:01</span><span class="win-dots" aria-hidden="true"><i></i><i></i></span></span>
+      </div>
+      <div class="win-body">
+        <p class="hello mono" data-i18n="hero.hello">&gt; PLAYER 1 READY</p>
+        <h1 id="heroName" class="hero-name"><span>Muhammad Imam</span> <span class="hl glitch" data-text="Arsyawalfa">Arsyawalfa</span></h1>
+        <p class="role mono"><span class="role-prefix">&gt;</span> <span id="typed">Software Engineer</span><span class="caret" aria-hidden="true"></span></p>
+        <p class="hero-sum" data-i18n="hero.sum">Software Engineer with 5+ years as a fullstack engineer, shipping web apps and systems for institutions on PHP (Laravel) and JavaScript. Now focused on Go — clean-architecture REST APIs with Chi, pgx, and sqlc.</p>
+        <nav class="menu-list hero-actions" aria-label="Quick actions">
+          <a href="#quests" class="is-active"><span data-i18n="hero.cta1">View Quests</span><small>Q.01–05</small></a>
+          <a href="pdf/CV_ATS_ENGLISH_M_IMAM_ARSYAWALFA.pdf" download data-cv><span data-i18n="hero.cta2">Download CV</span><small class="cv-lang">PDF · EN</small></a>
+          <a href="#party"><span data-i18n="hero.cta3">Contact Me</span><small>&lt; 24h</small></a>
+        </nav>
+      </div>
+    </article>
+
+    <article class="win win--teal player reveal" aria-labelledby="pcTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/player-card.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="pcTitle">Player Card</h2>
+        <span class="win-meta"><span>LV.05</span><span class="led" data-i18n="pc.online">ONLINE</span></span>
+      </div>
+      <div class="win-body">
+        <div class="pc-top">
+          <div class="pc-photo"><img src="assets/img/profile.webp" alt="Portrait of Muhammad Imam Arsyawalfa" width="480" height="647"></div>
+          <div class="pc-id">
+            <p class="pc-name">ARSYA</p>
+            <p class="pc-row"><span data-i18n="pc.class">Class</span> <b>Software Engineer</b></p>
+            <p class="pc-row"><span data-i18n="pc.base">Base</span> <b>Surabaya, ID</b></p>
+            <p class="status"><span data-i18n="pc.status">Open to work</span></p>
+          </div>
         </div>
-        <div class="tl-org">Universitas PGRI Adi Buana Surabaya <span class="type">· Contract</span></div>
-        <ul class="tl-list">
-          <li data-id="Memastikan seluruh sistem informasi institusi berjalan andal, stabil, dan sesuai kebutuhan operasional." data-en="Ensure all institutional information systems run reliably, stably, and in line with operational needs.">Memastikan seluruh sistem informasi institusi berjalan andal, stabil, dan sesuai kebutuhan operasional.</li>
-          <li data-id="Melakukan pemeliharaan, peningkatan, dan pengembangan sistem — perbaikan bug, penambahan fitur, hingga membangun sistem baru dari nol." data-en="Maintain, enhance, and develop systems — bug fixing, feature additions, and building new systems from scratch.">Melakukan pemeliharaan, peningkatan, dan pengembangan sistem — perbaikan bug, penambahan fitur, hingga membangun sistem baru dari nol.</li>
-          <li data-id="Memantau dan mengevaluasi aspek keamanan siber sistem institusi untuk mendeteksi dan merespons ancaman." data-en="Monitor and evaluate the cybersecurity of institutional systems to detect and respond to threats.">Memantau dan mengevaluasi aspek keamanan siber sistem institusi untuk mendeteksi dan merespons ancaman.</li>
+        <div class="pc-meters">
+          <div class="meter"><span>AVAIL</span><span class="meter-bar" style="--v:100;--c:var(--ok)"></span><b data-i18n="pc.avail">Now</b></div>
+          <div class="meter"><span>FOCUS</span><span class="meter-bar" style="--v:80;--c:var(--teal)"></span><b>Go</b></div>
+          <div class="meter"><span>EXP</span><span class="meter-bar" style="--v:70;--c:var(--accent-fill)"></span><b>5+ yrs</b></div>
+        </div>
+        <ul class="pc-links" id="pcLinks"></ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="wrap stats-sec" id="stats" aria-labelledby="statsTitle">
+  <div class="win win--gold reveal">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/stats.png" alt="" width="26" height="26">
+      <h2 class="win-title" id="statsTitle">Player Stats</h2><span class="win-label" data-i18n="lbl.stats">Impact in numbers</span>
+    </div>
+    <ul class="win-body stats" id="statsList"></ul>
+  </div>
+</section>
+
+<!-- ═════════ ZONE: PROFILE ═════════ -->
+<section class="wrap zone-sec" aria-label="Profile">
+  <p class="zone" aria-hidden="true"><span>Zone <b>02</b> · Profile</span></p>
+  <div class="grid-2">
+    <article class="win win--violet reveal" id="about" aria-labelledby="aboutTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/profile.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="aboutTitle">Player Profile</h2><span class="win-label" data-i18n="lbl.about">About me</span>
+      </div>
+      <div class="win-body about">
+        <p data-i18n="about.p1">I started as a freelance developer in 2018 and now lead the information systems team at Universitas PGRI Adi Buana Surabaya. Most of my work lives where data meets people: reporting integrations, internal tools, and client platforms that have to just work.</p>
+        <p data-i18n="about.p2">My recent focus has shifted toward Go. I build REST APIs with clean architecture, use AI-assisted tools to learn faster, and take full ownership of what I ship.</p>
+        <h3 class="mini-h" data-i18n="about.impact">Highlights</h3>
+        <ul class="impact">
+          <li data-i18n="about.i1">Run and secure every information system at a university.</li>
+          <li data-i18n="about.i2">Built a Dikti NeoFeeder integrator that cuts reporting errors.</li>
+          <li data-i18n="about.i3">Ship with Docker, GitHub Actions, and GHCR pipelines.</li>
         </ul>
-        <div class="tl-tags"><span>DevOps</span><span>Next.js</span><span>Laravel</span><span>Security</span><span>PostgreSQL</span></div>
+        <dl class="info">
+          <div><dt data-i18n="about.loc">Location</dt><dd>Surabaya, Indonesia</dd></div>
+          <div><dt data-i18n="about.edu">Education</dt><dd>S.Kom · STIKI Malang</dd></div>
+          <div><dt data-i18n="about.focus">Focus</dt><dd>Go · Laravel · Next.js</dd></div>
+          <div><dt data-i18n="about.since">Coding since</dt><dd>2018</dd></div>
+        </dl>
       </div>
-      <div class="tl-item">
-        <div class="tl-top">
-          <div class="tl-role" data-id="Software Developer" data-en="Software Developer">Software Developer</div>
-          <div class="tl-date">Jan 2018 — <span data-id="Sekarang" data-en="Present">Sekarang</span></div>
+    </article>
+
+    <article class="win reveal" id="skills" aria-labelledby="skillsTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/skill-tree.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="skillsTitle">Skill Tree</h2><span class="win-label" data-i18n="lbl.skills">Skills</span>
+      </div>
+      <div class="win-body"><ul class="tree" id="skillTree"></ul></div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════ ZONE: QUESTS ═════════ -->
+<section class="wrap zone-sec" aria-label="Quests">
+  <p class="zone" aria-hidden="true"><span>Zone <b>03</b> · Quests</span></p>
+  <article class="win reveal" id="quests" aria-labelledby="questsTitle">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/quests.png" alt="" width="26" height="26">
+      <h2 class="win-title" id="questsTitle">Quests</h2><span class="win-label" data-i18n="lbl.quests">Projects</span>
+      <span class="win-meta"><span id="questCount">5/5</span></span>
+    </div>
+    <div class="win-body">
+      <div class="filters">
+        <div class="seg" role="group" aria-label="Type" id="filterType"></div>
+        <div class="seg" role="group" aria-label="Class" id="filterClass"></div>
+      </div>
+      <ul class="quest-grid" id="questGrid"></ul>
+    </div>
+  </article>
+
+  <article class="win win--teal reveal" id="commissions" aria-labelledby="comTitle">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/commissions.png" alt="" width="26" height="26">
+      <h2 class="win-title" id="comTitle">Commissions</h2><span class="win-label" data-i18n="lbl.com">What I can build</span>
+    </div>
+    <div class="win-body">
+      <ul class="svc" id="svcList"></ul>
+      <ol class="steps" id="stepList" aria-label="Workflow"></ol>
+      <p class="form-note" data-i18n="com.note">No fixed price list — every build is quoted after a short brief.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ═════════ ZONE: JOURNEY ═════════ -->
+<section class="wrap zone-sec" aria-label="Journey">
+  <p class="zone" aria-hidden="true"><span>Zone <b>04</b> · Journey</span></p>
+  <div class="grid-2 grid-2--wide">
+    <article class="win reveal" id="journey" aria-labelledby="logTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/adventure-log.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="logTitle">Adventure Log</h2><span class="win-label" data-i18n="lbl.log">Experience</span>
+      </div>
+      <div class="win-body">
+        <div class="seg tabs" role="tablist" id="logTabs" aria-label="Experience type">
+          <button type="button" class="seg-btn" role="tab" id="tab-work" aria-selected="true" aria-controls="panel-work" data-i18n="log.work">Work</button>
+          <button type="button" class="seg-btn" role="tab" id="tab-intern" aria-selected="false" aria-controls="panel-intern" data-i18n="log.intern" hidden>Internship</button>
         </div>
-        <div class="tl-org">Strugg House <span class="type">· Freelance</span></div>
-        <ul class="tl-list">
-          <li data-id="Mengembangkan dan mengirimkan aplikasi web, platform digital, serta solusi bisnis khusus untuk organisasi dan perusahaan." data-en="Develop and deliver web applications, digital platforms, and custom business solutions for organizations and businesses.">Mengembangkan dan mengirimkan aplikasi web, platform digital, serta solusi bisnis khusus untuk organisasi dan perusahaan.</li>
-          <li data-id="Membangun website e-commerce dengan Laravel untuk UMKM guna mendorong pertumbuhan penjualan." data-en="Built an e-commerce website with Laravel for MSMEs (UMKM) to boost sales growth.">Membangun website e-commerce dengan Laravel untuk UMKM guna mendorong pertumbuhan penjualan.</li>
-        </ul>
-        <div class="tl-tags"><span>PHP</span><span>Laravel</span><span>Next.js</span><span>React.js</span></div>
+        <ol class="timeline" id="panel-work" role="tabpanel" aria-labelledby="tab-work"></ol>
+        <ol class="timeline" id="panel-intern" role="tabpanel" aria-labelledby="tab-intern" hidden></ol>
       </div>
-    </div>
-    <div class="skills-col reveal" id="skills">
-      <div class="focus-title mono" data-id="// teknologi" data-en="// technology">// teknologi</div>
-      <div class="skill-card">
-        <div class="sc-ico c1"><i class="fas fa-layer-group"></i></div>
-        <h4 data-id="Teknologi" data-en="Technology">Teknologi</h4>
-        <div class="items"><span>Go</span><span>PHP</span><span>JavaScript</span><span>SQL</span><span>Laravel</span><span>Next.js</span><span>React.js</span><span>Node.js</span><span>Docker</span><span>Docker Compose</span><span>GitHub Actions</span><span>GHCR</span><span>Git</span><span>PostgreSQL</span><span>MySQL</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+    </article>
 
-<!-- PROJECTS -->
-<section class="section wrap" id="projects">
-  <div class="reveal">
-    <!-- <span class="eyebrow" data-id="02 — Proyek" data-en="02 — Projects">02 — Proyek</span> -->
-    <div class="sec-head"><h2 data-id="<span class='g'>Karya</span>" data-en="<span class='g'>Work</span>"><span class="g">Karya</span></h2><p data-id="Sistem dan platform yang saya rancang serta bangun dari awal." data-en="Systems and platforms I've architected and built from the ground up.">Sistem dan platform yang saya rancang serta bangun dari awal.</p></div>
-  </div>
-  <div class="proj-grid reveal">
-    <article class="proj">
-      <div class="proj-head"><span class="proj-idx">P.01</span><div class="proj-ico"><i class="fas fa-store"></i></div></div>
-      <h3 data-id="Company Profile &amp; Marketplace Platform" data-en="Company Profile &amp; Marketplace Platform">Company Profile &amp; Marketplace Platform</h3>
-      <p data-id="Platform Next.js/React yang menggabungkan company profile dengan semi-marketplace: pengunjung menjelajah katalog, memesan, dan mengelola langganan lewat client dashboard terintegrasi. Didukung REST API dengan autentikasi JWT, di-deploy via CI/CD (GitHub Actions + GHCR), Docker Compose, dan PostgreSQL." data-en="A Next.js/React platform blending a company profile with a semi-marketplace: visitors browse catalogs, place orders, and manage subscriptions via an integrated client dashboard. Powered by a REST API with JWT auth, deployed through CI/CD (GitHub Actions + GHCR), Docker Compose, and PostgreSQL.">Platform Next.js/React yang menggabungkan company profile dengan semi-marketplace: pengunjung menjelajah katalog, memesan, dan mengelola langganan lewat client dashboard terintegrasi. Didukung REST API dengan autentikasi JWT, di-deploy via CI/CD (GitHub Actions + GHCR), Docker Compose, dan PostgreSQL.</p>
-      <div class="proj-tags"><span>Next.js</span><span>React.js</span><span>REST API</span><span>Docker</span><span>PostgreSQL</span></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><span class="proj-idx">P.02</span><div class="proj-ico"><i class="fas fa-gauge-high"></i></div></div>
-      <h3 data-id="Company Profile Berperforma Tinggi" data-en="High-Performance Company Profile">Company Profile Berperforma Tinggi</h3>
-      <p data-id="Website company profile Next.js/React yang mengutamakan kecepatan muat dan SEO. Arsitektur multi-repo terpisah (tampilan publik + admin dashboard), masing-masing pada container Docker dengan PostgreSQL, terhubung lewat internal Docker network. CI/CD via GitHub Actions & GHCR, server hanya menarik image setelah build sukses." data-en="A Next.js/React company profile focused on load speed and SEO. A decoupled multi-repo architecture (public site + admin dashboard), each on its own Docker container with PostgreSQL, linked through an internal Docker network. CI/CD via GitHub Actions & GHCR — the server only pulls the image once the build succeeds.">Website company profile Next.js/React yang mengutamakan kecepatan muat dan SEO. Arsitektur multi-repo terpisah (tampilan publik + admin dashboard), masing-masing pada container Docker dengan PostgreSQL, terhubung lewat internal Docker network. CI/CD via GitHub Actions & GHCR, server hanya menarik image setelah build sukses.</p>
-      <div class="proj-tags"><span>Next.js</span><span>React.js</span><span>Docker</span><span>CI/CD</span><span>SEO</span></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><span class="proj-idx">P.03</span><div class="proj-ico"><i class="fas fa-diagram-project"></i></div></div>
-      <h3 data-id="Integrator Sistem NeoFeeder Dikti" data-en="NeoFeeder Dikti Integrator System">Integrator Sistem NeoFeeder Dikti</h3>
-      <p data-id="Sistem informasi manajemen untuk pelaporan data pendidikan tinggi ke Dikti secara terintegrasi. Memanfaatkan endpoint API Dikti yang telah dipetakan ke menu & fitur, sehingga admin cukup membuka menu terkait, menyaring data lokal dan NeoFeeder, lalu mengirim laporan langsung — mengurangi kesalahan data dan menjaga ketepatan waktu." data-en="A management information system for reporting higher-education data to Dikti in an integrated way. It maps Dikti's API endpoints to menus & features, so admins simply open the relevant menu, filter local and NeoFeeder data, and submit reports directly — reducing data errors and keeping submissions on time.">Sistem informasi manajemen untuk pelaporan data pendidikan tinggi ke Dikti secara terintegrasi. Memanfaatkan endpoint API Dikti yang telah dipetakan ke menu & fitur, sehingga admin cukup membuka menu terkait, menyaring data lokal dan NeoFeeder, lalu mengirim laporan langsung — mengurangi kesalahan data dan menjaga ketepatan waktu.</p>
-      <div class="proj-tags"><span>PHP</span><span>Laravel</span><span>API Integration</span></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><span class="proj-idx">P.04</span><div class="proj-ico"><i class="fas fa-bolt"></i></div></div>
-      <h3 data-id="REST API dengan Go (Golang)" data-en="Go REST API — Clean Architecture">REST API dengan Go (Golang)</h3>
-      <p data-id="REST API Go dengan arsitektur berlapis Handler → Service → Repository menerapkan Clean Architecture & DDD. Dibangun di atas Chi Router dengan PostgreSQL via pgxpool, query type-safe dengan sqlc, konfigurasi & logging via Viper dan Zerolog. Autentikasi dual-token JWT (RS256) dengan Redis denylist, dikemas Docker Compose dan alur Git Flow." data-en="A Go REST API with a layered Handler → Service → Repository design applying Clean Architecture & DDD. Built on Chi Router with PostgreSQL via pgxpool, type-safe queries with sqlc, config & logging through Viper and Zerolog. Dual-token JWT (RS256) auth with a Redis denylist, containerized with Docker Compose and a structured Git Flow.">REST API Go dengan arsitektur berlapis Handler → Service → Repository menerapkan Clean Architecture & DDD. Dibangun di atas Chi Router dengan PostgreSQL via pgxpool, query type-safe dengan sqlc, konfigurasi & logging via Viper dan Zerolog. Autentikasi dual-token JWT (RS256) dengan Redis denylist, dikemas Docker Compose dan alur Git Flow.</p>
-      <div class="proj-tags"><span>Go</span><span>Chi</span><span>sqlc</span><span>JWT</span><span>Redis</span><span>Docker</span></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><span class="proj-idx">P.05</span><div class="proj-ico"><i class="fas fa-clipboard-check"></i></div></div>
-      <h3 data-id="Sistem Penjaminan Mutu Internal (SPMI)" data-en="Internal Quality Assurance System">Sistem Penjaminan Mutu Internal (SPMI)</h3>
-      <p data-id="Platform web berbasis Laravel untuk kebutuhan penjaminan mutu internal organisasi. Mencakup dua fungsi inti — manajemen mutu dan penilaian mutu — di mana setiap standar dikelola terstruktur dan dinilai oleh reviewer yang ditugaskan secara objektif, akuntabel, dan terdokumentasi sebagai dasar perbaikan berkelanjutan." data-en="A Laravel web platform for internal quality assurance within an organization. It covers two core functions — quality management and quality assessment — where each standard is managed in a structured way and scored by assigned reviewers objectively, accountably, and with full documentation as a basis for continuous improvement.">Platform web berbasis Laravel untuk kebutuhan penjaminan mutu internal organisasi. Mencakup dua fungsi inti — manajemen mutu dan penilaian mutu — di mana setiap standar dikelola terstruktur dan dinilai oleh reviewer yang ditugaskan secara objektif, akuntabel, dan terdokumentasi sebagai dasar perbaikan berkelanjutan.</p>
-      <div class="proj-tags"><span>PHP</span><span>Laravel</span><span>PostgreSQL</span></div>
+    <article class="win win--gold reveal" id="achievements" aria-labelledby="achTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/achievements.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="achTitle">Achievements</h2><span class="win-label" data-i18n="lbl.ach">Certs &amp; education</span>
+      </div>
+      <div class="win-body">
+        <ul class="certs" id="certList"></ul>
+        <h3 class="mini-h">— Academy —</h3>
+        <div class="edu" id="edu"></div>
+      </div>
     </article>
   </div>
 </section>
 
-<!-- CERTS + EDUCATION -->
-<section class="section wrap" id="certs">
-  <div class="reveal">
-    <!-- <span class="eyebrow" data-id="03 — Kredensial" data-en="03 — Credentials">03 — Kredensial</span> -->
-    <div class="sec-head"><h2 data-id="Sertifikasi &amp; <span class='g'>pendidikan</span>" data-en="Certifications &amp; <span class='g'>education</span>">Sertifikasi &amp; <span class="g">pendidikan</span></h2></div>
-  </div>
-  <div class="two-col">
-    <div class="reveal">
-      <a class="cert" href="https://www.hackerrank.com/certificates/ff333a0bbe60" target="_blank" rel="noopener">
-        <div class="cert-ico"><i class="fas fa-hashtag"></i></div>
-        <div><h4>HackerRank Go (Basic) <i class="fas fa-arrow-up-right-from-square ext"></i></h4><div class="issuer">HackerRank</div><div class="date" data-id="Diterbitkan Jul 2026" data-en="Issued Jul 2026">Diterbitkan Jul 2026</div></div>
-      </a>
-      <a class="cert" href="https://www.hackerrank.com/certificates/f0166dba2e8c" target="_blank" rel="noopener">
-        <div class="cert-ico"><i class="fas fa-database"></i></div>
-        <div><h4>HackerRank SQL (Intermediate) <i class="fas fa-arrow-up-right-from-square ext"></i></h4><div class="issuer">HackerRank</div><div class="date" data-id="Diterbitkan Jul 2026" data-en="Issued Jul 2026">Diterbitkan Jul 2026</div></div>
-      </a>
-      <a class="cert" href="https://www.hackerrank.com/certificates/9d91fc181515" target="_blank" rel="noopener">
-        <div class="cert-ico"><i class="fas fa-database"></i></div>
-        <div><h4>HackerRank SQL (Basic) <i class="fas fa-arrow-up-right-from-square ext"></i></h4><div class="issuer">HackerRank</div><div class="date" data-id="Diterbitkan Jul 2026" data-en="Issued Jul 2026">Diterbitkan Jul 2026</div></div>
-      </a>
-      <div class="cert cert-static">
-        <div class="cert-ico"><i class="fas fa-award"></i></div>
-        <div><h4 data-id="LSP STIKI — Kompetensi Web Developer" data-en="LSP STIKI — Web Developer Competency">LSP STIKI — Kompetensi Web Developer</h4><div class="issuer">STIKI Malang</div><div class="date">Sep 2020</div></div>
-      </div>
-      <div class="cert cert-static">
-        <div class="cert-ico"><i class="fas fa-shield-halved"></i></div>
-        <div><h4>EC-Council Certified Security Specialist</h4><div class="issuer" data-id="Ethical Hacking Fundamentals · EC-Council" data-en="Ethical Hacking Fundamentals · EC-Council">Ethical Hacking Fundamentals · EC-Council</div><div class="date" data-id="Diterbitkan Jan 2019" data-en="Issued Jan 2019">Diterbitkan Jan 2019</div></div>
-      </div>
+<!-- ═════════ ZONE: PARTY ═════════ -->
+<section class="wrap zone-sec" aria-label="Party">
+  <p class="zone" aria-hidden="true"><span>Zone <b>05</b> · Party</span></p>
+  <article class="win win--gold reveal" id="party" aria-labelledby="partyTitle">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/party.png" alt="" width="26" height="26">
+      <h2 class="win-title" id="partyTitle">Party Invite</h2><span class="win-label" data-i18n="lbl.party">Work with me</span>
     </div>
-    <div class="reveal">
-      <div class="edu-card">
-        <div class="cap"><i class="fas fa-graduation-cap"></i></div>
-        <h4 data-id="Sarjana Teknologi Informasi (S.Kom)" data-en="Bachelor of Information Technology (S.Kom)">Sarjana Teknologi Informasi (S.Kom)</h4>
-        <div class="school">STIKI Malang</div>
-        <div class="meta">
-          <span data-id="Sekolah Tinggi Informatika dan Komputer Indonesia" data-en="Sekolah Tinggi Informatika dan Komputer Indonesia">Sekolah Tinggi Informatika dan Komputer Indonesia</span>
-          <span><i class="fas fa-calendar"></i> 2016 — 2020</span>
-          <span><i class="fas fa-microchip"></i> <span data-id="Teknologi Informasi" data-en="Information Technology">Teknologi Informasi</span></span>
+    <div class="win-body party">
+      <p class="party-hello mono" data-i18n="party.hello">Arsyawalfa wants to join your party!</p>
+      <h3 class="party-h" data-i18n="party.h">Ready to team up?</h3>
+      <p class="party-sub" data-i18n="party.sub">I usually reply within 24 hours.</p>
+      <div class="party-cards">
+        <div class="pcard">
+          <h4>HIRE ME</h4>
+          <p data-i18n="party.hire">Full-time or contract · Backend / Fullstack · Go · PHP · Remote or hybrid.</p>
+        </div>
+        <div class="pcard pcard--alt">
+          <h4>COMMISSION</h4>
+          <p data-i18n="party.com">Company profile, web store, information system, REST API, or dashboard.</p>
         </div>
       </div>
+      <div class="party-actions">
+        <a class="btn" id="acceptBtn" href="mailto:arsyawalfa@gmail.com?subject=Hello%20Arsya"><span>▶</span><span data-i18n="party.accept">Accept · Email me</span></a>
+        <button type="button" class="btn btn--teal" id="buildBtn" data-i18n="party.build">Request a build</button>
+        <a class="btn btn--ghost" href="pdf/CV_ATS_ENGLISH_M_IMAM_ARSYAWALFA.pdf" download data-cv data-i18n="party.cv">Download CV</a>
+      </div>
     </div>
+  </article>
+
+  <div class="grid-2 grid-2--msg">
+    <article class="win win--teal reveal" id="contact" aria-labelledby="msgTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/message.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="msgTitle">Send Message</h2><span class="win-label" data-i18n="lbl.msg">Contact</span>
+      </div>
+      <div class="win-body msg">
+        <ul class="contact-list" id="contactList"></ul>
+        <form class="form" id="msgForm" novalidate>
+          <div class="field"><label for="mName" data-i18n="form.name">Name</label><input id="mName" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="mEmail" data-i18n="form.email">Email</label><input id="mEmail" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="mMsg" data-i18n="form.msg">Message</label><textarea id="mMsg" name="message" required></textarea></div>
+          <button type="submit" class="btn"><span>▶</span><span data-i18n="form.send">Send · via email</span></button>
+          <p class="form-note" data-i18n="form.note">Opens your email app. Nothing is stored on a server.</p>
+          <p class="form-status" id="msgStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </article>
+
+    <article class="win win--violet reveal" id="chat" aria-labelledby="chatTitle">
+      <div class="win-bar">
+        <img class="win-ico" src="assets/img/icons/chat.png" alt="" width="26" height="26">
+        <h2 class="win-title" id="chatTitle">Chat Log</h2>
+      </div>
+      <div class="win-body"><div class="dialog-box chat" id="chatLog" aria-live="off"></div></div>
+    </article>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="section wrap contact" id="contact">
-  <div class="reveal">
-    <!-- <span class="eyebrow eyebrow-center" data-id="04 — Kontak" data-en="04 — Contact">04 — Kontak</span> -->
-    <div class="sec-head sec-head-center">
-      <h2 data-id="Mari <span class='g'>terhubung</span>" data-en="Let&#39;s <span class='g'>connect</span>">Mari <span class="g">terhubung</span></h2>
-      <p data-id="Terbuka untuk peran Software Engineer & PHP/Go Developer. Jangan ragu menghubungi." data-en="Open to Software Engineer & PHP/Go Developer roles. Feel free to reach out.">Terbuka untuk peran Software Engineer & PHP/Go Developer. Jangan ragu menghubungi.</p>
-    </div>
-  </div>
-  <div class="contact-grid reveal">
-    <a class="cbtn em" href="mailto:arsyawalfa@gmail.com"><div class="ci"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><span>arsyawalfa@gmail.com</span></div></a>
-    <a class="cbtn li" href="https://id.linkedin.com/in/muhammad-imam-arsyawalfa-4062713a5" target="_blank" rel="noopener"><div class="ci"><i class="fab fa-linkedin-in"></i></div><div><h4>LinkedIn</h4><span>Arsyawalfa</span></div></a>
-    <a class="cbtn gh" href="https://github.com/Arsyawalfa98" target="_blank" rel="noopener"><div class="ci"><i class="fab fa-github"></i></div><div><h4>GitHub</h4><span>Arsyawalfa98</span></div></a>
-    <a class="cbtn ig" href="https://instagram.com/arsya_0" target="_blank" rel="noopener"><div class="ci"><i class="fab fa-instagram"></i></div><div><h4>Instagram</h4><span>@arsya_0</span></div></a>
-    <a class="cbtn js" href="https://id.jobstreet.com/profiles/muhammadimam-arsyawalfa-rq7cnzzNZt" target="_blank" rel="noopener"><div class="ci"><i class="fas fa-briefcase"></i></div><div><h4>Jobstreet</h4><span data-id="Lihat profil" data-en="View profile">Lihat profil</span></div></a>
-  </div>
-</section>
+</main>
 
-<footer>
-  <div class="wrap"><p>© 2026 Muhammad Imam Arsyawalfa · <span class="g" data-id="Dibangun dengan dedikasi." data-en="Built with dedication.">Dibangun dengan dedikasi.</span></p></div>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p>© <span id="year">2026</span> Muhammad Imam Arsyawalfa</p>
+    <p class="mono" data-i18n="foot.thanks">Thanks for playing ▶</p>
+  </div>
+  <div class="ground" aria-hidden="true"></div>
 </footer>
 
-<a href="#home" class="top" id="toTop"><i class="fas fa-arrow-up"></i></a>
+<!-- QUEST DETAILS -->
+<dialog class="modal" id="questModal" aria-labelledby="qmTitle">
+  <div class="win">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/quests.png" alt="" width="26" height="26">
+      <p class="win-title">Quest Details</p><span class="win-label" id="qmCode">Q.01</span>
+      <span class="win-meta"><button type="button" class="modal-close" data-close aria-label="Close">×</button></span>
+    </div>
+    <div class="win-body qd" id="qmBody"></div>
+  </div>
+</dialog>
 
+<!-- REQUEST A BUILD -->
+<dialog class="modal" id="buildModal" aria-labelledby="bmTitle">
+  <div class="win win--teal">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/commissions.png" alt="" width="26" height="26">
+      <p class="win-title" id="bmTitle">Request a Build</p>
+      <span class="win-meta"><button type="button" class="modal-close" data-close aria-label="Close">×</button></span>
+    </div>
+    <form class="win-body form form-2" id="buildForm" novalidate>
+      <div class="field"><label for="bName" data-i18n="form.name">Name</label><input id="bName" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="bEmail" data-i18n="form.email">Email</label><input id="bEmail" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="bCompany" data-i18n="form.company">Company (optional)</label><input id="bCompany" name="company" autocomplete="organization"></div>
+      <div class="field"><label for="bType" data-i18n="form.type">Project type</label><select id="bType" name="type" required></select></div>
+      <div class="field"><label for="bDate" data-i18n="form.date">Target date</label><input id="bDate" name="date" type="month"></div>
+      <div class="field field--full"><label for="bDesc" data-i18n="form.desc">Description</label><textarea id="bDesc" name="desc" required></textarea></div>
+      <div class="field--full form-foot">
+        <button type="submit" class="btn"><span>▶</span><span data-i18n="form.send">Send · via email</span></button>
+        <p class="form-status" id="buildStatus" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<a href="#home" class="to-top" id="toTop" aria-label="Back to top">▲</a>
+
+<!-- PIXEL COMPANION -->
+<div class="buddy" id="buddy">
+  <p class="buddy-bubble" id="buddyBubble" role="status" aria-live="polite"></p>
+  <span class="buddy-zz" id="buddyZz" aria-hidden="true">z<b>Z</b></span>
+  <span class="buddy-mark" id="buddyMark" aria-hidden="true"></span>
+  <button type="button" class="buddy-hide" id="buddyHide" aria-label="Hide character">×</button>
+  <button type="button" class="buddy-sprite" id="buddySprite" aria-label="Arsya, pixel character — click or drag"></button>
+</div>
+<button type="button" class="buddy-show" id="buddyShow" aria-label="Show character" hidden>🙂</button>
+
+<script src="assets/js/companion-frames.js" defer></script>
+<script src="assets/js/companion.js?v=4" defer></script>
+<script type="module" src="assets/js/main.js?v=4"></script>
 </body>
 </html>

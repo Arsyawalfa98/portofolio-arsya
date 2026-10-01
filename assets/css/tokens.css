@@ -1,0 +1,65 @@
+/* Pixel Quest — design tokens (docs/REDESIGN.md §2.2) */
+:root{
+  color-scheme:light;
+  --bg:#f4f1ea;
+  --bg-grid:rgba(27,31,59,.05);
+  --panel:#fffdf8;
+  --panel-2:#f1ebe0;
+  --titlebar:#1b1f3b;
+  --titlebar-ink:#fff4e6;
+  --frame:#1b1f3b;
+  --shadow:rgba(27,31,59,.9);
+  --ink:#1b1a24;
+  --ink-soft:#4a4656;
+  --ink-faint:#6b6578;
+  --accent:#b04a1c;
+  --accent-fill:#d9622b;
+  --accent-2:#9e5134;
+  --teal:#0f6f7c;
+  --violet:#5b45c9;
+  --gold:#e0a526;
+  --ok:#177a45;
+  --danger:#cc3344;
+  --skin:#fcbc93;
+  --glow:rgba(15,111,124,.18);
+  --hero-img:url(../img/bg/hero-day.webp);
+  --ground-img:url(../img/bg/ground-day.webp);
+
+  --font-display:'Tiny5','Pixelify Sans','Courier New',monospace;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+
+  --px:4px;               /* satu "piksel" UI */
+  --wrap:1180px;
+  --gap:clamp(1rem,2.4vw,1.5rem);
+  --nav-h:64px;
+  --safe-l:env(safe-area-inset-left,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121428;
+  --bg-grid:rgba(94,214,224,.06);
+  --panel:#1b1e38;
+  --panel-2:#252948;
+  --titlebar:#2a2f55;
+  --titlebar-ink:#fff4e6;
+  --frame:#4a5290;
+  --shadow:rgba(5,6,18,.85);
+  --ink:#f2eee8;
+  --ink-soft:#b9b6c9;
+  --ink-faint:#9a95b5;
+  --accent:#ff8a4c;
+  --accent-fill:#ff8a4c;
+  --accent-2:#e0956b;
+  --teal:#5ed6e0;
+  --violet:#a594ff;
+  --gold:#ffd45e;
+  --ok:#5be39a;
+  --danger:#ff6b7a;
+  --glow:rgba(94,214,224,.25);
+  --hero-img:url(../img/bg/hero-night.webp);
+  --ground-img:url(../img/bg/ground-night.webp);
+}

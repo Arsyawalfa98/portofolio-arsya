@@ -1,0 +1,157 @@
+/* komponen: .win, .btn, .menu-list, .meter, .chip, .tier, .dialog-box, dialog, form, tabs */
+
+/* ---------- jendela game berjudul ---------- */
+.win{
+  --edge:var(--frame);
+  position:relative;
+  background:var(--panel);
+  margin:var(--px);
+  /* bingkai piksel dengan sudut bertangga */
+  box-shadow:
+    0 calc(-1*var(--px)) 0 0 var(--edge),
+    0 var(--px) 0 0 var(--edge),
+    calc(-1*var(--px)) 0 0 0 var(--edge),
+    var(--px) 0 0 0 var(--edge);
+  filter:drop-shadow(6px 6px 0 var(--shadow));
+}
+.win-bar{
+  display:flex;align-items:center;gap:.6rem;
+  min-height:44px;padding:.45rem .8rem;
+  background:var(--titlebar);color:var(--titlebar-ink);
+  border-bottom:var(--px) solid var(--line-accent,var(--accent-fill));
+}
+.win--teal{--line-accent:var(--teal)}
+.win--violet{--line-accent:var(--violet)}
+.win--gold{--line-accent:var(--gold)}
+.win-ico{width:26px;height:26px;flex:none;image-rendering:auto}
+.win-title{font:400 1.02rem/1.1 var(--font-display);letter-spacing:.06em;text-transform:uppercase;margin:0;color:inherit}
+.win-label{font:500 .8rem/1 var(--font-body);color:#c9c3d8;white-space:nowrap}
+.win-label::before{content:"· ";color:#8f88a8}
+.win-meta{margin-left:auto;display:flex;align-items:center;gap:.7rem;font:600 .7rem/1 var(--font-mono);color:#c9c3d8;white-space:nowrap}
+.win-dots{display:flex;gap:4px}
+.win-dots i{width:10px;height:10px;background:#4a4f7a;display:block}
+.win-dots i:last-child{background:var(--accent-fill)}
+.led{display:inline-flex;align-items:center;gap:.4rem;color:#7fe3ad}
+.led::before{content:"";width:8px;height:8px;background:#5be39a;box-shadow:0 0 6px #5be39a;animation:blink 1.6s steps(2) infinite}
+.win-body{padding:clamp(1rem,2.6vw,1.6rem)}
+.win.is-link{cursor:pointer;transition:transform .12s steps(2),filter .12s steps(2)}
+.win.is-link:hover,.win.is-link:focus-within{transform:translate(-2px,-2px);filter:drop-shadow(9px 9px 0 var(--shadow))}
+
+@keyframes blink{50%{opacity:.25}}
+
+/* ---------- tombol pixel ---------- */
+.btn{
+  --b:var(--accent-fill);--bt:#1b1f3b;--bs:var(--accent-2);
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  min-height:46px;padding:.65rem 1.15rem;
+  background:var(--b);color:var(--bt);
+  font:400 1.05rem/1 var(--font-display);letter-spacing:.04em;text-transform:uppercase;text-decoration:none;
+  border:0;cursor:pointer;
+  box-shadow:
+    0 -3px 0 0 var(--frame),0 3px 0 0 var(--frame),-3px 0 0 0 var(--frame),3px 0 0 0 var(--frame),
+    inset -4px -4px 0 0 var(--bs);
+  margin:3px;
+  transition:transform .08s steps(1);
+}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(2px);box-shadow:0 -3px 0 0 var(--frame),0 3px 0 0 var(--frame),-3px 0 0 0 var(--frame),3px 0 0 0 var(--frame),inset 4px 4px 0 0 var(--bs)}
+.btn--ghost{--b:var(--panel);--bt:var(--ink);--bs:var(--panel-2)}
+.btn--teal{--b:var(--teal);--bt:#fff;--bs:#0a4f58}
+:root[data-theme="dark"] .btn--teal{--bt:#121428;--bs:#2f9aa4}
+.btn--sm{min-height:36px;padding:.45rem .8rem;font-size:.9rem}
+.btn[aria-pressed="true"]{--b:var(--titlebar);--bt:var(--titlebar-ink);--bs:#000}
+
+/* ---------- menu game dengan kursor ▶ ---------- */
+.menu-list{display:grid;gap:.25rem}
+.menu-list a,.menu-list button{
+  display:flex;align-items:center;gap:.7rem;width:100%;
+  min-height:46px;padding:.5rem .7rem .5rem 2rem;position:relative;
+  background:none;border:0;text-align:left;cursor:pointer;text-decoration:none;
+  font:400 clamp(1.05rem,2vw,1.25rem)/1.1 var(--font-display);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);
+}
+.menu-list a::before,.menu-list button::before{content:"▶";position:absolute;left:.5rem;color:var(--accent);opacity:0}
+.menu-list a:hover,.menu-list a:focus-visible,.menu-list button:hover,.menu-list button:focus-visible,.menu-list .is-active{background:var(--panel-2)}
+.menu-list a:hover::before,.menu-list a:focus-visible::before,.menu-list button:hover::before,.menu-list button:focus-visible::before,.menu-list .is-active::before{opacity:1;animation:blink 1s steps(2) infinite}
+.menu-list small{margin-left:auto;font:500 .78rem/1 var(--font-mono);color:var(--ink-faint);text-transform:none;letter-spacing:0}
+
+/* ---------- meter bersegmen ---------- */
+.meter{display:grid;grid-template-columns:4.6rem 1fr auto;align-items:center;gap:.7rem;font:700 .74rem/1 var(--font-mono);color:var(--ink-faint)}
+.meter-bar{--v:0;--c:var(--teal);height:14px;background:var(--panel-2);box-shadow:0 0 0 2px var(--frame);position:relative;overflow:hidden}
+.meter-bar::before{
+  content:"";position:absolute;inset:0;width:calc(var(--v)*1%);
+  background:repeating-linear-gradient(90deg,var(--c) 0 10%,transparent 10% 11%);
+  background-size:100% 100%;
+  transition:width 1s steps(10);
+}
+.js .meter-bar:not(.in)::before{width:0}
+.meter b{color:var(--ink);font-weight:700}
+
+/* ---------- chip / item slot ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.3rem .55rem;background:var(--panel-2);color:var(--ink);
+  font:600 .76rem/1.2 var(--font-mono);
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--frame) 35%,transparent);
+}
+
+/* ---------- tier ---------- */
+.tier{display:inline-flex;align-items:center;gap:.35rem;padding:.22rem .5rem;font:700 .66rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#1b1f3b;background:var(--tc)}
+.tier::before{content:"◆"}
+.tier--legendary{--tc:var(--gold)}
+.tier--epic{--tc:#c9bfff}
+.tier--rare{--tc:#9fe3ea}
+.tier--common{--tc:#d9d4e4}
+.tag{display:inline-flex;padding:.22rem .5rem;font:700 .66rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--titlebar);color:var(--titlebar-ink)}
+
+/* ---------- kotak dialog RPG ---------- */
+.dialog-box{background:var(--titlebar);color:var(--titlebar-ink);padding:1rem 1.2rem;font:500 .9rem/1.6 var(--font-mono);box-shadow:inset 0 0 0 3px #4a5290,inset 0 0 0 6px var(--titlebar),inset 0 0 0 7px #4a5290}
+.dialog-box p{color:inherit;margin:0}
+.dialog-box .who{font-weight:700;margin-right:.4rem}
+.dialog-box .who--sys{color:#7fe3ad}
+.dialog-box .who--me{color:#ffb489}
+.caret::after{content:"▌";animation:blink 1s steps(2) infinite;color:var(--accent-fill);margin-left:2px}
+
+/* ---------- section head ---------- */
+.zone{display:flex;align-items:center;gap:1rem;margin:0 0 1.4rem;font:700 .78rem/1 var(--font-mono);letter-spacing:.25em;color:var(--ink-faint);text-transform:uppercase}
+.zone::before,.zone::after{content:"";flex:1;height:4px;background:repeating-linear-gradient(90deg,var(--frame) 0 8px,transparent 8px 14px);opacity:.35}
+.zone b{color:var(--accent)}
+
+/* ---------- filter & tab ---------- */
+.seg{display:flex;flex-wrap:wrap;gap:.35rem}
+.seg-btn{
+  min-height:38px;padding:.4rem .75rem;border:0;cursor:pointer;
+  background:var(--panel-2);color:var(--ink);font:700 .78rem/1 var(--font-mono);letter-spacing:.04em;
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--frame) 40%,transparent);
+}
+.seg-btn:hover{box-shadow:inset 0 0 0 2px var(--accent-fill)}
+.seg-btn[aria-pressed="true"],.seg-btn[aria-selected="true"]{background:var(--titlebar);color:var(--titlebar-ink);box-shadow:inset 0 -4px 0 0 var(--accent-fill)}
+
+/* ---------- form ---------- */
+.field{display:grid;gap:.35rem}
+.field label{font:700 .74rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.field input,.field textarea,.field select{
+  width:100%;min-height:44px;padding:.6rem .75rem;background:var(--panel-2);color:var(--ink);
+  border:0;box-shadow:inset 0 0 0 2px var(--frame);border-radius:0;
+}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--teal),0 0 0 4px var(--glow)}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"]{box-shadow:inset 0 0 0 3px var(--danger)}
+.form-note{font-size:.8rem;color:var(--ink-faint)}
+.form-status{min-height:1.4em;font:600 .82rem/1.4 var(--font-mono);color:var(--ok)}
+.form-status.is-error{color:var(--danger)}
+
+/* ---------- modal <dialog> ---------- */
+.modal{
+  width:min(760px,100% - 1.5rem);max-height:calc(100dvh - 2rem);margin:auto;
+  padding:0;border:0;background:transparent;color:var(--ink);overflow:visible;
+}
+.modal::backdrop{background:rgba(10,11,26,.72);backdrop-filter:blur(2px)}
+.modal .win{max-height:calc(100dvh - 2.5rem);display:flex;flex-direction:column}
+.modal .win-body{overflow:auto}
+.modal-close{
+  margin-left:.6rem;width:34px;height:34px;flex:none;display:grid;place-items:center;
+  background:var(--accent-fill);color:#1b1f3b;border:0;cursor:pointer;font:700 1.3rem/1 var(--font-body);
+  box-shadow:inset -3px -3px 0 var(--accent-2);
+}
+body.modal-open{overflow:hidden}

@@ -1,0 +1,4 @@
+# hasil olahan sementara generator sprite (bisa dibuat ulang: tools/sprite/extract.py)
+tools/sprite/frames/
+tools/sprite/.tmp/
+__pycache__/

@@ -1,0 +1,101 @@
+// Kamus teks UI. Teks EN juga ditulis langsung di HTML sebagai default.
+// Judul kartu (MAIN MENU, SKILL TREE, …) tetap EN; label pendampingnya diterjemahkan.
+export const dict = {
+  en: {
+    'ui.skip': 'Skip to content',
+    'nav.profile': 'Profile', 'nav.quests': 'Quests', 'nav.journey': 'Journey', 'nav.party': 'Party',
+    'lbl.hero': 'Start', 'lbl.stats': 'Impact in numbers', 'lbl.about': 'About me', 'lbl.skills': 'Skills',
+    'lbl.quests': 'Projects', 'lbl.com': 'What I can build', 'lbl.log': 'Experience', 'lbl.ach': 'Certs & education',
+    'lbl.party': 'Work with me', 'lbl.msg': 'Contact',
+    'hero.hello': '> PLAYER 1 READY',
+    'hero.sum': 'Software Engineer with 5+ years as a fullstack engineer, shipping web apps and systems for institutions on PHP (Laravel) and JavaScript. Now focused on Go — clean-architecture REST APIs with Chi, pgx, and sqlc.',
+    'hero.cta1': 'View Quests', 'hero.cta2': 'Download CV', 'hero.cta3': 'Contact Me',
+    'pc.online': 'ONLINE', 'pc.class': 'Class', 'pc.base': 'Base', 'pc.status': 'Open to work', 'pc.avail': 'Now',
+    'about.p1': 'I started as a freelance developer in 2018 and now lead the information systems team at Universitas PGRI Adi Buana Surabaya. Most of my work lives where data meets people: reporting integrations, internal tools, and client platforms that have to just work.',
+    'about.p2': 'My recent focus has shifted toward Go. I build REST APIs with clean architecture, use AI-assisted tools to learn faster, and take full ownership of what I ship.',
+    'about.impact': 'Highlights',
+    'about.i1': 'Run and secure every information system at a university.',
+    'about.i2': 'Built a Dikti NeoFeeder integrator that cuts reporting errors.',
+    'about.i3': 'Ship with Docker, GitHub Actions, and GHCR pipelines.',
+    'about.loc': 'Location', 'about.edu': 'Education', 'about.focus': 'Focus', 'about.since': 'Coding since',
+    'com.note': 'No fixed price list — every build is quoted after a short brief.',
+    'log.work': 'Work', 'log.intern': 'Internship', 'log.now': 'Present',
+    'party.hello': 'Arsyawalfa wants to join your party!',
+    'party.h': 'Ready to team up?',
+    'party.sub': 'I usually reply within 24 hours.',
+    'party.hire': 'Full-time or contract · Backend / Fullstack · Go · PHP · Remote or hybrid.',
+    'party.com': 'Company profile, web store, information system, REST API, or dashboard.',
+    'party.accept': 'Accept · Email me', 'party.build': 'Request a build', 'party.cv': 'Download CV',
+    'form.name': 'Name', 'form.email': 'Email', 'form.msg': 'Message', 'form.send': 'Send · via email',
+    'form.note': 'Opens your email app. Nothing is stored on a server.',
+    'form.company': 'Company (optional)', 'form.type': 'Project type', 'form.date': 'Target date', 'form.desc': 'Description',
+    'form.invalid': 'Please fill in the highlighted fields.',
+    'form.ok': 'Your email app should open now. Thanks!',
+    'foot.thanks': 'Thanks for playing ▶',
+    'q.all': 'All', 'q.client': 'Client', 'q.own': 'Own product', 'q.institution': 'Institution', 'q.learning': 'Learning',
+    'q.be': 'Backend', 'q.fe': 'Frontend', 'q.fs': 'Fullstack', 'q.devops': 'DevOps',
+    'q.open': 'Open quest', 'q.building': 'Currently building', 'q.internal': 'Internal system — screenshots not public. Flow:',
+    'q.objective': 'Objective', 'q.strategy': 'Strategy', 'q.reward': 'Reward', 'q.equipment': 'Equipment',
+    'q.prev': '◀ Prev quest', 'q.next': 'Next quest ▶', 'q.live': 'Live ↗', 'q.repo': 'Source ↗',
+    'cert.view': 'View credential',
+    'chat.1': 'Arsyawalfa joined the server. Status: open to work.',
+    'chat.2': 'Average response time: < 24h.',
+    'chat.3': 'Thanks for playing! Ping me anytime — arsyawalfa@gmail.com',
+    'boot.1': '> LOADING PLAYER DATA........ OK', 'boot.2': '> LOADING QUESTS............. OK',
+    'theme.dark': 'Dark mode', 'menu': 'Menu'
+  },
+  id: {
+    'ui.skip': 'Lompat ke konten',
+    'nav.profile': 'Profil', 'nav.quests': 'Quest', 'nav.journey': 'Perjalanan', 'nav.party': 'Party',
+    'lbl.hero': 'Mulai', 'lbl.stats': 'Dampak dalam angka', 'lbl.about': 'Tentang saya', 'lbl.skills': 'Keahlian',
+    'lbl.quests': 'Proyek', 'lbl.com': 'Yang bisa saya bangun', 'lbl.log': 'Pengalaman', 'lbl.ach': 'Sertifikasi & pendidikan',
+    'lbl.party': 'Ajak kerja sama', 'lbl.msg': 'Kontak',
+    'hero.hello': '> PLAYER 1 SIAP',
+    'hero.sum': 'Software Engineer dengan 5+ tahun sebagai fullstack engineer, membangun aplikasi web dan sistem untuk institusi di atas PHP (Laravel) dan JavaScript. Kini fokus ke Go — REST API berarsitektur bersih dengan Chi, pgx, dan sqlc.',
+    'hero.cta1': 'Lihat Quest', 'hero.cta2': 'Unduh CV', 'hero.cta3': 'Hubungi Saya',
+    'pc.online': 'ONLINE', 'pc.class': 'Kelas', 'pc.base': 'Markas', 'pc.status': 'Terbuka untuk kerja', 'pc.avail': 'Siap',
+    'about.p1': 'Saya memulai sebagai developer freelance pada 2018 dan kini memimpin tim sistem informasi di Universitas PGRI Adi Buana Surabaya. Sebagian besar pekerjaan saya ada di titik temu data dan manusia: integrasi pelaporan, aplikasi internal, dan platform klien yang harus selalu jalan.',
+    'about.p2': 'Fokus terbaru saya bergeser ke Go. Saya membangun REST API dengan clean architecture, memanfaatkan AI-assisted tools untuk belajar lebih cepat, dan mengambil full ownership atas apa yang saya rilis.',
+    'about.impact': 'Sorotan',
+    'about.i1': 'Menjalankan dan mengamankan seluruh sistem informasi universitas.',
+    'about.i2': 'Membangun integrator NeoFeeder Dikti yang mengurangi kesalahan pelaporan.',
+    'about.i3': 'Rilis lewat pipeline Docker, GitHub Actions, dan GHCR.',
+    'about.loc': 'Lokasi', 'about.edu': 'Pendidikan', 'about.focus': 'Fokus', 'about.since': 'Ngoding sejak',
+    'com.note': 'Tidak ada daftar harga tetap — setiap proyek diberi penawaran setelah brief singkat.',
+    'log.work': 'Kerja', 'log.intern': 'Magang', 'log.now': 'Sekarang',
+    'party.hello': 'Arsyawalfa ingin bergabung ke party Anda!',
+    'party.h': 'Siap kerja sama?',
+    'party.sub': 'Biasanya saya membalas dalam 24 jam.',
+    'party.hire': 'Full-time atau kontrak · Backend / Fullstack · Go · PHP · Remote atau hybrid.',
+    'party.com': 'Company profile, toko online, sistem informasi, REST API, atau dashboard.',
+    'party.accept': 'Terima · Kirim email', 'party.build': 'Pesan proyek', 'party.cv': 'Unduh CV',
+    'form.name': 'Nama', 'form.email': 'Email', 'form.msg': 'Pesan', 'form.send': 'Kirim · via email',
+    'form.note': 'Membuka aplikasi email Anda. Tidak ada data yang disimpan di server.',
+    'form.company': 'Perusahaan (opsional)', 'form.type': 'Jenis proyek', 'form.date': 'Target selesai', 'form.desc': 'Deskripsi',
+    'form.invalid': 'Mohon lengkapi kolom yang ditandai.',
+    'form.ok': 'Aplikasi email Anda akan terbuka. Terima kasih!',
+    'foot.thanks': 'Terima kasih sudah bermain ▶',
+    'q.all': 'Semua', 'q.client': 'Klien', 'q.own': 'Produk sendiri', 'q.institution': 'Institusi', 'q.learning': 'Belajar',
+    'q.be': 'Backend', 'q.fe': 'Frontend', 'q.fs': 'Fullstack', 'q.devops': 'DevOps',
+    'q.open': 'Buka quest', 'q.building': 'Sedang dibangun', 'q.internal': 'Sistem internal — tangkapan layar tidak publik. Alur:',
+    'q.objective': 'Tujuan', 'q.strategy': 'Strategi', 'q.reward': 'Hasil', 'q.equipment': 'Perlengkapan',
+    'q.prev': '◀ Quest sebelumnya', 'q.next': 'Quest berikutnya ▶', 'q.live': 'Live ↗', 'q.repo': 'Kode ↗',
+    'cert.view': 'Lihat kredensial',
+    'chat.1': 'Arsyawalfa bergabung ke server. Status: terbuka untuk kerja.',
+    'chat.2': 'Rata-rata waktu balas: < 24 jam.',
+    'chat.3': 'Terima kasih sudah bermain! Hubungi saya kapan saja — arsyawalfa@gmail.com',
+    'boot.1': '> MEMUAT DATA PEMAIN......... OK', 'boot.2': '> MEMUAT QUEST............... OK',
+    'theme.dark': 'Mode gelap', 'menu': 'Menu'
+  }
+};
+
+export const getLang = () => (document.documentElement.lang === 'id' ? 'id' : 'en');
+export const t = (key) => dict[getLang()][key] ?? dict.en[key] ?? key;
+/** teks konten {en,id} atau string biasa */
+export const tx = (v) => (v && typeof v === 'object' ? v[getLang()] ?? v.en : v ?? '');
+
+export function applyStatic() {
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+}

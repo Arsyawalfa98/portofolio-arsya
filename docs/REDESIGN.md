@@ -154,7 +154,7 @@ Halaman dibagi menjadi **5 zona** seperti alur game: *Start → Profile → Ques
 | **QUESTS** | 6 | `#quests` | `QUESTS` | Proyek | filter + grid kartu → **pop-up detail** | `projects.js` |
 | | 7 | `#commissions` | `COMMISSIONS` | Layanan | jenis pekerjaan + alur kerja (tanpa harga) | `services.js` |
 | **JOURNEY** | 8 | `#journey` | `ADVENTURE LOG` | Pengalaman | tab **Work** / **Internship**, timeline | `experience.js`, `internships.js` |
-| | 9 | `#achievements` | `ACHIEVEMENTS` | Sertifikasi & pendidikan | badge sertifikat bertingkat + kartu pendidikan | `certs.js`, `profile.js` |
+| | 9 | `#achievements` | `ACHIEVEMENTS` | Sertifikasi, HAKI & pendidikan | badge sertifikat bertingkat + **2 HAKI** (tombol **View** membuka pop-up gambar sertifikat; gambar tidak dimuat sebelum diklik) + kartu pendidikan | `certs.js` (`certs`, `copyrights`, `education`) |
 | **PARTY** | 10 | `#party` | `PARTY INVITE` | Ajakan kerja sama | kartu Hire / Commission + 3 tombol | `profile.js` |
 | | 11 | (di party) | `SEND MESSAGE` | Kontak | daftar kontak + form email | `profile.js` |
 | | 12 | (di party) | `CHAT LOG` | — | kotak dialog sistem | i18n |
@@ -339,6 +339,7 @@ portofolio-arsya/
 ```
 
 - Memakai **ES modules** (`<script type="module">`); di lokal dijalankan lewat server (`python3 -m http.server 8000`).
+- **Cache-busting:** setiap rilis, naikkan `?v=N` di `index.html` (CSS, `main.js`, `companion.js`) **dan** di semua `import` pada `main.js`. Tanpa ini, browser bisa mencampur modul lama dan baru sehingga halaman kosong.
 - **Tanpa library.** Ikon brand (GitHub, LinkedIn, dll.) memakai SVG resmi; ikon lain dari Canva.
 
 ### 6.2 Contoh skema data
@@ -420,6 +421,7 @@ export const internships = [];
 | 11 | Nama panggilan pemain untuk Player Card (mis. "ARSYA") | ☐ |
 | 12 | Testimoni (opsional) | ☐ |
 | 13 | Sprite companion | ✅ selesai (§11) |
+| 15 | HAKI (Surat Pencatatan Ciptaan) | ✅ SISPAMI Adi Buana (000911970, 5 Mei 2025) dan RPL Adi Buana (000828297, 2 Des 2024) di `assets/img/haki/`; SISPAMI juga ditautkan dari Quest Q.05 (SPMI) |
 | 14 | Aset gambar website (§12.3) | prioritas 1 ✅ · prioritas 2–3 ☐ (menunggu kuota Canva) |
 
 ---

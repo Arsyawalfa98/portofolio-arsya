@@ -13,3 +13,33 @@ export const education = {
   full: 'Sekolah Tinggi Informatika dan Komputer Indonesia',
   years: '2016 — 2020'
 };
+
+// HAKI — Surat Pencatatan Ciptaan (Kemenkum, Ditjen Kekayaan Intelektual). Gambar baru tampil lewat tombol View.
+export const copyrights = [
+  {
+    slug: 'sispami',
+    title: 'SISPAMI Adi Buana',
+    desc: {
+      en: 'Internal Quality Assurance (SPMI) & Internal Quality Audit (AMI) Management Information System',
+      id: 'Sistem Informasi Pengelolaan Sistem Penjaminan Mutu Internal (SPMI) dan Audit Mutu Internal (AMI)'
+    },
+    kind: { en: 'Computer program', id: 'Program komputer' },
+    number: '000911970',
+    date: { en: '5 May 2025', id: '5 Mei 2025' },
+    img: 'assets/img/haki/sispami.webp',
+    quest: 'spmi'
+  },
+  {
+    slug: 'rpl',
+    title: 'RPL Adi Buana',
+    desc: {
+      en: 'Recognition of Prior Learning (RPL) Information System',
+      id: 'Sistem Informasi Rekognisi Pembelajaran Lampau (RPL)'
+    },
+    kind: { en: 'Computer program', id: 'Program komputer' },
+    number: '000828297',
+    date: { en: '2 Dec 2024', id: '2 Des 2024' },
+    img: 'assets/img/haki/rpl.webp',
+    quest: null
+  }
+];

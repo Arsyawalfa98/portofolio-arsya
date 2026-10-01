@@ -22,11 +22,11 @@ setTimeout(function(){if(!window.__appReady)d.classList.remove('js')},3000);})()
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Tiny5&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=4">
-<link rel="stylesheet" href="assets/css/base.css?v=4">
-<link rel="stylesheet" href="assets/css/components.css?v=4">
-<link rel="stylesheet" href="assets/css/sections.css?v=4">
-<link rel="stylesheet" href="assets/css/companion.css?v=4">
+<link rel="stylesheet" href="assets/css/tokens.css?v=5">
+<link rel="stylesheet" href="assets/css/base.css?v=5">
+<link rel="stylesheet" href="assets/css/components.css?v=5">
+<link rel="stylesheet" href="assets/css/sections.css?v=5">
+<link rel="stylesheet" href="assets/css/companion.css?v=5">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Muhammad Imam Arsyawalfa","jobTitle":"Software Engineer","email":"mailto:arsyawalfa@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Surabaya","addressCountry":"ID"},"sameAs":["https://github.com/Arsyawalfa98","https://id.linkedin.com/in/muhammad-imam-arsyawalfa-4062713a5","https://instagram.com/arsya_0"]}
 </script>
@@ -232,6 +232,8 @@ setTimeout(function(){if(!window.__appReady)d.classList.remove('js')},3000);})()
       </div>
       <div class="win-body">
         <ul class="certs" id="certList"></ul>
+        <h3 class="mini-h" data-i18n="haki.h">— Copyrights (HAKI) —</h3>
+        <ul class="certs haki" id="hakiList"></ul>
         <h3 class="mini-h">— Academy —</h3>
         <div class="edu" id="edu"></div>
       </div>
@@ -343,6 +345,18 @@ setTimeout(function(){if(!window.__appReady)d.classList.remove('js')},3000);})()
   </div>
 </dialog>
 
+<!-- HAKI VIEWER -->
+<dialog class="modal modal--doc" id="hakiModal" aria-labelledby="hmTitle">
+  <div class="win win--gold">
+    <div class="win-bar">
+      <img class="win-ico" src="assets/img/icons/achievements.png" alt="" width="26" height="26">
+      <p class="win-title" id="hmTitle">Copyright</p><span class="win-label" id="hmCode"></span>
+      <span class="win-meta"><button type="button" class="modal-close" data-close aria-label="Close">×</button></span>
+    </div>
+    <div class="win-body doc-view"><img id="hmImg" alt="" width="910" height="1287"></div>
+  </div>
+</dialog>
+
 <a href="#home" class="to-top" id="toTop" aria-label="Back to top">▲</a>
 
 <!-- PIXEL COMPANION -->
@@ -356,7 +370,7 @@ setTimeout(function(){if(!window.__appReady)d.classList.remove('js')},3000);})()
 <button type="button" class="buddy-show" id="buddyShow" aria-label="Show character" hidden>🙂</button>
 
 <script src="assets/js/companion-frames.js" defer></script>
-<script src="assets/js/companion.js?v=4" defer></script>
+<script src="assets/js/companion.js?v=5" defer></script>
 <script type="module" src="assets/js/main.js?v=4"></script>
 </body>
 </html>

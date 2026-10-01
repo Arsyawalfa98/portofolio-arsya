@@ -1,12 +1,12 @@
 // Entry: render konten dari data + interaksi. ES module, tanpa library.
-import { t, tx, getLang, applyStatic } from './i18n.js';
-import { profile } from './data/profile.js';
-import { projects } from './data/projects.js';
-import { experience } from './data/experience.js';
-import { internships } from './data/internships.js';
-import { certs, education } from './data/certs.js';
-import { skills } from './data/skills.js';
-import { services, steps } from './data/services.js';
+import { t, tx, getLang, applyStatic } from './i18n.js?v=5';
+import { profile } from './data/profile.js?v=5';
+import { projects } from './data/projects.js?v=5';
+import { experience } from './data/experience.js?v=5';
+import { internships } from './data/internships.js?v=5';
+import { certs, education, copyrights } from './data/certs.js?v=5';
+import { skills } from './data/skills.js?v=5';
+import { services, steps } from './data/services.js?v=5';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -126,6 +126,7 @@ function questHTML(p) {
   const links = [p.links.live && `<a class="btn btn--sm" href="${p.links.live}" target="_blank" rel="noopener">${t('q.live')}</a>`,
     p.links.repo && `<a class="btn btn--sm btn--ghost" href="${p.links.repo}" target="_blank" rel="noopener">${t('q.repo')}</a>`].filter(Boolean).join('');
   return `
+    ${p.haki ? `<p class="qd-haki"><span class="tier tier--legendary">HAKI</span> ${esc(t('q.hakiTag'))} · <button type="button" class="link-btn" data-haki="${p.haki}">${esc(t('q.haki'))} ▶</button></p>` : ''}
     <div class="qd-flow">${p.internal ? `<p class="mono">${esc(t('q.internal'))}</p>` : ''}<div class="flow">${flow}</div></div>
     <div class="qd-head">
       <h2 id="qmTitle" class="qd-title">${esc(tx(p.title))}</h2>
@@ -187,6 +188,29 @@ $$('.modal').forEach((m) => {
   });
 });
 
+/* ---------- HAKI viewer: gambar baru dimuat saat tombol View diklik ---------- */
+const hModal = $('#hakiModal');
+let hakiReturn = null;
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-haki]');
+  if (!b) return;
+  const c = copyrights.find((x) => x.slug === b.dataset.haki);
+  if (!c) return;
+  hakiReturn = b;
+  $('#hmCode').textContent = c.title;
+  const img = $('#hmImg');
+  img.alt = `${t('haki.alt')} ${c.title}`;
+  img.src = c.img;
+  hModal.showModal();
+  document.body.classList.add('modal-open');
+  $('.modal-close', hModal).focus();
+});
+hModal.addEventListener('close', () => {
+  if (!qModal.open) document.body.classList.remove('modal-open');
+  const sel = hakiReturn && hakiReturn.isConnected ? hakiReturn : $(`[data-haki="${hakiReturn?.dataset.haki}"]`);
+  sel?.focus?.({ preventScroll: true });
+});
+
 /* ---------- commissions ---------- */
 function renderServices() {
   $('#svcList').innerHTML = services.map((s) => `
@@ -231,6 +255,13 @@ function renderCerts() {
       <span class="cert-m mono">${esc(c.issuer)} · ${esc(tx(c.date))}</span>`;
     return `<li>${c.url ? `<a class="cert" href="${c.url}" target="_blank" rel="noopener" title="${esc(t('cert.view'))}">${inner}</a>` : `<div class="cert">${inner}</div>`}</li>`;
   }).join('');
+  $('#hakiList').innerHTML = copyrights.map((c) => `
+    <li><div class="cert">
+      <span class="cert-tier tier tier--legendary">HAKI</span>
+      <span class="cert-t">${esc(c.title)} <span class="cert-d">— ${esc(tx(c.desc))}</span></span>
+      <span class="cert-m mono">${esc(tx(c.kind))} · ${esc(t('haki.no'))} ${c.number} · ${esc(tx(c.date))}</span>
+      <button type="button" class="btn btn--sm btn--ghost cert-view" data-haki="${c.slug}">${esc(t('haki.view'))}<span class="sr-only">: ${esc(c.title)}</span></button>
+    </div></li>`).join('');
   $('#edu').innerHTML = `<p class="edu-deg">${esc(tx(education.degree))}</p>
     <p class="edu-school">${esc(education.school)} · <span class="mono">${education.years}</span></p>
     <p class="edu-full">${esc(education.full)}</p>`;

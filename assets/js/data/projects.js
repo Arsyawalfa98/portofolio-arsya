@@ -149,6 +149,7 @@ export const projects = [
     },
     stack: ['PHP', 'Laravel', 'PostgreSQL'],
     flow: ['Standards', 'Reviewer scoring', 'Reports'],
+    haki: 'sispami',                   // terdaftar HAKI (data/certs.js → copyrights)
     links: { live: null, repo: null },
     internal: true
   }

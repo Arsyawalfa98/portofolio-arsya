@@ -3,7 +3,7 @@ export const profile = {
   email: 'arsyawalfa@gmail.com',
   cv: { en: 'pdf/CV_ATS_ENGLISH_M_IMAM_ARSYAWALFA.pdf', id: 'pdf/CV_ATS_M_IMAM_ARSYAWALFA_INDONESIA.pdf' },
   stats: [
-    { value: '5+', label: { en: 'years building', id: 'tahun berkarya' } },
+    { value: '6+', label: { en: 'years building', id: 'tahun berkarya' } },
     { value: '10+', label: { en: 'systems shipped', id: 'sistem dibangun' } },
     { value: '5', label: { en: 'certifications', id: 'sertifikasi' } },
     { value: '2', label: { en: 'stacks: Go & PHP', id: 'stack: Go & PHP' } }

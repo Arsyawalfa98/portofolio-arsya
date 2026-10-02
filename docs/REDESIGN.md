@@ -471,10 +471,10 @@ Karakter chibi Arsya hidup di bagian bawah layar: berjalan kiri/kanan, ngoding d
 
 | File | Isi |
 |---|---|
-| `assets/img/companion/arsya-sheet.png` | sprite sheet grid 40 kolom, frame 80×82, 176 frame unik (±162 KB) |
+| `assets/img/companion/arsya-sheet.png` | sprite sheet grid 40 kolom, frame 80×82, 177 frame unik (±172 KB) |
 | `assets/js/companion-frames.js` | indeks frame per animasi (**auto-generated**, jangan diedit manual) |
 | `assets/js/companion.js` | mesin status (idle, walk, coding, coffee, sleep, wake, drag, fall, cry, …), balon dialog EN/ID |
-| `tools/sprite/source/*.png` | 11 lembar aset karakter asli (tidak ikut ke website); `jump.png`, `point.png`, `turn.png`, `drop.png` dibuat dengan GPT |
+| `tools/sprite/source/*.png` | 12 lembar aset karakter asli (tidak ikut ke website); `jump.png`, `point.png`, `turn.png`, `drop.png`, `emotions.png` (geli, marah, menangis, bingung) dibuat dengan GPT |
 | `tools/sprite/extract.py`, `build_sheet.py` | pipeline: potong frame → samakan ukuran & palet ke idle → sheet |
 
 **Membangun ulang sprite:** `python3 tools/sprite/extract.py && python3 tools/sprite/build_sheet.py --preview tools/sprite/preview.png`

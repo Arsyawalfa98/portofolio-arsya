@@ -24,6 +24,7 @@ SHEETS = {
     'point': os.path.join(SRC, 'point.png'),
     'turn': os.path.join(SRC, 'turn.png'),
     'slip': os.path.join(SRC, 'drop.png'),
+    'emo': os.path.join(SRC, 'emotions.png'),
 }
 
 def run(*a):
@@ -250,6 +251,22 @@ for i, b in enumerate([(352, 148, 672, 894), (852, 148, 1180, 892)]):
 for i, b in enumerate([(18, 320, 330, 758), (342, 310, 660, 712), (660, 318, 960, 712),
                        (984, 426, 1206, 768), (1284, 304, 1510, 762)]):
     FRAMES.append(('slip_%d' % (i + 1), 'slip', b, 452, 'head'))
+# ekspresi: emotions.png (2 baris, latar transparan, dibuat dengan GPT; menggantikan ekspresi tempelan di atas idle):
+#   baris 1: geli x4 (tertawa memegang perut), marah x2 (tangan di pinggang, mengentak kaki)
+#   baris 2: menangis x4 (meraung, mengucek mata, terisak), bingung x2 (menggaruk kepala)
+# Skala dari tinggi berdiri per baris (semua pose berdiri), warna: palet idle + warna air mata.
+EMO_ROWS = {
+    1: (340, [('tickle', (26, 136, 244, 488)), ('tickle', (270, 134, 450, 486)), ('tickle', (490, 148, 674, 488)),
+              ('tickle', (724, 116, 896, 484)), ('angry', (1044, 134, 1218, 488)), ('angry', (1272, 136, 1472, 488))]),
+    2: (352, [('cry', (56, 550, 230, 918)), ('cry', (282, 554, 466, 918)), ('cry', (506, 550, 678, 918)),
+              ('cry', (738, 558, 920, 918)), ('confused', (1032, 550, 1230, 922)), ('confused', (1306, 558, 1490, 922))]),
+}
+for row, (stand_h, items) in EMO_ROWS.items():
+    count = {}
+    for kind, b in items:
+        count[kind] = count.get(kind, 0) + 1
+        FRAMES.append(('emo_%s_%d' % (kind, count[kind]), 'emo', b, stand_h, 'head'))
+
 # lembar buatan GPT: satu faktor skala per lembar dari lebar kepala frame pertama (= idle) x koreksi
 #   jump x0.96: badan di aset sedikit lebih jangkung dari idle; pose meregang (2, 5) muat di frame
 #   point x0.9, turn x0.84, slip x0.875: tinggi berdiri disamakan dengan idle (77 px)
@@ -455,7 +472,7 @@ def build(names=None):
         elif sheet == 'fall':
             scale *= fall_scale(name)                  # tinggi berdiri (FALL_STAND_H) x koreksi kelompok
             resize(scale)
-        elif sheet == 'slp':
+        elif sheet in ('slp', 'emo'):
             pass                                       # skala dari tinggi berdiri per baris (SLP_STAND_H)
         elif sheet in ('lap', 'cof'):
             hw = head_width(sm)
@@ -482,6 +499,7 @@ def build(names=None):
     pal_lap = os.path.join(TMP, 'palette_laptop.png')
     pal_cof = os.path.join(TMP, 'palette_coffee.png')
     pal_slp = os.path.join(TMP, 'palette_sleep.png')
+    pal_emo = os.path.join(TMP, 'palette_emotions.png')
     if not names:
         refs = [small[n][0] for n in small if n.startswith('idle_') or n.startswith('act_')]
         run('convert', *refs, '+append', '-background', 'none', '-alpha', 'off',
@@ -506,7 +524,7 @@ def build(names=None):
         os.remove(gray_png + '.pam')
         run('convert', pal_idle, gray_png, '+append', pal_lap)
         # lembar kopi & tidur: palet idle + 8 warna yang jauh dari semua warna idle (gelas, bantal)
-        for prefix, pal_out in (('cof_', pal_cof), ('slp_', pal_slp)):
+        for prefix, pal_out in (('cof_', pal_cof), ('slp_', pal_slp), ('emo_', pal_emo)):
             extra_palette(small, prefix, pal_idle, pal_out)
 
     # 3) samakan palet, taruh di frame FWxFH dengan kaki di lantai & kepala di tengah
@@ -515,7 +533,7 @@ def build(names=None):
     for name, (sm, anchor) in small.items():
         q = os.path.join(TMP, name + '_q.png')
         pal_for = {'fall': pal_idle, 'lap': pal_lap, 'walk': pal_idle, 'cof': pal_cof,
-                   'slp': pal_slp, 'jump': pal_idle, 'point': pal_idle, 'turn': pal_idle, 'slip': pal_idle}.get(sheet_of[name], pal)
+                   'slp': pal_slp, 'jump': pal_idle, 'point': pal_idle, 'turn': pal_idle, 'slip': pal_idle, 'emo': pal_emo}.get(sheet_of[name], pal)
         run('convert', sm, '-alpha', 'off', '+dither', '-remap', pal_for, q)
         w, h, d = load_rgba(q)
         _, _, a = load_rgba(sm)                   # transparansi diambil dari sebelum remap

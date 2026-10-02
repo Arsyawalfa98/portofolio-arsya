@@ -80,11 +80,11 @@
     walk:      { anim: 'walk', fps: 9 },
     wave:      { anim: 'wave', fps: 6, dur: [1800, 2200] },
     happy:     { anim: 'happy', fps: 3, dur: [1200, 1400] },
-    tickle:    { anim: 'tickle', fps: 9, dur: [1500, 1700] },
+    tickle:    { anim: 'tickle', fps: 6, dur: [1500, 1700] },
     angry:     { anim: 'angry', fps: 2.5, dur: [2400, 2800], mark: '💢' },
     surprised: { anim: 'surprised', fps: 1, dur: [700, 800], mark: '❗' },
     think:     { anim: 'think', fps: 1.2, dur: [4000, 6000], mark: '💡' },
-    confused:  { anim: 'confused', fps: 3, dur: [2500, 3200], mark: '❓' },
+    confused:  { anim: 'confused', fps: 1.5, dur: [2500, 3200], mark: '❓' },
     point:     { anim: 'point', fps: 2.5, dur: [3000, 3400], intro: ['point_in'], introFps: 4, outro: true },
     coffee:    { anim: 'coffee', fps: 4, dur: [6000, 9000], intro: ['coffee_in'], introFps: 4, outro: ['coffee_out'],
                  cue: { frame: 6, say: 'coffeeTalk', ms: 3000 } },   // frame 6 = mulai mengobrol
@@ -99,7 +99,7 @@
     land:      { anim: 'land', fps: 6, dur: [330, 360], loop: false },
     hurt:      { anim: 'hurt', fps: 2.5, dur: [1600, 1700], loop: false },
     getup:     { anim: 'getup', fps: 7, dur: [1400, 1450], loop: false },
-    cry:       { anim: 'cry', fps: 5, dur: [3200, 3600] }
+    cry:       { anim: 'cry', fps: 3, dur: [3200, 3600] }
   };
 
   /* aktivitas acak saat tidak diganggu (bobot) */

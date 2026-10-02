@@ -3,8 +3,8 @@
 # Hasil: assets/img/companion/arsya-sheet.png + assets/js/companion-frames.js
 #
 # Frame dasar diambil apa adanya dari aset (idle, jalan, interaksi). Ekspresi yang tidak ada di aset
-# (bicara, kedip, geli, marah, menangis, meronta, pusing, bingung) digambar di atas frame idle_1
-# memakai koordinat wajah/lengan/kaki yang dipetakan dari frame tersebut.
+# (bicara, kedip) digambar di atas frame idle_1; geli, marah, menangis, bingung memakai emotions.png (GPT).
+# Gambar tempel memakai koordinat wajah/lengan/kaki yang dipetakan dari frame idle_1.
 import json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -300,10 +300,9 @@ def build():
     g = copy(F['idle_8']); add('happy', g)
     add('happy', shift_all(F['idle_8'], 0, -1))
 
-    # geli: tertawa, pipi merah, badan bergoyang kiri-kanan
-    for k, (wx, mo) in enumerate(((-1, 'grin'), (1, 'grin'), (-1, 'open'), (1, 'grin'))):
-        g = copy(base); face(g, eyes='laugh', mouth=mo, blush=True)
-        g = shift_all(g, wx, -(k % 2)); add('tickle', g)
+    # geli (emotions.png): tertawa memegang perut, bergoyang, menutup mulut, memantul
+    for i in range(1, 5):
+        add('tickle', F['emo_tickle_%d' % i])
 
     # jalan (menghadap kanan; JS mencerminkan seluruh sprite saat ke kiri): new-walk-frame.png,
     # 8 frame sesuai urutan aset (berpapasan di frame 1, 3, 6; melangkah di antaranya)
@@ -330,12 +329,9 @@ def build():
     for n in ['slp_r3_%d' % i for i in (1, 2, 3, 4, 5, 6, 9)] + ['slp_r4_%d' % i for i in range(1, 12)]:
         add('wake_up', F[n])
 
-    # marah: alis menukik, mata tajam, cemberut, kaki mengentak
-    for k in (0, 1):
-        g = copy(base); face(g, eyes='angry', brows='angry', mouth='frown' if k == 0 else 'pout')
-        if k:
-            move(g, *LEG_R, 0, -2)
-        add('angry', g)
+    # marah (emotions.png): tangan di pinggang -> mengomel sambil mengentak kaki
+    for i in (1, 2):
+        add('angry', F['emo_angry_%d' % i])
 
     # diangkat -> dilepas & jatuh -> menghantam lantai -> tergeletak -> bangun (new-up-and-fall.png),
     # lalu menangis (di bawah)
@@ -354,19 +350,13 @@ def build():
     add('getup', squat(base))
     add('getup', base)
 
-    # menangis: alis sedih, mata terpejam, air mata mengalir, bahu naik-turun
-    for k in range(4):
-        g = copy(base); face(g, eyes='cry', brows='sad', mouth='wail' if k % 2 == 0 else 'wail2', tears=k % 3)
-        if k % 2:
-            g = shift_upper(g, 1, WAIST)
-        add('cry', g)
+    # menangis (emotions.png): meraung, mengucek mata, meraung, terisak menyeka air mata
+    for i in range(1, 5):
+        add('cry', F['emo_cry_%d' % i])
 
-    # bingung: satu mata menyipit, mulut bergelombang, keringat, kepala sedikit miring
-    for k in range(2):
-        g = copy(base); face(g, eye_r='squint', brows='raised', mouth='wavy', sweat=True)
-        if k:
-            g = shift_upper(g, 1, WAIST)
-        add('confused', g)
+    # bingung (emotions.png): menggaruk kepala, kepala miring bergantian
+    for i in (1, 2):
+        add('confused', F['emo_confused_%d' % i])
 
     # transisi: lihat barang di lantai -> jongkok -> (pose aktivitas)
     add('squat', squat(base))

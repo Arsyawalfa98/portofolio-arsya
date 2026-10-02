@@ -1,7 +1,7 @@
 /* pixel companion (dipindah dari style.css; balon memakai gaya .dialog-box) */
 .buddy{--bs:2;--bc:1;--br:1;--fw:80;--fh:82;position:fixed;left:0;top:0;z-index:950;width:calc(var(--fw)*1px*var(--bs));height:calc(var(--fh)*1px*var(--bs));will-change:transform;pointer-events:none}
 .buddy[hidden]{display:none}
-.buddy-sprite{position:absolute;inset:0;pointer-events:auto;padding:0;border:0;background:url(../img/companion/arsya-sheet.png?v=6) 0 0/calc(var(--fw)*1px*var(--bs)*var(--bc)) calc(var(--fh)*1px*var(--bs)*var(--br)) no-repeat;image-rendering:pixelated;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 5px 6px rgba(15,21,51,.28));transform-origin:50% 100%}
+.buddy-sprite{position:absolute;inset:0;pointer-events:auto;padding:0;border:0;background:url(../img/companion/arsya-sheet.png?v=7) 0 0/calc(var(--fw)*1px*var(--bs)*var(--bc)) calc(var(--fh)*1px*var(--bs)*var(--br)) no-repeat;image-rendering:pixelated;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 5px 6px rgba(15,21,51,.28));transform-origin:50% 100%}
 .buddy.face-left .buddy-sprite{scale:-1 1}
 .buddy.dragging .buddy-sprite{cursor:grabbing;filter:drop-shadow(0 18px 14px rgba(15,21,51,.25))}
 .buddy-sprite:focus-visible{outline:3px solid var(--teal);outline-offset:2px}

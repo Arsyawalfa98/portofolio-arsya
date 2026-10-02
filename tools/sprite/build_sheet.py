@@ -408,6 +408,20 @@ def build():
         add('coding_out', F[n])
     add('coding_out', with_floor_laptop(squat(base), floor_laptop))
     add('coding_out', with_floor_laptop(base, floor_laptop))
+    # lompat (jump.png): 1 ancang-ancang, 2 menolak, 3 naik, 4 puncak, 5 turun, 6 mendarat.
+    # JS memilih frame sesuai fase lompatan / kecepatan vertikal (lihat airPose di companion.js)
+    for i in range(1, 7):
+        add('jump', F['jump_%d' % i])
+    # menunjuk (point.png): mengangkat tangan -> menunjuk sambil bicara / tersenyum (bergantian)
+    add('point_in', F['point_1'])
+    for n in ('point_2', 'point_3'):
+        add('point', F[n])
+    # berbalik (turn.png): 1 posisi 3/4 menghadap kanan, 2 menghadap depan (JS mencerminkan frame 1 untuk sisi kiri)
+    for i in (1, 2):
+        add('turn', F['turn_%d' % i])
+    # jatuh kaget dari jalan (drop.png): 1 kehilangan pijakan, 2-3 melayang (bergantian), 4 mendarat jongkok, 5 lega
+    for i in range(1, 6):
+        add('slip', F['slip_%d' % i])
     return anims
 
 SHEET_COLS = 40          # sheet disusun grid (lebar 40 x 80 = 3200px) - aman untuk batas ukuran gambar/browser

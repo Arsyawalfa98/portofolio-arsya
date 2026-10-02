@@ -20,6 +20,10 @@ SHEETS = {
     'lap':  os.path.join(SRC, 'action-pick-and-use-laptop.png'),
     'cof':  os.path.join(SRC, 'pick-up-coffe.png'),
     'slp':  os.path.join(SRC, 'new-sleep.png'),
+    'jump': os.path.join(SRC, 'jump.png'),
+    'point': os.path.join(SRC, 'point.png'),
+    'turn': os.path.join(SRC, 'turn.png'),
+    'slip': os.path.join(SRC, 'drop.png'),
 }
 
 def run(*a):
@@ -226,6 +230,31 @@ for row, (y0, y1, cols) in SLP_ROWS.items():
         name = 'slp_%s_%d' % (row, i + 1)
         FRAMES.append((name, 'slp', (c[0], y0, c[1], y1), SLP_STAND_H[row], 'box' if name[4:] in SLP_LYING else 'head'))
 
+# lompat: jump.png (1 baris, 6 frame, latar transparan, dibuat dengan GPT):
+#   1 ancang-ancang jongkok, 2 menolak, 3 naik (lutut ditarik), 4 puncak, 5 turun, 6 mendarat jongkok.
+# Semua frame digambar dengan skala yang sama: satu faktor dari lebar kepala jump_1 (= idle).
+for i, b in enumerate([(28, 440, 282, 774), (310, 330, 532, 728), (556, 256, 766, 596),
+                       (776, 228, 1004, 578), (1034, 306, 1248, 710), (1296, 436, 1500, 774)]):
+    FRAMES.append(('jump_%d' % (i + 1), 'jump', b, 390, 'head'))
+# menunjuk: point.png (1 baris, 3 frame, latar transparan, dibuat dengan GPT):
+#   1 mengangkat tangan, 2 menunjuk sambil bicara, 3 menunjuk sambil tersenyum (2-3 dipakai bergantian)
+for i, b in enumerate([(114, 198, 464, 830), (590, 202, 972, 830), (1092, 200, 1466, 830)]):
+    FRAMES.append(('point_%d' % (i + 1), 'point', b, 618, 'head'))
+# berbalik: turn.png (1 baris, 2 frame, latar transparan, dibuat dengan GPT): 1 posisi 3/4, 2 menghadap depan
+for i, b in enumerate([(352, 148, 672, 894), (852, 148, 1180, 892)]):
+    FRAMES.append(('turn_%d' % (i + 1), 'turn', b, 734, 'head'))
+# jatuh kaget dari jalan: drop.png (1 baris, 5 frame, latar transparan, dibuat dengan GPT; nama frame
+#   slip_* agar tidak bentrok dengan drop_* dari lembar diangkat & jatuh):
+#   1 kehilangan pijakan, 2-3 melayang jatuh (bergantian), 4 mendarat jongkok, 5 berdiri lega.
+#   Frame 2 & 3 berdempetan di aset -> batas dipotong manual di x=660.
+for i, b in enumerate([(18, 320, 330, 758), (342, 310, 660, 712), (660, 318, 960, 712),
+                       (984, 426, 1206, 768), (1284, 304, 1510, 762)]):
+    FRAMES.append(('slip_%d' % (i + 1), 'slip', b, 452, 'head'))
+# lembar buatan GPT: satu faktor skala per lembar dari lebar kepala frame pertama (= idle) x koreksi
+#   jump x0.96: badan di aset sedikit lebih jangkung dari idle; pose meregang (2, 5) muat di frame
+#   point x0.9, turn x0.84, slip x0.875: tinggi berdiri disamakan dengan idle (77 px)
+GPT_SHEET_FIX = {'jump': 0.96, 'point': 0.9, 'turn': 0.84, 'slip': 0.875}
+
 # pose yang kepalanya tidak bisa diukur otomatis (berbaring): koreksi skala manual,
 # disamakan dengan pose lain di baris yang sama pada lembar interaksi
 SCALE_FIX = {}
@@ -385,6 +414,7 @@ def build(names=None):
     # 1) potong + bersihkan + perkecil tiap frame
     small = {}
     walk_fix = None
+    gpt_fix = {}
     for name, sheet, box, stand_h, anchor in FRAMES:
         if names and name not in names:
             continue
@@ -416,6 +446,12 @@ def build(names=None):
             scale *= walk_fix
             resize(scale)
             print('  %-14s kepala -> %d (skala x%.3f)' % (name, head_width(sm), walk_fix))
+        elif sheet in GPT_SHEET_FIX:
+            if sheet not in gpt_fix:
+                gpt_fix[sheet] = ref_head / head_width(sm) * GPT_SHEET_FIX[sheet]
+            scale *= gpt_fix[sheet]
+            resize(scale)
+            print('  %-14s kepala -> %d, tinggi %d (skala x%.3f)' % (name, head_width(sm), opaque_h(sm), gpt_fix[sheet]))
         elif sheet == 'fall':
             scale *= fall_scale(name)                  # tinggi berdiri (FALL_STAND_H) x koreksi kelompok
             resize(scale)
@@ -479,7 +515,7 @@ def build(names=None):
     for name, (sm, anchor) in small.items():
         q = os.path.join(TMP, name + '_q.png')
         pal_for = {'fall': pal_idle, 'lap': pal_lap, 'walk': pal_idle, 'cof': pal_cof,
-                   'slp': pal_slp}.get(sheet_of[name], pal)
+                   'slp': pal_slp, 'jump': pal_idle, 'point': pal_idle, 'turn': pal_idle, 'slip': pal_idle}.get(sheet_of[name], pal)
         run('convert', sm, '-alpha', 'off', '+dither', '-remap', pal_for, q)
         w, h, d = load_rgba(q)
         _, _, a = load_rgba(sm)                   # transparansi diambil dari sebelum remap

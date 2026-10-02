@@ -339,7 +339,7 @@ portofolio-arsya/
 ```
 
 - Memakai **ES modules** (`<script type="module">`); di lokal dijalankan lewat server (`python3 -m http.server 8000`).
-- **Cache-busting:** setiap rilis, naikkan `?v=N` di `index.html` (CSS, `main.js`, `companion.js`) **dan** di semua `import` pada `main.js`. Tanpa ini, browser bisa mencampur modul lama dan baru sehingga halaman kosong.
+- **Cache-busting:** setiap rilis, naikkan `?v=N` di `index.html` (CSS, `main.js`, `companion.js`, `companion-frames.js`, dan `arsya-sheet.png` di `companion.css` bila sprite berubah) **dan** di semua `import` pada `main.js`. Tanpa ini, browser bisa mencampur modul lama dan baru sehingga halaman kosong.
 - **Tanpa library.** Ikon brand (GitHub, LinkedIn, dll.) memakai SVG resmi; ikon lain dari Canva.
 
 ### 6.2 Contoh skema data
@@ -471,22 +471,25 @@ Karakter chibi Arsya hidup di bagian bawah layar: berjalan kiri/kanan, ngoding d
 
 | File | Isi |
 |---|---|
-| `assets/img/companion/arsya-sheet.png` | sprite sheet grid 40 kolom, frame 80×82, 160 frame unik (±144 KB) |
+| `assets/img/companion/arsya-sheet.png` | sprite sheet grid 40 kolom, frame 80×82, 176 frame unik (±162 KB) |
 | `assets/js/companion-frames.js` | indeks frame per animasi (**auto-generated**, jangan diedit manual) |
 | `assets/js/companion.js` | mesin status (idle, walk, coding, coffee, sleep, wake, drag, fall, cry, …), balon dialog EN/ID |
-| `tools/sprite/source/*.png` | 7 lembar aset karakter asli (tidak ikut ke website) |
+| `tools/sprite/source/*.png` | 11 lembar aset karakter asli (tidak ikut ke website); `jump.png`, `point.png`, `turn.png`, `drop.png` dibuat dengan GPT |
 | `tools/sprite/extract.py`, `build_sheet.py` | pipeline: potong frame → samakan ukuran & palet ke idle → sheet |
 
 **Membangun ulang sprite:** `python3 tools/sprite/extract.py && python3 tools/sprite/build_sheet.py --preview tools/sprite/preview.png`
 
+**Aset karakter buatan GPT:** daftarkan lembarnya di `SHEETS` dan `FRAMES` (`extract.py`) lalu atur faktor skala di `GPT_SHEET_FIX` sampai tinggi berdiri = idle (77 px).
+
 **Aturan aset karakter baru:** ukuran badan dan warna setiap frame wajib senada dengan idle (tinggi berdiri ±77 px, palet dikunci ke palet idle). Uji cepat di browser dengan `?buddy=<state>`, misalnya `?buddy=sleep`, `?buddy=wake`, `?buddy=coding`.
 
 **Integrasi dengan redesign**
-- **Pijakan di jalan hero:** selama trotoar pada latar hero terlihat, companion berdiri dan berjalan di atasnya (`window.ARSYA_FLOOR` di `main.js` menghitung posisi trotoar dari ukuran `background-size: cover`; baris piksel trotoar di gambar 1776×896: siang **818**, malam **802**). Saat trotoar keluar layar, companion jatuh ke dasar layar; saat kembali, ia melompat naik ke jalan. Hero diberi ruang kosong bawah (`--stage`: 290px desktop, 250px mobile) agar karakter tidak menutupi jendela.
+- **Pijakan di jalan hero:** selama trotoar pada latar hero terlihat, companion berdiri dan berjalan di atasnya (`window.ARSYA_FLOOR` di `main.js` menghitung posisi trotoar dari ukuran `background-size: cover`; baris piksel trotoar di gambar 1776×896: siang **818**, malam **802**). Saat trotoar keluar layar, companion terpeleset kaget lalu jatuh ke dasar layar (animasi `slip`, 5 frame: kehilangan pijakan, melayang ×2, mendarat jongkok, lega); saat kembali, ia melompat naik ke jalan (animasi `jump`, 6 frame: ancang-ancang, menolak, naik, puncak, turun, mendarat). Frame dipilih dari fase dan kecepatan vertikal (`airPose` di `companion.js`).
+- **Berbalik arah:** saat arah jalan berganti, companion berbalik lewat animasi `turn` (3/4 → depan → 3/4 dicerminkan, ±¼ detik) alih-alih langsung dicerminkan. Hero diberi ruang kosong bawah (`--stage`: 290px desktop, 250px mobile) agar karakter tidak menutupi jendela.
 - Jika latar hero diganti, perbarui angka baris trotoar di `HERO_IMG` (`assets/js/main.js`).
 - Tanah footer (`ground-{day,night}.webp`) dipotong dari latar hero, warna ikut tema.
 - Balon dialog memakai gaya `.dialog-box` yang sama dengan Chat Log.
-- Pemicu scroll: masuk **Quests** → berpikir ("My projects are right here!"), **Skill Tree** → ngoding, **Party** → melambai, form terkirim → senang.
+- Pemicu scroll: masuk **Quests** → menunjuk ("My projects are right here!"), **Skill Tree** → menunjuk ("This is my tech stack"; dicerminkan bila companion di separuh kanan layar), **Party** → melambai, form terkirim → senang.
 - CSS companion dipindah ke `companion.css`; teks balon pindah ke `i18n.js`.
 
 ---

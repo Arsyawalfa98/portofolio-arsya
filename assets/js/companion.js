@@ -5,9 +5,13 @@
    Perilaku:
    - aktivitas acak: jalan (menoleh sesuai arah), diam & bernapas, berpikir, bingung, peregangan,
      minum kopi, membaca, duduk, ngoding, melambai
+   - section Quests / Skill Tree terlihat -> menunjuk ke arah konten sambil berkomentar
    - klik  -> tertawa kegelian (klik terus -> marah)
    - seret -> diangkat: marah & meronta; lepas -> jatuh, pusing, lalu menangis
-   - tidak ada aktivitas 35 detik -> tidur berbaring; ada aktivitas -> bangun kaget & bingung */
+   - tidak ada aktivitas 35 detik -> tidur berbaring; ada aktivitas -> bangun kaget & bingung
+   - ganti arah jalan -> berbalik (3/4 -> depan -> 3/4 dicerminkan), tidak langsung dicerminkan
+   - jalan hero muncul lagi saat scroll -> ancang-ancang & melompat ke jalan;
+     jalan hilang -> terpeleset kaget, melayang, mendarat jongkok, lalu lega */
 (() => {
   const root = document.getElementById('buddy');
   const DATA = window.ARSYA_FRAMES;
@@ -81,6 +85,7 @@
     surprised: { anim: 'surprised', fps: 1, dur: [700, 800], mark: '❗' },
     think:     { anim: 'think', fps: 1.2, dur: [4000, 6000], mark: '💡' },
     confused:  { anim: 'confused', fps: 3, dur: [2500, 3200], mark: '❓' },
+    point:     { anim: 'point', fps: 2.5, dur: [3000, 3400], intro: ['point_in'], introFps: 4, outro: true },
     coffee:    { anim: 'coffee', fps: 4, dur: [6000, 9000], intro: ['coffee_in'], introFps: 4, outro: ['coffee_out'],
                  cue: { frame: 6, say: 'coffeeTalk', ms: 3000 } },   // frame 6 = mulai mengobrol
     read:      { anim: 'read', fps: 0.8, dur: [6000, 9000], intro: ['read_in'], introFps: 3, outro: true },
@@ -115,6 +120,8 @@
   let S = 2, W = FW * S, H = FH * S;
   let x = 24, y = 0, floorY = 0;
   let onRoad, dropping = false;                                       // lantai: jalan di gambar hero atau dasar layar
+  let crouchUntil = 0, landUntil = 0, launchAt = 0, landAt = 0;      // ancang-ancang / mendarat (frame lompat)
+  let slipping = false;                                               // jatuh kaget dari jalan (frame slip)
 
   /* lantai = jalan pada latar hero (window.ARSYA_FLOOR dari main.js, posisi telapak kaki di viewport)
      selama jalan itu terlihat; selain itu dasar layar */
@@ -143,6 +150,7 @@
 
   /* ---------- pemutar animasi ---------- */
   let list = ANIMS.idle, animFps = 1, frameI = 0, frameT = 0, loop = true, override = null, overrideI = 0;
+  let pose = null;                                 // frame lompat / berbalik yang menimpa animasi state
   const seq = (names, reverse) => {
     const l = [].concat(...names.map((n) => ANIMS[n]));
     return reverse ? l.reverse() : l;
@@ -153,7 +161,9 @@
   }
   function render() {
     let f;
-    if (override) {
+    if (pose != null) {
+      f = pose;
+    } else if (override) {
       const o = ANIMS[override];
       f = o[overrideI % o.length];
     } else {
@@ -161,6 +171,46 @@
     }
     sprite.style.backgroundPosition = `${-(f % COLS) * W}px ${-Math.floor(f / COLS) * H}px`;
   }
+  function setPose(f) {
+    if (f === pose) return;
+    pose = f; render();
+  }
+  /* frame lompat (jump: 1 ancang-ancang, 2 menolak, 3 naik, 4 puncak, 5 turun, 6 mendarat) dari kecepatan vertikal */
+  const JUMP = ANIMS.jump, SLIP = ANIMS.slip;
+  /* jatuh kaget: slip = [kehilangan pijakan, melayang, melayang, mendarat jongkok, lega] */
+  function airPose(now) {
+    const t = now - launchAt;
+    if (slipping) return t < 150 ? SLIP[0] : SLIP[1 + (Math.floor(t / 110) % 2)];
+    return t < 110 ? JUMP[1] : vy < -300 ? JUMP[2] : vy < 250 ? JUMP[3] : JUMP[4];
+  }
+  function stopJump() {
+    dropping = slipping = false; crouchUntil = landUntil = 0; vy = 0;
+    setPose(null);
+  }
+
+  /* berbalik arah: turn = [3/4 menghadap kanan, depan]; sisi kiri memakai frame 3/4 yang dicerminkan */
+  const TURN = ANIMS.turn, TURN_STEP = 85;
+  let faceLeft = false, turnSteps = null, turnAt = 0;
+  const showFace = (left) => root.classList.toggle('face-left', left);
+  function face(left, animate = true) {
+    if (left === faceLeft && (animate || !turnSteps)) return;
+    faceLeft = left;
+    if (!animate || turnSteps || pose != null || dropping || crouchUntil || landUntil || root.hidden) {
+      if (turnSteps) { turnSteps = null; setPose(null); }
+      showFace(left);
+      return;
+    }
+    turnSteps = [[TURN[0], !left], [TURN[1], false], [TURN[0], left]];
+    turnAt = performance.now();
+    stepTurn(turnAt);
+  }
+  function stepTurn(now) {
+    const i = Math.floor((now - turnAt) / TURN_STEP);
+    if (i >= turnSteps.length) { turnSteps = null; setPose(null); showFace(faceLeft); return; }
+    showFace(turnSteps[i][1]);
+    setPose(turnSteps[i][0]);
+  }
+
   /* tampilkan frame lain sebentar (kedip / bicara) tanpa mengganggu animasi utama */
   let overrideTimer = null;
   function flash(name, ms) {
@@ -196,7 +246,7 @@
     state = s;
     const dur = ms != null ? ms : (cfg.dur ? rand(cfg.dur[0], cfg.dur[1]) : 0);
     root.classList.remove('sleeping');
-    if (s !== 'walk') root.classList.remove('face-left');
+    if (s !== 'walk') face(false, !['drag', 'fall', 'land', 'hurt', 'getup', 'cry', 'sleep'].includes(s));
     override = null;
     setMark(null);
     stateEnd = 0;
@@ -301,29 +351,45 @@
     const surf = surface();
     if (state === 'drag' || state === 'fall') {
       floorY = surf.y;
+    } else if (crouchUntil) {                         // ancang-ancang, lalu menolak ke jalan
+      if (now >= crouchUntil) {
+        crouchUntil = 0; dropping = true; launchAt = now;
+        floorY = surf.y;
+        vy = floorY < y ? -Math.sqrt(2 * 2600 * (y - floorY + 40)) : 0;   // puncak 40px di atas jalan
+      }
     } else if (dropping) {
       floorY = surf.y;
       vy += 2600 * dt;
       y += vy * dt;
-      if (vy > 0 && y >= floorY) {
-        y = floorY; vy = 0; dropping = false;
-        root.classList.remove('land'); void root.offsetWidth; root.classList.add('land');
+      setPose(airPose(now));
+      if (vy > 0 && y >= floorY) {                    // mendarat jongkok sebentar (jatuh kaget: lalu lega)
+        y = floorY; vy = 0; dropping = false; landAt = now;
+        landUntil = now + (slipping ? 1000 : 180);
+        setPose(slipping ? SLIP[3] : JUMP[5]);
       }
       place();
     } else if (onRoad !== undefined && surf.road !== onRoad && !root.hidden) {
-      dropping = true;
       floorY = surf.y;
-      vy = floorY < y ? -Math.sqrt(2 * 2600 * (y - floorY + 24)) : 0;   // naik: lompat ke jalan; turun: jatuh
+      face(faceLeft, false);                          // batalkan berbalik yang sedang berjalan
+      if (floorY < y) {                               // naik: ancang-ancang dulu
+        crouchUntil = now + 150; landUntil = 0; slipping = false;
+        setPose(JUMP[0]);
+      } else {                                        // turun: kehilangan pijakan, jatuh
+        dropping = slipping = true; vy = 0; launchAt = now; landUntil = 0;
+      }
     } else if (y !== surf.y) {
       floorY = y = surf.y;
       place();
     }
     onRoad = surf.road;
+    if (landUntil && now >= landUntil) { landUntil = 0; slipping = false; setPose(null); }
+    else if (landUntil && slipping && now - landAt > 280) setPose(SLIP[4]);
+    if (turnSteps) stepTurn(now);
 
-    if (state === 'walk') {
+    if (state === 'walk' && !crouchUntil && !landUntil) {
       const dir = Math.sign(targetX - x);
-      x += dir * WALK_SPEED * S * dt;                // sama dengan panjang langkah: kaki tidak meluncur
-      root.classList.toggle('face-left', dir < 0);   // frame jalan menghadap kanan, dicerminkan ke kiri
+      if (dir) face(dir < 0);                        // frame jalan menghadap kanan, dicerminkan ke kiri
+      if (!turnSteps) x += dir * WALK_SPEED * S * dt;   // sama dengan panjang langkah: kaki tidak meluncur
       if (dir === 0 || (dir > 0 && x >= targetX) || (dir < 0 && x <= targetX)) {
         x = targetX; setState('idle', rand(1200, 3000));
       }
@@ -373,6 +439,7 @@
     if (!press.moved && Math.hypot(e.clientX - press.sx, e.clientY - press.sy) > 6) {
       press.moved = true;
       root.classList.add('dragging');
+      stopJump();
       setState('drag'); say('lift', 2200);
     }
     if (press.moved) {
@@ -430,7 +497,9 @@
         const id = en.target.id;
         if (!en.isIntersecting || seen.has(id) || !['idle', 'walk', 'think'].includes(state)) return;
         seen.add(id);
-        setState(id === 'skills' ? 'coding' : id === 'quests' ? 'think' : 'wave');
+        setState(id === 'party' ? 'wave' : 'point');
+        // frame menunjuk menghadap kanan: di separuh kanan layar dicerminkan agar menunjuk ke konten
+        if (id !== 'party') face(x + W / 2 > window.innerWidth / 2);
         say(SECTION_LINE[id]);
       });
     }, { threshold: 0.35 });

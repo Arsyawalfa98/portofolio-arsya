@@ -25,10 +25,43 @@ SHEETS = {
     'turn': os.path.join(SRC, 'turn.png'),
     'slip': os.path.join(SRC, 'drop.png'),
     'emo': os.path.join(SRC, 'emotions.png'),
+    'jet': os.path.join(SRC, 'jetpack.png'),
+    'jetoff': os.path.join(SRC, 'jetpack-off.png'),
+    'jetk': os.path.join(SRC, 'jet-tickle.png'),
+    'jetl': os.path.join(SRC, 'jet-lift.png'),
+    'jetr': os.path.join(SRC, 'jet-recover.png'),
 }
+# lembar berlatar hitam dengan cahaya lembut (gradasi): latar dihapus dengan soft_bg, bukan flood fill warna
+SOFT_BG = {'jet', 'jetoff'}
 
 def run(*a):
     subprocess.run([str(x) for x in a], check=True)
+
+def soft_bg(src, dst, step=10):
+    """Hapus latar bergradasi (hitam + cahaya oranye/putih di sekitar karakter): telusuri dari tepi gambar
+       selama selisih warna dengan tetangga kecil (<= step, jumlah |dR|+|dG|+|dB|). Gradasi cahaya lolos,
+       outline karakter yang tajam menghentikan penelusuran, jadi rambut/celana gelap tidak ikut terhapus."""
+    run('convert', src, '-alpha', 'set', dst)
+    w, h, d = load_rgba(dst)
+    d = bytearray(d)
+    seen = bytearray(w * h)
+    q = deque(s for s in range(w * h) if s % w in (0, w - 1) or s // w in (0, h - 1))
+    for s in q:
+        seen[s] = 1
+    while q:
+        s = q.popleft(); x, y = s % w, s // w; i = s * 4
+        r, g, b = d[i], d[i + 1], d[i + 2]
+        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+            if 0 <= nx < w and 0 <= ny < h:
+                k = ny * w + nx
+                if not seen[k]:
+                    j = k * 4
+                    if abs(d[j] - r) + abs(d[j + 1] - g) + abs(d[j + 2] - b) <= step:
+                        seen[k] = 1; q.append(k)
+    for s in range(w * h):
+        if seen[s]:
+            d[s * 4 + 3] = 0
+    save_rgba(dst, w, h, d)
 
 def to_rgba(src, dst):
     """Salin ke PNG RGBA. Lembar tanpa transparansi (latar hitam) dibersihkan dengan flood fill
@@ -103,9 +136,12 @@ def merge(boxes, gap=8):
         boxes = out
     return boxes
 
+def sheet_rgba(name, dst):
+    (soft_bg if name in SOFT_BG else to_rgba)(SHEETS[name], dst)
+
 def detect(name):
     rgba = os.path.join(TMP, name + '.png')
-    to_rgba(SHEETS[name], rgba)
+    sheet_rgba(name, rgba)
     w, h, data = load_rgba(rgba)
     boxes = merge([b for b in components(w, h, data) if b[4] > 15])
     boxes.sort(key=lambda b: (round(b[1] / 200), b[0]))
@@ -267,10 +303,45 @@ for row, (stand_h, items) in EMO_ROWS.items():
         count[kind] = count.get(kind, 0) + 1
         FRAMES.append(('emo_%s_%d' % (kind, count[kind]), 'emo', b, stand_h, 'head'))
 
+# jetpack: jetpack.png (1 baris, 8 frame, latar hitam bercahaya, dibuat dengan GPT):
+#   1 mengencangkan tali, 2 menyalakan mesin (jongkok), 3 lepas landas, 4-5 melayang (api panjang/pendek),
+#   6 terbang turun (bersandar, kaki ke depan), 7-8 terbang naik (tangan ke atas, api panjang/pendek).
+#   Frame 6 & 7 berdempetan di aset -> batas dipotong manual di x=1192.
+for i, b in enumerate([(22, 412, 156, 704), (208, 430, 360, 704), (400, 380, 560, 678), (578, 354, 756, 646),
+                       (788, 364, 950, 654), (986, 332, 1192, 702), (1192, 332, 1352, 702), (1384, 332, 1536, 660)]):
+    FRAMES.append(('jet_%d' % (i + 1), 'jet', b, 292, 'head'))
+# lepas jetpack: jetpack-off.png (1 baris, 6 frame, latar hitam bercahaya, dibuat dengan GPT):
+#   1 mendarat (api padam), 2 mengusap dahi, 3 membuka tali, 4 jetpack dijinjing, 5 dipeluk/disimpan, 6 berdiri tanpa jetpack
+for i, b in enumerate([(36, 386, 216, 720), (318, 348, 502, 716), (564, 344, 724, 714), (784, 350, 988, 718),
+                       (1078, 348, 1254, 718), (1338, 348, 1494, 718)]):
+    FRAMES.append(('jetoff_%d' % (i + 1), 'jetoff', b, 366, 'head'))
+# jetpack saat diganggu (latar transparan, 1 baris 8 frame, dibuat dengan GPT):
+#   jet-tickle.png  dicolek sambil melayang: kaget, cekikikan, tertawa (condong belakang/depan, goyang), usap air mata, melayang lagi
+#   jet-lift.png    diseret (dipegang di gagang atas jetpack): kaget, bergoyang kiri-tengah-kanan, cemberut (loop)
+#   jet-recover.png dilepas: kaget, jatuh (api padam), menyala lagi, oleng ke dua sisi, stabil, lega, melayang
+JET_EXTRA = {
+    'jetk': [(42, 148, 218, 548), (306, 152, 516, 548), (580, 156, 752, 544), (838, 146, 1036, 538),
+             (1106, 172, 1324, 544), (1366, 172, 1638, 546), (1684, 150, 1884, 546), (1940, 150, 2114, 548)],
+    'jetl': [(32, 154, 236, 556), (294, 154, 524, 560), (552, 154, 794, 554), (854, 154, 1074, 552),
+             (1126, 154, 1334, 556), (1366, 154, 1592, 550), (1636, 154, 1878, 556), (1924, 154, 2126, 558)],
+    'jetr': [(32, 148, 244, 520), (292, 208, 532, 550), (558, 152, 802, 514), (852, 154, 1080, 528),
+             (1116, 182, 1346, 536), (1392, 190, 1626, 546), (1674, 184, 1868, 546), (1956, 154, 2116, 536)],
+}
+for sheet, boxes in JET_EXTRA.items():
+    for i, (x0, y0, x1, y1) in enumerate(boxes):
+        FRAMES.append(('%s_%d' % (sheet, i + 1), sheet, (x0 - 4, y0 - 4, x1 + 4, y1 + 4), 360, 'head'))
+# frame terbang yang lebih tinggi dari frame (api di bawah kaki): rambut tetap di dalam frame, ujung api dipotong
+TOP_FIT = {'jet'}
+# posisi vertikal mengikuti lembar aset (bukan sol/ujung api tiap frame), supaya badan tidak meloncat saat
+# panjang api berubah: 'bottom' = baris terbawah lembar di lantai frame, 'top' = gagang jetpack (baris teratas)
+# selalu di baris 1 (titik pegang saat diseret tetap)
+KEEP_Y = {'jetk': 'bottom', 'jetr': 'bottom', 'jetl': 'top'}
+
 # lembar buatan GPT: satu faktor skala per lembar dari lebar kepala frame pertama (= idle) x koreksi
 #   jump x0.96: badan di aset sedikit lebih jangkung dari idle; pose meregang (2, 5) muat di frame
-#   point x0.9, turn x0.84, slip x0.875: tinggi berdiri disamakan dengan idle (77 px)
-GPT_SHEET_FIX = {'jump': 0.96, 'point': 0.9, 'turn': 0.84, 'slip': 0.875}
+#   point x0.9, turn x0.84, slip x0.875, jet x0.925, jetoff x0.885: tinggi berdiri disamakan dengan idle (77 px)
+GPT_SHEET_FIX = {'jump': 0.96, 'point': 0.9, 'turn': 0.84, 'slip': 0.875, 'jet': 0.925, 'jetoff': 0.885,
+                 'jetk': 0.9, 'jetl': 0.9, 'jetr': 0.9}
 
 # pose yang kepalanya tidak bisa diukur otomatis (berbaring): koreksi skala manual,
 # disamakan dengan pose lain di baris yang sama pada lembar interaksi
@@ -427,11 +498,12 @@ def build(names=None):
     for n in SHEETS:
         p = os.path.join(TMP, n + '.png')
         if not os.path.exists(p):
-            to_rgba(SHEETS[n], p)
+            sheet_rgba(n, p)
     # 1) potong + bersihkan + perkecil tiap frame
     small = {}
     walk_fix = None
     gpt_fix = {}
+    scales = {}
     for name, sheet, box, stand_h, anchor in FRAMES:
         if names and name not in names:
             continue
@@ -493,6 +565,7 @@ def build(names=None):
             resize(scale)
             print('  %-14s kepala %d -> %d (skala x%.3f)' % (name, hw, head_width(sm), ref_head / hw))
         small[name] = (sm, anchor)
+        scales[name] = scale / 100
     # 2) palet bersama dari frame idle (warna asli karakter)
     pal = os.path.join(TMP, 'palette.png')
     pal_idle = os.path.join(TMP, 'palette_idle.png')
@@ -500,6 +573,7 @@ def build(names=None):
     pal_cof = os.path.join(TMP, 'palette_coffee.png')
     pal_slp = os.path.join(TMP, 'palette_sleep.png')
     pal_emo = os.path.join(TMP, 'palette_emotions.png')
+    pal_jet = os.path.join(TMP, 'palette_jetpack.png')
     if not names:
         refs = [small[n][0] for n in small if n.startswith('idle_') or n.startswith('act_')]
         run('convert', *refs, '+append', '-background', 'none', '-alpha', 'off',
@@ -524,16 +598,18 @@ def build(names=None):
         os.remove(gray_png + '.pam')
         run('convert', pal_idle, gray_png, '+append', pal_lap)
         # lembar kopi & tidur: palet idle + 8 warna yang jauh dari semua warna idle (gelas, bantal)
-        for prefix, pal_out in (('cof_', pal_cof), ('slp_', pal_slp), ('emo_', pal_emo)):
+        for prefix, pal_out in (('cof_', pal_cof), ('slp_', pal_slp), ('emo_', pal_emo), ('jet', pal_jet)):
             extra_palette(small, prefix, pal_idle, pal_out)
 
     # 3) samakan palet, taruh di frame FWxFH dengan kaki di lantai & kepala di tengah
     index = {}
     sheet_of = {f[0]: f[1] for f in FRAMES}
+    box_of = {f[0]: f[2] for f in FRAMES}
     for name, (sm, anchor) in small.items():
         q = os.path.join(TMP, name + '_q.png')
         pal_for = {'fall': pal_idle, 'lap': pal_lap, 'walk': pal_idle, 'cof': pal_cof,
-                   'slp': pal_slp, 'jump': pal_idle, 'point': pal_idle, 'turn': pal_idle, 'slip': pal_idle, 'emo': pal_emo}.get(sheet_of[name], pal)
+                   'slp': pal_slp, 'jump': pal_idle, 'point': pal_idle, 'turn': pal_idle, 'slip': pal_idle, 'emo': pal_emo,
+                   'jet': pal_jet, 'jetoff': pal_jet, 'jetk': pal_jet, 'jetl': pal_jet, 'jetr': pal_jet}.get(sheet_of[name], pal)
         run('convert', sm, '-alpha', 'off', '+dither', '-remap', pal_for, q)
         w, h, d = load_rgba(q)
         _, _, a = load_rgba(sm)                   # transparansi diambil dari sebelum remap
@@ -544,6 +620,16 @@ def build(names=None):
         cx = head_center(w, h, d) if anchor == 'head' else (x0 + x1) / 2
         ox = int(round(FW / 2 - cx))
         oy = FLOOR - y1
+        if sheet_of[name] in TOP_FIT and y1 - y0 + 1 > FH - 1:
+            oy = 1 - y0                               # rambut di baris 1, ujung api terpotong di bawah
+        if sheet_of[name] in KEEP_Y:
+            sb = [f[2] for f in FRAMES if f[1] == sheet_of[name]]
+            top = box_of[name][1]                     # baris lembar di y=0 potongan
+            if KEEP_Y[sheet_of[name]] == 'bottom':
+                tall = (max(b[3] for b in sb) - min(b[1] for b in sb)) * scales[name]
+                oy = FLOOR - int(round((max(b[3] for b in sb) - top) * scales[name] - max(0, tall - (FH - 2))))
+            else:
+                oy = 1 - int(round((min(b[1] for b in sb) - top) * scales[name]))
         # buang bintik lepas di tepi (sisa latar hitam): piksel dengan <= 2 tetangga buram
         for _ in range(2):
             kill = []

@@ -1,38 +1,50 @@
-/* Pixel Quest — design tokens (docs/REDESIGN.md §2.2) */
+/* Bento — design tokens (docs/REDESIGN.md, bagian "Tema Bento")
+   kartu putih bersudut bulat di latar netral hangat, satu aksen oranye (senada logo "A"),
+   teal & ungu sebagai aksen pendukung. Karakter pixel jadi satu-satunya elemen "main-main". */
 :root{
   color-scheme:light;
-  --bg:#f4f1ea;
-  --bg-grid:rgba(27,31,59,.05);
-  --panel:#fffdf8;
-  --panel-2:#f1ebe0;
-  --titlebar:#1b1f3b;
-  --titlebar-ink:#fff4e6;
-  --frame:#1b1f3b;
-  --shadow:rgba(27,31,59,.9);
-  --ink:#1b1a24;
-  --ink-soft:#4a4656;
-  --ink-faint:#6b6578;
-  --accent:#b04a1c;
-  --accent-fill:#d9622b;
-  --accent-2:#9e5134;
-  --teal:#0f6f7c;
-  --violet:#5b45c9;
-  --gold:#e0a526;
-  --ok:#177a45;
-  --danger:#cc3344;
-  --skin:#fcbc93;
-  --glow:rgba(15,111,124,.18);
-  --hero-img:url(../img/bg/hero-day.webp);
-  --ground-img:url(../img/bg/ground-day.webp);
+  --bg:#f4f3ef;
+  --bg-dot:rgba(30,28,24,.07);
+  --card:#ffffff;
+  --card-2:#f7f6f2;
+  --line:#e6e3dc;
+  --line-strong:#d6d2c8;
+  --ink:#1c1b19;
+  --ink-soft:#57544e;
+  --ink-faint:#6f6b63;
+  --accent:#c4501a;
+  --accent-fill:#ec6a2c;
+  --accent-soft:#fdeee6;
+  --on-accent:#ffffff;
+  --teal:#0e7a72;
+  --teal-soft:#e3f4f2;
+  --violet:#6a4bc4;
+  --violet-soft:#efebfb;
+  --gold:#b7791f;
+  --gold-soft:#fbf1df;
+  --ok:#1f8a4c;
+  --ok-soft:#e5f5eb;
+  --danger:#c4384a;
+  --ring:rgba(236,106,44,.35);
+  --shadow-sm:0 1px 2px rgba(28,27,25,.05);
+  --shadow:0 1px 2px rgba(28,27,25,.04),0 10px 30px -14px rgba(28,27,25,.14);
+  --shadow-lg:0 2px 4px rgba(28,27,25,.05),0 24px 48px -20px rgba(28,27,25,.22);
+  --backdrop:rgba(20,19,17,.5);
+  --bubble:#1c1b19;
+  --bubble-ink:#fbfaf7;
+  --sprite-shadow:rgba(28,27,25,.22);
 
-  --font-display:'Tiny5','Pixelify Sans','Courier New',monospace;
-  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-display:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-body:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
   --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
 
-  --px:4px;               /* satu "piksel" UI */
+  --r-lg:22px;            /* kartu bento */
+  --r-md:14px;            /* kartu kecil di dalam kartu */
+  --r-sm:10px;            /* input, ikon */
   --wrap:1180px;
-  --gap:clamp(1rem,2.4vw,1.5rem);
-  --nav-h:64px;
+  --gap:clamp(.8rem,1.6vw,1.1rem);
+  --pad:clamp(1.15rem,2.4vw,1.7rem);
+  --nav-h:68px;
   --safe-l:env(safe-area-inset-left,0px);
   --safe-r:env(safe-area-inset-right,0px);
   --safe-b:env(safe-area-inset-bottom,0px);
@@ -40,26 +52,34 @@
 
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#121428;
-  --bg-grid:rgba(94,214,224,.06);
-  --panel:#1b1e38;
-  --panel-2:#252948;
-  --titlebar:#2a2f55;
-  --titlebar-ink:#fff4e6;
-  --frame:#4a5290;
-  --shadow:rgba(5,6,18,.85);
-  --ink:#f2eee8;
-  --ink-soft:#b9b6c9;
-  --ink-faint:#9a95b5;
+  --bg:#111113;
+  --bg-dot:rgba(255,255,255,.05);
+  --card:#1a1a1d;
+  --card-2:#222226;
+  --line:#2a2a2f;
+  --line-strong:#3a3a41;
+  --ink:#f3f2ef;
+  --ink-soft:#bdbab3;
+  --ink-faint:#9a978f;
   --accent:#ff8a4c;
   --accent-fill:#ff8a4c;
-  --accent-2:#e0956b;
-  --teal:#5ed6e0;
-  --violet:#a594ff;
-  --gold:#ffd45e;
-  --ok:#5be39a;
-  --danger:#ff6b7a;
-  --glow:rgba(94,214,224,.25);
-  --hero-img:url(../img/bg/hero-night.webp);
-  --ground-img:url(../img/bg/ground-night.webp);
+  --accent-soft:#2c1d15;
+  --on-accent:#1a0f08;
+  --teal:#5fd3c8;
+  --teal-soft:#13282a;
+  --violet:#b4a0ff;
+  --violet-soft:#211d33;
+  --gold:#f0c060;
+  --gold-soft:#2a2314;
+  --ok:#5fdc95;
+  --ok-soft:#14281c;
+  --danger:#ff7a88;
+  --ring:rgba(255,138,76,.4);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.35),0 24px 48px -20px rgba(0,0,0,.7);
+  --backdrop:rgba(0,0,0,.6);
+  --bubble:#f3f2ef;
+  --bubble-ink:#1a1a1d;
+  --sprite-shadow:rgba(0,0,0,.45);
 }

@@ -277,6 +277,11 @@ def squat(g, item=None):
 
 # ----------------------------------------------------------------------
 # susun animasi
+# mulut kecil untuk wajah 3/4 di frame jetpack melayang (kiri-atas area 5x3)
+JET_MOUTH = {'jet_4': (44, 31), 'jet_5': (44, 32)}
+JET_SKIN = (252, 188, 147)
+JET_MOUTHS = {'open': [' OOO ', 'ORRPO', ' OOO '], 'o': ['  OO ', ' ORRO', '  OO ']}
+
 # ----------------------------------------------------------------------
 def build():
     F = {n[:-4]: load(n[:-4]) for n in os.listdir(FRAMES_DIR) if n.endswith('.png')}
@@ -412,6 +417,33 @@ def build():
     # jatuh kaget dari jalan (drop.png): 1 kehilangan pijakan, 2-3 melayang (bergantian), 4 mendarat jongkok, 5 lega
     for i in range(1, 6):
         add('slip', F['slip_%d' % i])
+    # jetpack (jetpack.png + jetpack-off.png): turun/naik antara lantai hero & footer
+    #   jet_on: kencangkan tali, nyalakan mesin, lepas landas; jet_hover: melayang (api berkedip);
+    #   jet_down: terbang turun; jet_up: terbang naik (api berkedip); jet_off: mendarat -> jetpack dilepas -> berdiri
+    for i in (1, 2, 3):
+        add('jet_on', F['jet_%d' % i])
+    for i in (4, 5):
+        add('jet_hover', F['jet_%d' % i])
+    add('jet_down', F['jet_6'])
+    for i in (7, 8):
+        add('jet_up', F['jet_%d' % i])
+    for i in range(1, 7):
+        add('jet_off', F['jetoff_%d' % i])
+    # bicara sambil melayang: mulut digambar di wajah 3/4 jet_4 / jet_5 (api tetap bergantian tiap frame)
+    #   urutan: buka, bulat, tutup (asli) - berulang
+    for src, mouth in (('jet_4', 'open'), ('jet_5', 'o'), ('jet_4', None), ('jet_5', 'open'), ('jet_4', 'o'), ('jet_5', None)):
+        g = copy(F[src])
+        if mouth:
+            mx, my = JET_MOUTH[src]
+            fill(g, mx, my, mx + 5, my + 3, JET_SKIN)
+            draw(g, mx, my, JET_MOUTHS[mouth])
+        add('jet_talk', g)
+    # diganggu saat terbang (jet-tickle / jet-lift / jet-recover.png, masing-masing 8 frame):
+    #   jet_tickle: dicolek -> tertawa sambil tetap melayang; jet_lift: diseret, bergoyang di gagang jetpack (loop);
+    #   jet_recover: dilepas -> jatuh sebentar, jetpack menyala lagi, oleng, stabil, melayang
+    for anim, sheet in (('jet_tickle', 'jetk'), ('jet_lift', 'jetl'), ('jet_recover', 'jetr')):
+        for i in range(1, 9):
+            add(anim, F['%s_%d' % (sheet, i)])
     return anims
 
 SHEET_COLS = 40          # sheet disusun grid (lebar 40 x 80 = 3200px) - aman untuk batas ukuran gambar/browser

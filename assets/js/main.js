@@ -1,12 +1,12 @@
 // Entry: render konten dari data + interaksi. ES module, tanpa library.
-import { t, tx, getLang, applyStatic } from './i18n.js?v=5';
-import { profile } from './data/profile.js?v=5';
-import { projects } from './data/projects.js?v=5';
-import { experience } from './data/experience.js?v=5';
-import { internships } from './data/internships.js?v=5';
-import { certs, education, copyrights } from './data/certs.js?v=5';
-import { skills } from './data/skills.js?v=5';
-import { services, steps } from './data/services.js?v=5';
+import { t, tx, getLang, applyStatic } from './i18n.js?v=13';
+import { profile } from './data/profile.js?v=13';
+import { projects } from './data/projects.js?v=13';
+import { experience } from './data/experience.js?v=13';
+import { internships } from './data/internships.js?v=13';
+import { certs, education, copyrights } from './data/certs.js?v=13';
+import { skills } from './data/skills.js?v=13';
+import { services, steps } from './data/services.js?v=13';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -17,7 +17,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 const svg = (id) => `<svg class="bi" aria-hidden="true"><use href="#i-${id}"/></svg>`;
-const icon = (name, size = 32) => `<img class="pix-ico" src="assets/img/icons/${name}.png" alt="" width="${size}" height="${size}" loading="lazy">`;
+const icon = (name) => `<span class="ico"><img src="assets/img/icons/${name}.png" alt="" width="30" height="30" loading="lazy"></span>`;
 
 /* ================= render ================= */
 
@@ -25,10 +25,10 @@ function renderLinks() {
   $('#pcLinks').innerHTML = profile.links.map((l) =>
     `<li><a href="${l.url}" target="_blank" rel="noopener" aria-label="${l.label}">${svg(l.key)}</a></li>`).join('');
   $('#contactList').innerHTML =
-    `<li><a href="mailto:${profile.email}">${icon('message', 28)}<span><b>Email</b>${profile.email}</span></a></li>` +
-    `<li><span class="cl-static"><span class="cl-pin" aria-hidden="true">⌖</span><span><b>${esc(t('about.loc'))}</b>Surabaya, Indonesia</span></span></li>` +
+    `<li><a href="mailto:${profile.email}"><span class="ci" aria-hidden="true">✉</span><span><b>Email</b>${profile.email}</span></a></li>` +
+    `<li><span class="cl-static"><span class="ci" aria-hidden="true">⌖</span><span><b>${esc(t('about.loc'))}</b>Surabaya, Indonesia</span></span></li>` +
     profile.links.map((l) =>
-      `<li><a href="${l.url}" target="_blank" rel="noopener">${svg(l.key)}<span><b>${l.label}</b>${esc(tx(l.handle))}</span></a></li>`).join('');
+      `<li><a href="${l.url}" target="_blank" rel="noopener"><span class="ci">${svg(l.key)}</span><span><b>${l.label}</b>${esc(tx(l.handle))}</span></a></li>`).join('');
 }
 
 /* tombol Download CV mengikuti bahasa aktif */
@@ -40,6 +40,12 @@ function renderCV() {
 function renderStats() {
   $('#statsList').innerHTML = profile.stats.map((s) =>
     `<li><b class="stat-v">${s.value}</b><span>${esc(tx(s.label))}</span></li>`).join('');
+}
+
+/* kartu "Saat ini": peran yang masih berjalan (end: null) dari data pengalaman */
+function renderNow() {
+  $('#nowList').innerHTML = experience.filter((x) => !x.end).map((x) =>
+    `<li><b>${esc(tx(x.role))}</b><span>${esc(x.org)} · ${esc(tx(x.kind))}</span></li>`).join('');
 }
 
 function renderSkills() {
@@ -76,18 +82,18 @@ function renderFilters() {
 
 function renderQuests() {
   $('#questGrid').innerHTML = projects.map((p) => `
-    <li class="quest" data-slug="${p.slug}">
+    <li class="card quest" data-slug="${p.slug}">
       <div class="quest-top">
-        ${icon(p.icon, 40)}
-        <span class="quest-code mono">${p.code}</span>
-        <span class="tier tier--${p.tier}">${p.tier}</span>
+        ${icon(p.icon)}
+        <span class="tag tag--${p.type}">${esc(t('q.' + p.type))}</span>
+        <span class="quest-code">${p.code.replace('Q.', '')}</span>
       </div>
       <h3 class="quest-h">${esc(tx(p.title))}</h3>
-      <p class="quest-meta mono">${esc(tx(p.meta))}</p>
+      <p class="quest-meta">${esc(tx(p.meta))}</p>
       <p class="quest-sum">${esc(tx(p.summary))}</p>
-      ${p.building ? `<p class="quest-flag mono">● ${esc(t('q.building'))}</p>` : ''}
+      ${p.building ? `<p class="quest-flag">${esc(t('q.building'))}</p>` : ''}
       <div class="chips">${p.stack.slice(0, 4).map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</div>
-      <a class="quest-open" href="#quest/${p.slug}">${esc(t('q.open'))} <span aria-hidden="true">▶</span><span class="sr-only">: ${esc(tx(p.title))}</span></a>
+      <a class="quest-open" href="#quest/${p.slug}">${esc(t('q.open'))} <span aria-hidden="true">→</span><span class="sr-only">: ${esc(tx(p.title))}</span></a>
     </li>`).join('');
   applyFilter();
 }
@@ -102,7 +108,7 @@ function applyFilter() {
     el.querySelector('.quest-open').tabIndex = ok ? 0 : -1;
     if (ok) shown++;
   });
-  $('#questCount').textContent = `${shown}/${projects.length}`;
+  $('#questCount').textContent = `${shown} / ${projects.length}`;
 }
 
 document.addEventListener('click', (e) => {
@@ -122,27 +128,27 @@ function questHTML(p) {
   const i = projects.indexOf(p);
   const prev = projects[(i - 1 + projects.length) % projects.length];
   const next = projects[(i + 1) % projects.length];
-  const flow = p.flow.map((f) => `<span class="flow-node">${esc(f)}</span>`).join('<span class="flow-arrow" aria-hidden="true">▶</span>');
+  const flow = p.flow.map((f) => `<span class="flow-node">${esc(f)}</span>`).join('<span class="flow-arrow" aria-hidden="true">→</span>');
   const links = [p.links.live && `<a class="btn btn--sm" href="${p.links.live}" target="_blank" rel="noopener">${t('q.live')}</a>`,
     p.links.repo && `<a class="btn btn--sm btn--ghost" href="${p.links.repo}" target="_blank" rel="noopener">${t('q.repo')}</a>`].filter(Boolean).join('');
   return `
-    ${p.haki ? `<p class="qd-haki"><span class="tier tier--legendary">HAKI</span> ${esc(t('q.hakiTag'))} · <button type="button" class="link-btn" data-haki="${p.haki}">${esc(t('q.haki'))} ▶</button></p>` : ''}
-    <div class="qd-flow">${p.internal ? `<p class="mono">${esc(t('q.internal'))}</p>` : ''}<div class="flow">${flow}</div></div>
-    <div class="qd-head">
+    <div class="qd-top">
+      <span class="tag tag--${p.type}">${esc(t('q.' + p.type))}</span>
       <h2 id="qmTitle" class="qd-title">${esc(tx(p.title))}</h2>
-      <span class="tier tier--${p.tier}">${p.tier}</span><span class="tag">${esc(t('q.' + p.type))}</span>
+      <p class="quest-meta">${esc(tx(p.meta))}</p>
     </div>
-    <p class="quest-meta mono">${esc(tx(p.meta))}</p>
-    <h3 class="mini-h">— ${esc(t('q.objective'))} —</h3><p>${esc(tx(p.objective))}</p>
-    <h3 class="mini-h">— ${esc(t('q.strategy'))} —</h3><p>${esc(tx(p.strategy))}</p>
-    <h3 class="mini-h">— ${esc(t('q.reward'))} —</h3><p>${esc(tx(p.reward))}</p>
-    <h3 class="mini-h">— ${esc(t('q.equipment'))} —</h3>
+    ${p.haki ? `<p class="qd-haki"><span class="tag tag--haki">HAKI</span> ${esc(t('q.hakiTag'))} · <button type="button" class="link-btn" data-haki="${p.haki}">${esc(t('q.haki'))}</button></p>` : ''}
+    <div class="qd-flow">${p.internal ? `<p>${esc(t('q.internal'))}</p>` : ''}<div class="flow">${flow}</div></div>
+    <h3 class="mini-h">${esc(t('q.objective'))}</h3><p>${esc(tx(p.objective))}</p>
+    <h3 class="mini-h">${esc(t('q.strategy'))}</h3><p>${esc(tx(p.strategy))}</p>
+    <h3 class="mini-h">${esc(t('q.reward'))}</h3><p>${esc(tx(p.reward))}</p>
+    <h3 class="mini-h">${esc(t('q.equipment'))}</h3>
     <div class="chips">${p.stack.map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</div>
     <div class="qd-foot">
       <div class="qd-links">${links}</div>
       <nav class="qd-nav" aria-label="Quests">
-        <a class="seg-btn" href="#quest/${prev.slug}">${esc(t('q.prev'))}</a>
-        <a class="seg-btn" href="#quest/${next.slug}">${esc(t('q.next'))}</a>
+        <a class="btn btn--sm btn--ghost" href="#quest/${prev.slug}">${esc(t('q.prev'))}</a>
+        <a class="btn btn--sm btn--ghost" href="#quest/${next.slug}">${esc(t('q.next'))}</a>
       </nav>
     </div>`;
 }
@@ -150,7 +156,7 @@ function questHTML(p) {
 function openQuest(slug) {
   const p = projects.find((x) => x.slug === slug);
   if (!p) return closeQuest();
-  $('#qmCode').textContent = p.code;
+  $('#qmCode').textContent = p.code.replace('Q.', '');
   $('#qmBody').innerHTML = questHTML(p);
   $('#qmBody').scrollTop = 0;
   if (!qModal.open) {
@@ -214,8 +220,8 @@ hModal.addEventListener('close', () => {
 /* ---------- commissions ---------- */
 function renderServices() {
   $('#svcList').innerHTML = services.map((s) => `
-    <li class="svc-item">${icon(s.icon, 36)}<div><h3>${esc(tx(s.title))}</h3><p>${esc(tx(s.desc))}</p></div></li>`).join('');
-  $('#stepList').innerHTML = steps.map((s, i) => `<li><span class="mono">0${i + 1}</span>${esc(tx(s))}</li>`).join('');
+    <li class="svc-item">${icon(s.icon)}<div><h3>${esc(tx(s.title))}</h3><p>${esc(tx(s.desc))}</p></div></li>`).join('');
+  $('#stepList').innerHTML = steps.map((s, i) => `<li><span>${i + 1}</span>${esc(tx(s))}</li>`).join('');
   $('#bType').innerHTML = services.map((s) => `<option>${esc(tx(s.title))}</option>`).join('') +
     `<option>${getLang() === 'id' ? 'Lainnya' : 'Other'}</option>`;
 }
@@ -224,7 +230,7 @@ function renderServices() {
 function timeline(list) {
   return list.map((x) => `
     <li class="tl">
-      <p class="tl-date mono">${esc(tx(x.start))} — ${x.end ? esc(tx(x.end)) : esc(t('log.now'))}</p>
+      <p class="tl-date">${esc(tx(x.start))} — ${x.end ? esc(tx(x.end)) : esc(t('log.now'))}</p>
       <h3 class="tl-role">${esc(tx(x.role))}</h3>
       <p class="tl-org">${esc(x.org)} <span>· ${esc(tx(x.kind))}</span></p>
       <ul class="tl-list">${x.points.map((p) => `<li>${esc(tx(p))}</li>`).join('')}</ul>
@@ -235,6 +241,7 @@ function renderJourney() {
   $('#panel-work').innerHTML = timeline(experience);
   $('#panel-intern').innerHTML = timeline(internships);
   $('#tab-intern').hidden = internships.length === 0;
+  $('#logTabs').hidden = internships.length === 0;   // satu tab saja: tidak perlu tombol tab
 }
 $('#logTabs').addEventListener('click', (e) => {
   const tab = e.target.closest('[role="tab"]');
@@ -250,56 +257,27 @@ $('#logTabs').addEventListener('click', (e) => {
 /* ---------- achievements ---------- */
 function renderCerts() {
   $('#certList').innerHTML = certs.map((c) => {
-    const inner = `<span class="cert-tier tier tier--${c.tier}">${c.tier}</span>
-      <span class="cert-t">${esc(tx(c.title))}${c.url ? ' <span aria-hidden="true">↗</span>' : ''}</span>
-      <span class="cert-m mono">${esc(c.issuer)} · ${esc(tx(c.date))}</span>`;
+    const inner = `<span class="cert-t">${esc(tx(c.title))}</span>
+      <span class="cert-m">${esc(c.issuer)} · ${esc(tx(c.date))}</span>
+      ${c.url ? '<span class="cert-side" aria-hidden="true">↗</span>' : ''}`;
     return `<li>${c.url ? `<a class="cert" href="${c.url}" target="_blank" rel="noopener" title="${esc(t('cert.view'))}">${inner}</a>` : `<div class="cert">${inner}</div>`}</li>`;
   }).join('');
   $('#hakiList').innerHTML = copyrights.map((c) => `
     <li><div class="cert">
-      <span class="cert-tier tier tier--legendary">HAKI</span>
       <span class="cert-t">${esc(c.title)} <span class="cert-d">— ${esc(tx(c.desc))}</span></span>
-      <span class="cert-m mono">${esc(tx(c.kind))} · ${esc(t('haki.no'))} ${c.number} · ${esc(tx(c.date))}</span>
-      <button type="button" class="btn btn--sm btn--ghost cert-view" data-haki="${c.slug}">${esc(t('haki.view'))}<span class="sr-only">: ${esc(c.title)}</span></button>
+      <span class="cert-m">${esc(tx(c.kind))} · ${esc(t('haki.no'))} ${c.number} · ${esc(tx(c.date))}</span>
+      <button type="button" class="btn btn--sm btn--ghost cert-side" data-haki="${c.slug}">${esc(t('haki.view'))}<span class="sr-only">: ${esc(c.title)}</span></button>
     </div></li>`).join('');
   $('#edu').innerHTML = `<p class="edu-deg">${esc(tx(education.degree))}</p>
-    <p class="edu-school">${esc(education.school)} · <span class="mono">${education.years}</span></p>
+    <p class="edu-school">${esc(education.school)} · ${education.years}</p>
     <p class="edu-full">${esc(education.full)}</p>`;
-}
-
-/* ---------- chat log (diketik saat terlihat) ---------- */
-const chatLines = [['SYS', 'chat.1'], ['SYS', 'chat.2'], ['ARSYA', 'chat.3']];
-let chatPlayed = false;
-function renderChat(animate) {
-  const box = $('#chatLog');
-  box.innerHTML = chatLines.map(([who, k]) =>
-    `<p><span class="who ${who === 'SYS' ? 'who--sys' : 'who--me'}">[${who}]</span><span class="say">${animate ? '' : esc(t(k))}</span></p>`).join('');
-  if (!animate) return;
-  const spans = $$('.say', box);
-  let li = 0;
-  const next = () => {
-    if (li >= spans.length) return;
-    const full = t(chatLines[li][1]);
-    const el = spans[li];
-    el.classList.add('caret');
-    let ci = 0;
-    const step = Math.max(8, 900 / full.length);
-    const tick = () => {
-      el.textContent = full.slice(0, ++ci);
-      if (ci < full.length) setTimeout(tick, step);
-      else { el.classList.remove('caret'); li++; setTimeout(next, 250); }
-    };
-    tick();
-  };
-  next();
 }
 
 /* ================= bahasa & tema ================= */
 function renderAll() {
   applyStatic();
-  renderLinks(); renderCV(); renderStats(); renderSkills(); renderFilters(); renderQuests();
+  renderLinks(); renderCV(); renderStats(); renderNow(); renderSkills(); renderFilters(); renderQuests();
   renderServices(); renderJourney(); renderCerts();
-  renderChat(false);
   if (qModal.open) routeHash();
   $('#themeBtn').setAttribute('aria-label', t('theme.dark'));
   $('#burger').setAttribute('aria-label', t('menu'));
@@ -319,7 +297,7 @@ function setTheme(th) {
   document.documentElement.dataset.theme = th;
   store.set('theme', th);
   $('#themeBtn').setAttribute('aria-pressed', String(th === 'dark'));
-  $('meta[name="theme-color"]').content = th === 'dark' ? '#121428' : '#1b1f3b';
+  $('meta[name="theme-color"]').content = th === 'dark' ? '#111113' : '#f4f3ef';
 }
 $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
 
@@ -334,7 +312,7 @@ links.addEventListener('click', (e) => {
   if (e.target.closest('a')) { burger.setAttribute('aria-expanded', 'false'); links.classList.remove('open'); }
 });
 
-const nav = $('#nav'), toTop = $('#toTop'), heroBg = $('.hero-bg');
+const nav = $('#nav'), toTop = $('#toTop');
 const navTargets = $$('.nav-links a').map((a) => [a, $(a.getAttribute('href'))]);
 let ticking = false;
 function onScroll() {
@@ -348,19 +326,19 @@ function onScroll() {
 }
 addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 
-/* jalan (trotoar) pada latar hero untuk pijakan companion.
-   Baris piksel trotoar di gambar Canva 1776×896: siang 818, malam 802. */
-const HERO_IMG = { w: 1776, h: 896, road: { light: 818, dark: 802 } };
+/* lantai piksel panggung hero (.stage-floor) & footer (.ground) sebagai pijakan companion di mode portofolio;
+   di antaranya companion terbang dengan jetpack (companion.js). */
+const floors = [$('.stage-floor'), $('.ground')].filter(Boolean);
 window.ARSYA_FLOOR = () => {
-  const r = heroBg.getBoundingClientRect();
-  if (r.bottom <= 0 || r.top >= innerHeight) return null;
-  const scale = Math.max(r.width / HERO_IMG.w, r.height / HERO_IMG.h);   // background-size: cover, rata bawah
-  const road = HERO_IMG.road[document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'];
-  return r.bottom - (HERO_IMG.h - road) * scale;
+  for (const f of floors) {
+    const r = f.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) return r.top + 14;   // telapak kaki di tengah ubin lantai
+  }
+  return null;
 };
 
 /* ================= efek ================= */
-const roles = ['Software Engineer', 'Go & Laravel Developer', 'Building scalable web apps'];
+const roles = ['Software Engineer', 'Fullstack Web Developer', 'Building reliable web apps'];
 let typeTimer = null;
 function typeRole(reset) {
   const el = $('#typed');
@@ -381,7 +359,7 @@ function typeRole(reset) {
 }
 
 function observe() {
-  const els = $$('.reveal, .meter-bar');
+  const els = $$('.reveal');
   if (!('IntersectionObserver' in window)) { els.forEach((e) => e.classList.add('in')); return; }
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;
@@ -389,27 +367,6 @@ function observe() {
     io.unobserve(e.target);
   }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   els.forEach((e) => io.observe(e));
-
-  const chatIO = new IntersectionObserver((es) => {
-    if (es[0].isIntersecting && !chatPlayed) { chatPlayed = true; renderChat(!reduced); chatIO.disconnect(); }
-  }, { threshold: 0.5 });
-  chatIO.observe($('#chatLog'));
-}
-
-/* partikel koin di CTA utama */
-function coins(btn) {
-  if (reduced) return;
-  btn.addEventListener('pointerenter', () => {
-    for (let i = 0; i < 6; i++) {
-      const c = document.createElement('span');
-      c.className = 'coin';
-      c.style.left = 10 + Math.random() * 80 + '%';
-      c.style.setProperty('--dx', (Math.random() * 40 - 20).toFixed(0) + 'px');
-      c.style.animationDelay = i * 40 + 'ms';
-      btn.appendChild(c);
-      setTimeout(() => c.remove(), 900);
-    }
-  });
 }
 
 /* ================= form → mailto ================= */
@@ -444,32 +401,6 @@ const bModal = $('#buildModal');
 $('#buildBtn').addEventListener('click', () => { bModal.showModal(); document.body.classList.add('modal-open'); });
 bModal.addEventListener('close', () => { document.body.classList.remove('modal-open'); $('#buildBtn').focus(); });
 
-/* ================= boot screen ================= */
-function boot() {
-  const el = $('#boot');
-  let seen = null;
-  try { seen = sessionStorage.getItem('booted'); } catch (e) {}
-  if (seen || reduced) return;
-  try { sessionStorage.setItem('booted', '1'); } catch (e) {}
-  el.hidden = false;
-  document.body.classList.add('modal-open');
-  const log = $('#bootLog'), bar = $('#bootBar');
-  log.textContent = '';
-  [t('boot.1'), t('boot.2')].forEach((line, i) => setTimeout(() => { log.textContent += line + '\n'; }, 180 + i * 260));
-  requestAnimationFrame(() => { bar.style.width = '100%'; });
-  const done = () => {
-    if (el.hidden) return;
-    el.classList.add('out');
-    document.body.classList.remove('modal-open');
-    setTimeout(() => { el.hidden = true; }, 260);
-    removeEventListener('keydown', done);
-  };
-  el.addEventListener('click', done);
-  addEventListener('keydown', done);
-  setTimeout(() => $('#bootStart').focus({ preventScroll: true }), 50);
-  setTimeout(done, 2600);
-}
-
 /* ================= init ================= */
 readFilterFromURL();
 setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
@@ -477,10 +408,7 @@ $$('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset
 renderAll();
 $('#year').textContent = new Date().getFullYear();
 typeRole(true);
-if (!reduced) $('.glitch').classList.add('go');
 observe();
-coins($('#acceptBtn'));
 onScroll();
-boot();
 routeHash();
 window.__appReady = true;

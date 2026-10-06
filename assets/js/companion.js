@@ -5,13 +5,16 @@
    Perilaku:
    - aktivitas acak: jalan (menoleh sesuai arah), diam & bernapas, berpikir, bingung, peregangan,
      minum kopi, membaca, duduk, ngoding, melambai
-   - section Quests / Skill Tree terlihat -> menunjuk ke arah konten sambil berkomentar
+   - baru dibuka (setelah layar boot) -> melambai & memperkenalkan diri (beberapa kalimat berurutan)
+   - scroll -> menjelaskan singkat section yang sedang di tengah layar (sambil terbang pun tetap bicara)
    - klik  -> tertawa kegelian (klik terus -> marah)
    - seret -> diangkat: marah & meronta; lepas -> jatuh, pusing, lalu menangis
+   - saat terbang ber-jetpack: klik -> tertawa sambil tetap melayang; seret -> bergoyang tergantung di gagang
+     jetpack; lepas -> jatuh sebentar, jetpack menyala lagi, oleng, lalu melayang lagi (tidak jatuh & menangis)
    - tidak ada aktivitas 35 detik -> tidur berbaring; ada aktivitas -> bangun kaget & bingung
    - ganti arah jalan -> berbalik (3/4 -> depan -> 3/4 dicerminkan), tidak langsung dicerminkan
-   - jalan hero muncul lagi saat scroll -> ancang-ancang & melompat ke jalan;
-     jalan hilang -> terpeleset kaget, melayang, mendarat jongkok, lalu lega */
+   - lantai hero hilang saat scroll -> pasang jetpack & melayang di tengah layar;
+     lantai footer / hero muncul -> mendarat & lepas jetpack (ke hero: lalu melompat kecil) */
 (() => {
   const root = document.getElementById('buddy');
   const DATA = window.ARSYA_FRAMES;
@@ -32,6 +35,8 @@
       tickle: ['Hehe, that tickles! 🤭', 'Ahaha stop it!', 'Hihi, I\'m ticklish!'],
       angry: ['Hey, enough already! 😤', 'Stop poking me! 💢'],
       lift: ['Put me down! 😠', 'Hey! Let go of me!', 'Nooo, put me down!'],
+      jetLift: ['Whoa, careful with the handle! 😳', 'Where are you taking me? 😅', 'Hey, I can fly on my own!'],
+      jetDrop: ['Whoa— jetpack on! 🚀', 'Phew, caught myself! 😮‍💨'],
       fall: ['Aaaah! 😱'],
       cry: ['Waaah… that hurt 😭', 'Huhuu… my back 😭'],
       sniff: ['*sniff* I\'m okay now…', 'I\'ll be fine… 🥲'],
@@ -45,15 +50,29 @@
                    'Everything I\'ve built is on this page 😄'],
       read: ['Reading docs 📖'],
       wave: ['Hello there! 👋'],
-      projects: ['My projects are right here! 👇'],
-      skills: ['This is my tech stack 🛠️'],
-      contact: ['Let\'s work together! ✉️']
+      intro: ['Hi! 👋 I\'m Arsya — Muhammad Imam Arsyawalfa.',
+              'A Software Engineer & Fullstack Web Developer with 6+ years of building web apps.',
+              'Scroll down — I\'ll walk you through each section! 👇'],
+      sec: {
+        home: 'Back to the top — my quick intro & profile 🙂',
+        stats: '6+ years of work and 10+ systems built 📊',
+        about: 'About: a short story of who I am and how I work 🙂',
+        skills: 'Skills: the tech stack I use every day 🛠️',
+        quests: 'Projects I\'ve built. Click one for the details 👇',
+        commissions: 'The kinds of apps I can build for you 💼',
+        journey: 'Experience: my work journey from 2018 until now 🗺️',
+        achievements: 'My certifications, IP rights & education 🏆',
+        party: 'Want to work together? Details are here 🤝',
+        contact: 'Send me a message or reach me through these channels ✉️'
+      }
     },
     id: {
       greet: ['Halo! 👋 Makasih sudah berkunjung!'],
       tickle: ['Hehe, geli! 🤭', 'Ahaha udah dong!', 'Hihi, aku gelian!'],
       angry: ['Udah ah, jangan colek terus! 😤', 'Berhenti nyolek! 💢'],
       lift: ['Turunin aku! 😠', 'Heh! Lepasin aku!', 'Huaa, turunin!'],
+      jetLift: ['Eh, pegang gagangnya pelan-pelan! 😳', 'Mau dibawa ke mana aku? 😅', 'Heh, aku bisa terbang sendiri!'],
+      jetDrop: ['Waa— nyalakan jetpack! 🚀', 'Fiuh, hampir jatuh! 😮‍💨'],
       fall: ['Aaaaa! 😱'],
       cry: ['Huwaaa… sakit 😭', 'Huhuu… punggungku 😭'],
       sniff: ['*hiks* udah gapapa kok…', 'Aku baik-baik aja… 🥲'],
@@ -67,9 +86,21 @@
                    'Semua yang saya bangun ada di halaman ini 😄'],
       read: ['Baca dokumentasi dulu 📖'],
       wave: ['Haii! 👋'],
-      projects: ['Project-ku ada di sini! 👇'],
-      skills: ['Ini tech stack aku 🛠️'],
-      contact: ['Yuk kerja sama! ✉️']
+      intro: ['Halo! 👋 Aku Arsya — Muhammad Imam Arsyawalfa.',
+              'Aku Software Engineer & Fullstack Web Developer, 6+ tahun membangun aplikasi web.',
+              'Scroll ke bawah, nanti aku jelasin tiap bagiannya! 👇'],
+      sec: {
+        home: 'Balik ke atas — perkenalan & profil singkatku 🙂',
+        stats: '6+ tahun berkarya & 10+ sistem dibangun 📊',
+        about: 'Tentang: cerita singkat siapa aku & cara kerjaku 🙂',
+        skills: 'Keahlian: tech stack yang aku pakai sehari-hari 🛠️',
+        quests: 'Proyek yang pernah aku bangun. Klik untuk detailnya 👇',
+        commissions: 'Jenis aplikasi yang bisa aku buatkan untukmu 💼',
+        journey: 'Pengalaman: perjalanan kerjaku dari 2018 sampai sekarang 🗺️',
+        achievements: 'Sertifikasi, HAKI & pendidikanku 🏆',
+        party: 'Mau kerja bareng? Detailnya ada di sini 🤝',
+        contact: 'Kirim pesan atau hubungi aku lewat kanal ini ya ✉️'
+      }
     }
   };
 
@@ -122,9 +153,10 @@
   let onRoad, dropping = false;                                       // lantai: jalan di gambar hero atau dasar layar
   let crouchUntil = 0, landUntil = 0, launchAt = 0, landAt = 0;      // ancang-ancang / mendarat (frame lompat)
   let slipping = false;                                               // jatuh kaget dari jalan (frame slip)
+  let jet = null;                                                     // terbang ber-jetpack: { phase: 'on'|'fly'|'off', at, hop }
 
-  /* lantai = jalan pada latar hero (window.ARSYA_FLOOR dari main.js, posisi telapak kaki di viewport)
-     selama jalan itu terlihat; selain itu dasar layar */
+  /* lantai = lantai piksel hero / footer (window.ARSYA_FLOOR dari main.js, posisi telapak kaki di viewport)
+     selama lantai itu terlihat; selain itu dasar layar (di sana Arsya melayang dengan jetpack) */
   const baseFloor = () => window.innerHeight - H - 2;
   function surface() {
     const feet = typeof window.ARSYA_FLOOR === 'function' ? window.ARSYA_FLOOR() : null;
@@ -141,11 +173,15 @@
     if (state !== 'drag' && state !== 'fall') y = floorY;
     place();
   }
-  const minX = () => -FW * S * 0.25;                                 // frame punya ruang kosong di sisi
-  const maxX = () => Math.max(minX(), window.innerWidth - W - 56);    // sisakan ruang tombol "ke atas"
+  const minX = () => -FW * S * 0.25;                                  // frame punya ruang kosong di sisi
+  const maxX = () => Math.max(minX(), window.innerWidth - W - 56);   // sisakan ruang tombol "ke atas"
   function place() {
     root.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
-    root.classList.toggle('bubble-left', x + W / 2 > window.innerWidth / 2);
+    const left = x + W / 2 > window.innerWidth / 2;
+    root.classList.toggle('bubble-left', left);
+    // gelembung tetap di dalam layar walau karakter sebagian di luar (mis. saat masuk dari tepi)
+    const nudge = left ? Math.min(0, window.innerWidth - 8 - (x + W - 22 * S)) : Math.max(0, 8 - (x + 22 * S));
+    bubble.style.translate = nudge ? `${Math.round(nudge)}px 0` : '';
   }
 
   /* ---------- pemutar animasi ---------- */
@@ -184,8 +220,76 @@
     return t < 110 ? JUMP[1] : vy < -300 ? JUMP[2] : vy < 250 ? JUMP[3] : JUMP[4];
   }
   function stopJump() {
-    dropping = slipping = false; crouchUntil = landUntil = 0; vy = 0;
+    dropping = slipping = false; crouchUntil = landUntil = 0; vy = 0; jet = null;
     setPose(null);
+  }
+
+  /* jetpack: lantai hero hilang (scroll turun) -> pasang jetpack, terbang turun, melayang di dasar layar;
+     lantai footer / hero muncul -> terbang ke sana, mendarat, lepas jetpack (dari bawah ke hero: lalu melompat).
+     jet_on = [kencangkan tali, nyalakan, lepas landas], jet_hover/jet_up = 2 frame api berkedip */
+  const JET_ON = ANIMS.jet_on, JET_HOVER = ANIMS.jet_hover, JET_DOWN = ANIMS.jet_down, JET_UP = ANIMS.jet_up, JET_OFF = ANIMS.jet_off;
+  const JET_TALK = ANIMS.jet_talk;                      // melayang sambil bicara (mulut buka / bulat / tutup)
+  /* diganggu saat terbang (jet.act): tickle = dicolek, tertawa (frame 5-6 diulang); recover = dilepas setelah
+     diseret: frame 1-2 jatuh (api padam), 3-8 jetpack menyala lagi, oleng, stabil. jet_lift = diseret (loop) */
+  const JET_TICKLE = ANIMS.jet_tickle, JET_LIFT = ANIMS.jet_lift, JET_RECOVER = ANIMS.jet_recover;
+  const JET_ACTS = { tickle: [JET_TICKLE, [0, 1, 2, 3, 4, 5, 4, 5, 3, 6, 7]], recover: [JET_RECOVER, [0, 1, 2, 3, 4, 5, 4, 5, 6, 7]] };
+  const JET_ACT_STEP = 140;
+  const flying = () => jet && jet.phase !== 'off';
+  const JET_ON_STEP = 140, JET_OFF_STEP = 210, JET_SPEED = 1100;
+  const hoverY = (now) =>                               // melayang di tengah layar, naik-turun pelan
+    Math.min(baseFloor(), Math.max(8, Math.round(window.innerHeight / 2 - H / 2 + Math.sin(now / 450) * 2 * S)));
+  function startJet(now, wearing) {
+    if (!['idle', 'walk'].includes(state)) setState('idle', rand(1500, 2500));
+    stopJump();
+    jet = { phase: wearing ? 'fly' : 'on', at: now, hop: false };
+  }
+  function stepJet(now, dt, surf) {
+    const t = now - jet.at;
+    if (jet.phase === 'on') {                           // memasang jetpack di tempat (tetap di dalam layar)
+      y = Math.min(Math.max(y, 8), baseFloor());
+      setPose(JET_ON[Math.min(JET_ON.length - 1, Math.floor(t / JET_ON_STEP))]);
+      if (t >= JET_ON.length * JET_ON_STEP) { jet.phase = 'fly'; jet.at = now; }
+    } else if (jet.phase === 'fly') {
+      const act = jet.act, ta = act ? now - act.at : 0;
+      if (act && act.kind === 'recover' && ta < 2 * JET_ACT_STEP) {   // baru dilepas: jatuh sebentar, api padam
+        act.vy = (act.vy || 0) + 1800 * S * dt;
+        y = Math.min(y + act.vy * dt, baseFloor());
+        setPose(JET_RECOVER[Math.floor(ta / JET_ACT_STEP)]);
+        floorY = y; place();
+        return;
+      }
+      const goal = surf.road ? surf.y : hoverY(now);
+      const d = goal - y;
+      if (surf.road && Math.abs(d) < 3) {               // mendarat di lantai: lepas jetpack
+        y = goal;
+        jet.phase = 'off'; jet.at = now; jet.act = null;
+        setPose(JET_OFF[0]);
+      } else {
+        const v = Math.sign(d) * Math.min(JET_SPEED, Math.max(140, Math.abs(d) * 5));
+        y += Math.abs(v * dt) > Math.abs(d) ? d : v * dt;
+        const flick = Math.floor(t / 90) % 2;
+        if (d < -6 * S) jet.hop = surf.road;                 // terbang naik ke lantai: setelah lepas jetpack melompat
+        const hover = now < talkUntil ? JET_TALK[Math.floor(t / 90) % JET_TALK.length] : JET_HOVER[flick];
+        let f = d > 6 * S ? JET_DOWN[0] : d < -6 * S ? JET_UP[flick] : hover;
+        if (act) {                                      // dicolek / baru pulih: animasinya menimpa pose terbang
+          const [frames, order] = JET_ACTS[act.kind], i = Math.floor(ta / JET_ACT_STEP);
+          if (i < order.length) f = frames[order[i]]; else jet.act = null;
+        }
+        setPose(f);
+      }
+    } else {                                            // 'off': berdiri di lantai, jetpack dilepas
+      if (!surf.road) { jet.phase = 'fly'; jet.at = now; return; }   // lantai hilang lagi: terbang lagi
+      y = surf.y;
+      const i = Math.floor(t / JET_OFF_STEP);
+      if (i < JET_OFF.length) setPose(JET_OFF[i]);
+      else {
+        const hop = jet.hop;
+        jet = null; setPose(null);
+        if (hop) { crouchUntil = now + 150; setPose(JUMP[0]); }   // lompat kecil lega setelah sampai di hero
+      }
+    }
+    floorY = y;
+    place();
   }
 
   /* berbalik arah: turn = [3/4 menghadap kanan, depan]; sisi kiri memakai frame 3/4 yang dicerminkan */
@@ -227,7 +331,17 @@
     bubble.classList.add('show');
     clearTimeout(bubbleTimer);
     bubbleTimer = setTimeout(() => bubble.classList.remove('show'), ms);
-    talkUntil = performance.now() + Math.min(1400, 180 + text.length * 45);
+    talkUntil = performance.now() + Math.min(3200, 180 + text.length * 40);
+  }
+  /* beberapa kalimat berurutan (perkenalan); dibatalkan bila ada kalimat lain (mis. narasi section) */
+  let chain = [];
+  function stopChain() { chain.forEach(clearTimeout); chain = []; }
+  function sayChain(texts, gap) {
+    stopChain();
+    texts.forEach((txt, i) => chain.push(setTimeout(() => {
+      holdUntil = Math.max(holdUntil, performance.now() + gap);
+      say(txt, i === texts.length - 1 ? gap + 1200 : gap + 200);
+    }, i * gap)));
   }
   function setMark(m) {
     mark.textContent = m || '';
@@ -239,6 +353,7 @@
   let phase = 'main', phaseEnd = 0, pendingDur = 0;
   let beatAt = 0, beatEnd = 0;                       // momen sisipan selama aktivitas (mis. kesal saat ngoding)
   let lastInput = performance.now();
+  let holdUntil = 0;                                 // sedang menjelaskan: diam di tempat (tanpa aktivitas acak)
   const SLEEP_AFTER = 35000;
 
   function setState(s, ms) {
@@ -300,6 +415,16 @@
   }
 
   function nextActivity() {
+    const now = performance.now();
+    if (now < holdUntil) { setState('idle', holdUntil - now); return; }   // biarkan selesai bicara
+    if (jet) {                                          // terbang: melayang pindah di sisi kiri / kanan layar (konten di tengah)
+      if (Math.random() < 0.5) {
+        const side = Math.min(W * 0.7, (maxX() - minX()) / 2);
+        targetX = Math.random() < 0.5 ? rand(minX(), minX() + side) : rand(maxX() - side, maxX());
+        setState('walk');
+      } else setState('idle', rand(2000, 4000));
+      return;
+    }
     const total = ACTIVITIES.reduce((n, a) => n + a[1], 0);
     let r = Math.random() * total, next = 'idle';
     for (const [name, w] of ACTIVITIES) { if ((r -= w) < 0) { next = name; break; } }
@@ -349,13 +474,18 @@
 
     // ikuti lantai: menempel saat jalan bergeser karena scroll, jatuh/melompat saat lantai berganti
     const surf = surface();
-    if (state === 'drag' || state === 'fall') {
+    if (state === 'drag' && flying()) {               // diseret saat terbang: bergoyang di gagang jetpack
+      setPose(JET_LIFT[Math.floor(now / (animFps > 12 ? 80 : 125)) % JET_LIFT.length]);
+    } else if (state === 'drag' || state === 'fall') {
+      if (jet) { jet = null; setPose(null); }
       floorY = surf.y;
+    } else if (jet) {
+      stepJet(now, dt, surf);
     } else if (crouchUntil) {                         // ancang-ancang, lalu menolak ke jalan
       if (now >= crouchUntil) {
         crouchUntil = 0; dropping = true; launchAt = now;
         floorY = surf.y;
-        vy = floorY < y ? -Math.sqrt(2 * 2600 * (y - floorY + 40)) : 0;   // puncak 40px di atas jalan
+        vy = -Math.sqrt(2 * 2600 * (Math.max(0, y - floorY) + 40));   // puncak 40px di atas lantai
       }
     } else if (dropping) {
       floorY = surf.y;
@@ -369,14 +499,8 @@
       }
       place();
     } else if (onRoad !== undefined && surf.road !== onRoad && !root.hidden) {
-      floorY = surf.y;
       face(faceLeft, false);                          // batalkan berbalik yang sedang berjalan
-      if (floorY < y) {                               // naik: ancang-ancang dulu
-        crouchUntil = now + 150; landUntil = 0; slipping = false;
-        setPose(JUMP[0]);
-      } else {                                        // turun: kehilangan pijakan, jatuh
-        dropping = slipping = true; vy = 0; launchAt = now; landUntil = 0;
-      }
+      startJet(now, false);                           // lantai berganti: pasang jetpack lalu terbang
     } else if (y !== surf.y) {
       floorY = y = surf.y;
       place();
@@ -386,12 +510,13 @@
     else if (landUntil && slipping && now - landAt > 280) setPose(SLIP[4]);
     if (turnSteps) stepTurn(now);
 
-    if (state === 'walk' && !crouchUntil && !landUntil) {
+    if (state === 'walk' && !crouchUntil && !landUntil && (!jet || jet.phase === 'fly')) {
       const dir = Math.sign(targetX - x);
       if (dir) face(dir < 0);                        // frame jalan menghadap kanan, dicerminkan ke kiri
       if (!turnSteps) x += dir * WALK_SPEED * S * dt;   // sama dengan panjang langkah: kaki tidak meluncur
       if (dir === 0 || (dir > 0 && x >= targetX) || (dir < 0 && x <= targetX)) {
-        x = targetX; setState('idle', rand(1200, 3000));
+        x = targetX;
+        setState('idle', rand(1200, 3000));
       }
       place();
     } else if (state === 'fall') {
@@ -439,8 +564,11 @@
     if (!press.moved && Math.hypot(e.clientX - press.sx, e.clientY - press.sy) > 6) {
       press.moved = true;
       root.classList.add('dragging');
+      const keep = flying() ? jet : null;             // terbang: jetpack tetap terpasang
       stopJump();
-      setState('drag'); say('lift', 2200);
+      if (keep) { jet = keep; jet.phase = 'fly'; jet.act = null; }
+      setState('drag'); say(keep ? 'jetLift' : 'lift', 2200);
+      if (keep) setPose(JET_LIFT[0]);                 // langsung frame tergantung, tanpa sekilas frame meronta
     }
     if (press.moved) {
       const now = performance.now();
@@ -448,7 +576,7 @@
       press.lx = e.clientX; press.ly = e.clientY; press.lt = now;
       animFps = speed > 0.8 ? 16 : 10;               // makin diguncang, makin meronta
       x = Math.min(Math.max(minX(), e.clientX - press.ox), window.innerWidth - W * 0.8);
-      y = Math.min(Math.max(-H * 0.2, e.clientY - press.oy), floorY);
+      y = Math.min(Math.max(-H * 0.2, e.clientY - press.oy), jet ? baseFloor() : floorY);
       place();
     }
   });
@@ -457,7 +585,11 @@
     const moved = press.moved;
     press = null;
     root.classList.remove('dragging');
-    if (moved) {
+    if (moved && jet) {                              // dilepas saat terbang: jetpack menyala lagi, melayang
+      jet.act = { kind: 'recover', at: performance.now() };
+      jet.at = performance.now();
+      setState('idle', rand(2000, 3000)); say('jetDrop', 2000);
+    } else if (moved) {
       vy = 0;
       if (floorY - y < 12) { setState('land'); }    // dilepas dekat lantai: langsung mendarat
       else { setState('fall'); say('fall', 1200); }
@@ -473,6 +605,12 @@
     if (state === 'sleep') { onActivity(); return; }
     if (['drag', 'fall', 'land', 'hurt', 'getup', 'cry'].includes(state)) return;
     const now = performance.now();
+    if (flying()) {                                   // terbang: tertawa sambil tetap melayang
+      if (jet.phase === 'on') { jet.phase = 'fly'; jet.at = now; }
+      jet.act = { kind: 'tickle', at: now };
+      setState('idle', 1800); say('tickle', 2000);
+      return;
+    }
     pokes = pokes.filter((t) => now - t < 3500);
     pokes.push(now);
     if (pokes.length >= 4) {                          // dicolek terus -> marah
@@ -488,25 +626,48 @@
     if (e.animationName === 'buddyLand') root.classList.remove('land');
   });
 
-  /* komentar saat section tertentu terlihat (sekali per section) */
-  const SECTION_LINE = { quests: 'projects', skills: 'skills', party: 'contact' };
-  if ('IntersectionObserver' in window) {
-    const seen = new Set();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        const id = en.target.id;
-        if (!en.isIntersecting || seen.has(id) || !['idle', 'walk', 'think'].includes(state)) return;
-        seen.add(id);
-        setState(id === 'party' ? 'wave' : 'point');
-        // frame menunjuk menghadap kanan: di separuh kanan layar dicerminkan agar menunjuk ke konten
-        if (id !== 'party') face(x + W / 2 > window.innerWidth / 2);
-        say(SECTION_LINE[id]);
-      });
-    }, { threshold: 0.35 });
-    Object.keys(SECTION_LINE).forEach((id) => {
+  /* narasi: section yang melintasi tengah layar dijelaskan singkat (saat terbang pakai frame bicara jetpack).
+     Dicek berkala selama scroll; jeda minimal antarkalimat agar balon sempat terbaca.
+     Panel bersebelahan (desktop) dijelaskan bergantian: yang baru saja dijelaskan dilewati */
+  const SECTIONS = ['home', 'stats', 'about', 'skills', 'quests', 'commissions', 'journey', 'achievements', 'party', 'contact'];
+  const NARRATE_GAP = 1600, NARRATE_MS = 4200;
+  const quiet = ['sleep', 'wake', 'drag', 'fall', 'land', 'hurt', 'getup', 'cry', 'angry'];
+  let spoken = null, recent = [], narrAt = 0, narrTimer = 0;
+  function sectionAtCenter() {
+    const h = window.innerHeight;                      // pita tengah layar (20%–60% tinggi)
+    return SECTIONS.find((id) => {
       const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
+      if (!el || recent.includes(id)) return false;
+      const r = el.getBoundingClientRect();
+      return r.top <= h * 0.6 && r.bottom >= h * 0.2;
+    }) || null;
+  }
+  function narrate() {
+    narrTimer = 0;
+    if (root.hidden || quiet.includes(state)) return;
+    const id = sectionAtCenter();
+    if (!id) return;
+    const now = performance.now(), wait = narrAt + NARRATE_GAP - now;
+    if (wait > 0) { narrTimer = setTimeout(narrate, wait); return; }
+    spoken = id; narrAt = now;
+    recent = [id, ...recent].slice(0, 2);
+    narrTimer = setTimeout(narrate, NARRATE_MS);       // panel sebelahnya (bila ada) setelah kalimat ini selesai
+    stopChain();
+    holdUntil = now + NARRATE_MS;
+    if (!jet && state === 'walk') setState('idle', NARRATE_MS);   // berhenti dulu supaya terlihat bicara
+    say(LINES[lang()].sec[id], NARRATE_MS);
+  }
+  window.addEventListener('scroll', () => {
+    if (!narrTimer) narrTimer = setTimeout(narrate, 450);
+  }, { passive: true });
+
+  /* perkenalan saat halaman baru dibuka */
+  function intro() {
+    if (root.hidden) return;
+    if (spoken && spoken !== 'home') return;          // sudah scroll jauh: narasi section yang jalan
+    spoken = 'home'; recent = ['home'];
+    if (!jet && ['idle', 'walk'].includes(state)) setState('wave', 2400);
+    sayChain(LINES[lang()].intro, 3600);
   }
 
   /* sembunyikan / munculkan */
@@ -531,10 +692,7 @@
   if (store.get('buddyHidden') === '1') setHidden(true);
   setState('walk');
   targetX = Math.min(40, maxX());
-  setTimeout(() => {
-    if (!root.hidden && state === 'idle') { setState('wave', 2400); say('greet', 3800); }
-    else if (!root.hidden) say('greet', 3800);
-  }, 1800);
+  setTimeout(intro, 1800);
   requestAnimationFrame((t) => { last = t; requestAnimationFrame(tick); });
 
   /* alat uji pengembang: ?buddy=<state> memaksa state tertentu (mis. ?buddy=cry) */

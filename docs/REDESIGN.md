@@ -1,11 +1,35 @@
-# Rencana Redesign Portofolio — Pixel Quest
+# Rencana Redesign Portofolio — tema Bento (sebelumnya Pixel Quest / Lo-fi Dev Room)
 
 > Status: **v3 diimplementasikan (fase 1–8)** · 1 Okt 2026
 > Pemilik: Muhammad Imam Arsyawalfa
 > Inspirasi elemen: [renalazy.github.io/portofren](https://renalazy.github.io/portofren/). Hanya **jenis elemennya** yang diambil. Penempatan, visual, dan teks dibuat sendiri.
 > Perubahan dari v2: tema cyberpunk/Call of Duty diganti **pixel game × futuristik** agar senada dengan karakter pixel. **Seluruh aset gambar dibuat lewat Canva** (§12).
+> **6 Okt 2026 — mode game & layar boot dihapus.** Kamar "jelajahi kamar" (`game.js`, `game.css`, `#game`, `#gamePop`), tombol 🎮 di nav & Main Menu, layar boot pilih mode, kunci i18n `boot.*`/`game.*`/`room.*`, gambar latar kamar `hero-{day,night}.webp`, serta API `window.ARSYA` di `companion.js` dihapus. Companion pixel tetap ada (perkenalan langsung saat halaman dibuka). Catatan mode game & boot di bawah adalah riwayat.
+>
+> **2 Okt 2026 — tema visual diganti ke Lo-fi Dev Room:** latar hero kota futuristik diganti kamar programmer pixel (siang: dinding krem & kayu; malam: ungu-biru lo-fi, lampu meja, monitor cyan), palet token diganti (§2.2). Konten dan elemen game (menu, quest, meter) tetap. Alasan: aktivitas companion (ngoding, kopi, membaca, tidur) cocok dengan suasana kamar dan langsung bercerita "software engineer".
+> **Dua mode (2 Okt 2026):**
+> - **Mode Portofolio (default, profesional):** halaman satu-page lengkap. Hero = Main Menu (nama, ringkasan, CTA, "Play") + Player Card, lalu **panggung** (`.stage`): strip polos dengan lantai ubin piksel CSS tempat companion berjalan (tanpa tombol, tanpa teks berjalan). Latar kamar **khusus mode game**, tidak dipakai di halaman portofolio. Copy dibuat umum (fullstack, tidak "fokus Go") supaya relevan untuk lowongan IT apa pun; Player Card memakai daftar chip **Stack** (PHP, Laravel, Go, JavaScript, Next.js, React, HTML, CSS, MySQL, PostgreSQL, Docker, Git) sebagai ganti meter FOCUS, dan foto berlatar putih. Mode dipilih di **layar awal (boot)**: kartu **Portfolio** atau **Game**; layar menunggu pilihan (← → untuk pindah, Enter memilih, Esc = Portfolio), sekali per sesi. Setelah itu tombol 🎮 di navbar dan item "Play" di Main Menu tetap bisa membuka mode game.
+> - **Mode Game (`assets/js/game.js`, `assets/css/game.css`):** kamar layar penuh dengan HUD. Klik benda → Arsya berjalan ke sana, beraksi, lalu pop-up berisi **bagian halaman yang asli** (elemen dipindah sementara ke pop-up, dikembalikan saat ditutup): jendela → Profile (berpikir), lampu & kopi → Party + kontak (minum kopi), monitor → Quests + Commissions (menunjuk), rak buku → Journey + Achievements (membaca), server → Skills (ngoding). Klik lantai = berjalan ke titik itu; ← → / A D = berjalan; E / Enter = interaksi dengan benda terdekat; Esc / ✕ = kembali. Ukuran Arsya mengikuti skala kamar (`3.3 × skala`, ± 1,5 × tinggi meja) dan langkahnya 1,6× lebih cepat. Kamar dimuat utuh (contain); di layar portrait kamar setinggi layar dan kamera mengikuti Arsya (side-scroller). Tautan langsung: `…/#play`.
+> - Companion dikendalikan lewat `window.ARSYA` (`setGame`, `teleport`, `walkTo`, `hold`, `perform`, `release`, `say`, `shift`); mode game memasang `ARSYA_SCALE`, `ARSYA_BOUNDS`, dan `ARSYA_FLOOR` (lantai baris 805) selama aktif.
 
 ---
+
+
+## Tema Bento (v4, 6 Okt 2026) — berlaku sekarang
+
+Tema game diganti tampilan **Bento Grid** yang rapi dan profesional agar cocok untuk melamar di bidang IT mana pun. **Karakter pixel Arsya tetap ada** (jalan, jetpack, narasi section, colek/seret) dan kini menjadi satu-satunya elemen pixel di halaman. Bagian di bawah dokumen ini (Pixel Quest, Lo-fi Dev Room, mode game) adalah **riwayat**.
+
+| Aspek | Keputusan |
+|---|---|
+| Tata letak | Kartu bento: grid 12 kolom (`.bento`, `.span-*`), kartu putih sudut 22px, border tipis, bayangan lembut. Tablet: 2 kolom proyek; HP (≤640px): satu kolom. |
+| Warna | Latar netral hangat `#f4f3ef` + pola titik halus; satu aksen oranye `#ec6a2c` (senada logo "A"), teal/ungu/emas/hijau hanya untuk titik label & angka. Mode gelap `#111113`. Token di `tokens.css`. |
+| Logo & favicon | Huruf **A** geometris putih (goresan bulat) di kotak gelap `#1c1b19` bersudut bulat, palang oranye `#ec6a2c` sebagai aksen. Dibuat `tools/make_logo.py` → `favicon.svg` (utama, vektor), `favicon.png` 32, `logo.png` 256, `apple-touch-icon.png` 180 (kotak penuh, sudut dipotong iOS). Di mode gelap logo nav diberi garis tipis agar terlihat. |
+| Font | **Plus Jakarta Sans** (judul & isi) + JetBrains Mono (label kecil). Chakra Petch & Inter dilepas. |
+| Hero | Kartu intro (status "Available for work", nama **hitam satu baris** di desktop/tablet — ukuran mengikuti lebar layar, di HP ≤640px boleh 2 baris; peran yang diketik berwarna **oranye**, satu-satunya teks oranye di hero; ringkasan, 3 CTA) + kartu foto (latar putih) + kartu angka, tech stack, dan "Currently" (peran yang masih berjalan, dari `experience.js`). |
+| Section | 01 About (tentang, sorotan, 4 info, Skills), 02 Projects (filter + kartu, "What I can build"), 03 Experience (timeline, sertifikasi, HAKI, pendidikan), 04 Contact (kartu CTA gelap, tautan, form). Id elemen lama (`#quests`, `#journey`, `#party`, …) dipertahankan untuk tautan & narasi companion. |
+| Istilah | Istilah game diganti profesional: Quests → Projects, Adventure Log → Experience, Party → Contact, Objective/Strategy/Reward → Challenge/Approach/Outcome. Badge tier (EPIC/RARE) diganti tag jenis proyek (Client / Own product / Institution). |
+| Dihapus | Chat Log, partikel koin, efek glitch, kursor menu ▶, ikon `chat`/`main-menu`/`message`/`profile`/`party`. |
+| Lantai companion | `.stage-floor` (bawah hero) & `.ground` (footer) kini garis lantai tipis senada tema; logika `ARSYA_FLOOR` tetap. |
 
 ## 1. Ringkasan
 
@@ -15,7 +39,7 @@ Portofolio dirombak menjadi **website bergaya game pixel 16-bit dengan sentuhan 
 
 | Topik | Keputusan |
 |---|---|
-| Tema | **Game pixel 16-bit × futuristik** (menu RPG + panel sci-fi) |
+| Tema | **Game pixel 16-bit × Lo-fi Dev Room** (menu RPG di dalam kamar programmer pixel) |
 | Motif | **Tanpa motif batik** di website. Batik hanya ada di baju karakter |
 | Warna | Mengikuti warna karakter (oranye, cokelat, kulit, hitam rambut) + pelengkap yang tidak bertabrakan (§2.2) |
 | Mode | **Terang (default)** + toggle **gelap** |
@@ -49,7 +73,7 @@ Portofolio dirombak menjadi **website bergaya game pixel 16-bit dengan sentuhan 
 
 - **Pixel game (16-bit):** jendela dialog berbingkai piksel, menu dengan kursor `▶`, teks dialog yang diketik huruf per huruf, bar XP/HP, ikon item, "PRESS START".
 - **Futuristik:** panel HUD tipis, garis grid halus, cahaya lembut (glow) pada aksen, latar kota/teknologi pixel, label kode kecil (`LV.05`, `ID:01`).
-- **Mode terang** = level siang hari (langit cerah, panel krem/putih). **Mode gelap** = level malam (langit navy, lampu neon kota).
+- **Mode terang** = kamar siang hari (dinding krem, kayu walnut, sinar matahari). **Mode gelap** = kamar malam lo-fi (ungu-biru, lampu meja hangat, monitor cyan, lampu hias oranye).
 - **Tidak ada:** motif batik, hazard stripe militer, nuansa perang/senjata.
 
 ### 2.2 Palet warna (token)
@@ -58,25 +82,26 @@ Diambil dari karakter (oranye baju, cokelat, warna kulit, hitam rambut) dan dile
 
 | Token | Terang (default) | Gelap | Dipakai untuk | Asal |
 |---|---|---|---|---|
-| `--bg` | `#f4f1ea` | `#121428` | latar halaman | krem netral / navy malam |
-| `--bg-grid` | `rgba(27,31,59,.05)` | `rgba(94,214,224,.06)` | grid latar | — |
-| `--panel` | `#fffdf8` | `#1b1e38` | isi kartu | — |
-| `--panel-2` | `#f1ebe0` | `#252948` | chip, input | — |
-| `--titlebar` | `#1b1f3b` | `#2a2f55` | **title bar kartu** (gelap di kedua tema) | senada hitam rambut |
-| `--titlebar-ink` | `#fff4e6` | `#fff4e6` | teks title bar | — |
-| `--frame` | `#1b1f3b` | `#4a5290` | bingkai piksel kartu | — |
-| `--ink` | `#1b1a24` | `#f2eee8` | teks utama | — |
-| `--ink-soft` | `#4a4656` | `#b9b6c9` | paragraf | — |
-| `--ink-faint` | `#6b6578` | `#9a95b5` | meta | — |
-| `--accent` | `#b04a1c` | `#ff8a4c` | **aksen teks**: link aktif, judul kecil | oranye baju karakter (digelapkan agar terbaca) |
-| `--accent-fill` | `#d9622b` | `#ff8a4c` | isi tombol CTA, garis, ikon (bukan teks kecil) | oranye baju karakter |
-| `--accent-2` | `#9e5134` | `#e0956b` | hover/shadow tombol oranye | cokelat baju |
-| `--teal` | `#0f6f7c` | `#5ed6e0` | aksen futuristik: fokus, angka, meter | pelengkap oranye |
-| `--violet` | `#5b45c9` | `#a594ff` | highlight, tier epic (senada zZ karakter) | — |
-| `--gold` | `#e0a526` | `#ffd45e` | koin, bintang, tier legendary (isi, bukan teks) | — |
-| `--ok` | `#177a45` | `#5be39a` | status online / open to work | — |
-| `--danger` | `#cc3344` | `#ff6b7a` | error form | — |
-| `--skin` | `#fcbc93` | `#fcbc93` | aksen kecil (avatar bg, badge) | kulit karakter |
+| `--bg` | `#f5ecdf` | `#17121f` | latar halaman | dinding krem / malam ungu |
+| `--bg-grid` | `rgba(74,50,34,.05)` | `rgba(255,170,110,.05)` | grid latar | — |
+| `--panel` | `#fffaf1` | `#211a2c` | isi kartu | — |
+| `--panel-2` | `#f3e7d6` | `#2b2238` | chip, input | — |
+| `--titlebar` | `#3b2a21` | `#2f2440` | **title bar kartu** (gelap di kedua tema) | kayu walnut / ungu malam |
+| `--titlebar-ink` | `#fff3e2` | `#fff1e0` | teks title bar | — |
+| `--frame` | `#3b2a21` | `#5e4a7c` | bingkai piksel kartu | — |
+| `--ink` | `#2a1f19` | `#f3ebe2` | teks utama | — |
+| `--ink-soft` | `#56463b` | `#c5b8cb` | paragraf | — |
+| `--ink-faint` | `#6f5f53` | `#a898b0` | meta | — |
+| `--accent` | `#a84a1b` | `#ffa064` | **aksen teks**: link aktif, judul kecil | oranye baju karakter / lampu hias |
+| `--accent-fill` | `#e07a3a` | `#ff9a5c` | isi tombol CTA, garis, ikon (bukan teks kecil) | oranye baju karakter |
+| `--accent-2` | `#a0583a` | `#e3a27a` | hover/shadow tombol oranye | cokelat baju |
+| `--teal` | `#116b74` | `#6fd8e4` | fokus, angka, meter | cahaya monitor |
+| `--violet` | `#6a4bb8` | `#b9a2ff` | highlight, tier epic | — |
+| `--gold` | `#e2a63b` | `#ffcf6b` | koin, bintang, tier legendary (isi, bukan teks) | lampu hias |
+| `--ok` | `#2a7a45` | `#6be3a0` | status online / open to work | — |
+| `--danger` | `#c4384a` | `#ff7a88` | error form | — |
+| `--skin` | `#fcbc93` | `#fcbc93` | aksen kecil (badge); foto Player Card berlatar putih | kulit karakter |
+| `--bar-*`, `--deep*`, `--on-accent`, `--backdrop`, `--sprite-shadow` | lihat `tokens.css` | | permukaan gelap (bilah judul, boot screen, diagram), teks di atas isi oranye, backdrop modal, bayangan companion | menggantikan warna navy yang dulu ditulis langsung di CSS |
 
 - Kontras teks memenuhi WCAG AA (≥ 4.5:1), sudah dihitung: `--accent` 4,9:1, `--teal` 5,2:1, `--ink-faint` 5,0:1, `--ok` ≥ 4,5:1 di atas `--bg` terang; di mode gelap semua ≥ 4,5:1.
 - `--accent-fill` (oranye karakter asli) hanya untuk isi tombol dan dekorasi. Teks di atasnya memakai navy `--titlebar` dengan ukuran ≥ 19px tebal (rasio 4,4:1, lolos AA teks besar).
@@ -87,7 +112,7 @@ Diambil dari karakter (oranye baju, cokelat, warna kulit, hitam rambut) dan dile
 
 | Peran | Font | Catatan |
 |---|---|---|
-| Display (h1, h2, title bar, tombol menu) | **Tiny5** 400 (fallback Pixelify Sans) | diganti dari Pixelify Sans: di Pixelify huruf `C` mirip `O` dan angka `5` mirip `S` |
+| Display (h1, h2, title bar, tombol menu) | **Chakra Petch** 600/700 | bukan font piksel: lebih profesional & mudah dibaca, tapi sudut terpotongnya tetap bernuansa game/tech. Sebelumnya Tiny5 (piksel) |
 | Body | **Inter** 400/500/600 | paragraf tetap nyaman |
 | Label HUD, angka, kode | **JetBrains Mono** 500/700 | `LV.05`, metrik (termasuk angka Player Stats), tag |
 
@@ -129,7 +154,7 @@ Semua konten berada di dalam jendela ini. **Title bar wajib ada.**
 | Latar pixel (aset Canva) | hero | **tanpa parallax**: latar ikut scroll bersama halaman agar jalan di gambar tetap sinkron dengan pijakan companion |
 | Grid halus + glow lembut | seluruh halaman | CSS statis |
 | Teks diketik ala dialog RPG | role line hero, system log | ≤ 900ms per baris |
-| "PRESS START" berkedip | boot screen | — |
+| "SELECT MODE" berkedip + pilihan Portfolio / Game | boot screen | — |
 | Glitch tipis (futuristik) | nama di hero, sekali saat load | ≤ 400ms |
 | Meter terisi bertahap | player card & skill tree saat terlihat | IntersectionObserver |
 | Reveal on scroll (muncul bertahap gaya pixel) | tiap section | konten tetap tampil jika JS gagal |
@@ -453,7 +478,7 @@ export const internships = [];
    > LOADING PLAYER DATA........ OK
    > LOADING QUESTS............. OK
    ■■■■■■■■■■■■■■■■■■ 100%
-            ▶ PRESS START ◀        (klik / tombol apa pun)
+     SELECT MODE  [📄 PORTFOLIO]  [🎮 GAME]   (menunggu pilihan)
    ```
    Konten halaman tetap ada di HTML di belakangnya, sehingga SEO dan pengunjung tanpa JS tidak terpengaruh.
 2. **Magang: riwayat magang pemilik sendiri** sebagai tab **Internship** di Adventure Log (`internships.js` kosong; tab muncul otomatis begitu diisi).
@@ -484,10 +509,13 @@ Karakter chibi Arsya hidup di bagian bawah layar: berjalan kiri/kanan, ngoding d
 **Aturan aset karakter baru:** ukuran badan dan warna setiap frame wajib senada dengan idle (tinggi berdiri ±77 px, palet dikunci ke palet idle). Uji cepat di browser dengan `?buddy=<state>`, misalnya `?buddy=sleep`, `?buddy=wake`, `?buddy=coding`.
 
 **Integrasi dengan redesign**
-- **Pijakan di jalan hero:** selama trotoar pada latar hero terlihat, companion berdiri dan berjalan di atasnya (`window.ARSYA_FLOOR` di `main.js` menghitung posisi trotoar dari ukuran `background-size: cover`; baris piksel trotoar di gambar 1776×896: siang **818**, malam **802**). Saat trotoar keluar layar, companion terpeleset kaget lalu jatuh ke dasar layar (animasi `slip`, 5 frame: kehilangan pijakan, melayang ×2, mendarat jongkok, lega); saat kembali, ia melompat naik ke jalan (animasi `jump`, 6 frame: ancang-ancang, menolak, naik, puncak, turun, mendarat). Frame dipilih dari fase dan kecepatan vertikal (`airPose` di `companion.js`).
-- **Berbalik arah:** saat arah jalan berganti, companion berbalik lewat animasi `turn` (3/4 → depan → 3/4 dicerminkan, ±¼ detik) alih-alih langsung dicerminkan. Hero diberi ruang kosong bawah (`--stage`: 290px desktop, 250px mobile) agar karakter tidak menutupi jendela.
-- Jika latar hero diganti, perbarui angka baris trotoar di `HERO_IMG` (`assets/js/main.js`).
-- Tanah footer (`ground-{day,night}.webp`) dipotong dari latar hero, warna ikut tema.
+- **Jetpack antar-lantai:** pijakan companion = lantai piksel hero (`.stage-floor`) atau footer (`.ground`) yang sedang terlihat (`window.ARSYA_FLOOR` di `main.js`). Saat lantai berganti (scroll), companion memasang jetpack (`jet_on`, 3 frame), terbang (`jet_down` / `jet_up` / `jet_hover` dengan api berkedip) dan melayang di **tengah layar** (naik-turun pelan) selama tidak ada lantai terlihat; selama terbang aktivitasnya hanya berpindah di sisi kiri/kanan layar agar tidak menutupi konten. Saat lantai muncul ia terbang ke sana, mendarat, dan melepas jetpack (`jet_off`, 6 frame); kalau terbang **naik** ke lantai hero, setelahnya ia melompat kecil (frame `jump`). Logika di `startJet`/`stepJet` (`companion.js`). Frame dari `tools/sprite/source/jetpack.png` & `jetpack-off.png` (GPT, latar hitam bercahaya, dibersihkan dengan `soft_bg` di `extract.py`).
+- **Diganggu saat terbang:** selama jetpack terpasang (`jet` bukan fase `off`), klik → `jet_tickle` (tertawa sambil tetap melayang, frame tawa diulang); seret → `jet_lift` (8 frame loop, tergantung di gagang jetpack, bukan meronta); lepas → `jet_recover` (jatuh sebentar dengan api padam, jetpack menyala lagi, oleng, stabil) lalu kembali melayang. Mode meronta/jatuh/menangis hanya saat tanpa jetpack. Frame dari `tools/sprite/source/jet-tickle.png`, `jet-lift.png`, `jet-recover.png` (GPT, latar transparan, 8 frame per lembar). Posisi vertikal frame mengikuti lembar aset (`KEEP_Y` di `extract.py`): badan tidak meloncat saat panjang api berubah, dan gagang jetpack di `jet_lift` selalu di baris 1.
+- **Perkenalan & narasi section:** saat halaman dibuka, companion melambai lalu memperkenalkan diri (3 kalimat berurutan, `intro` di `LINES`). Saat scroll, section yang ada di pita tengah layar (20–60% tinggi) dijelaskan singkat (`LINES.*.sec`; urutan `SECTIONS` di `companion.js`), jeda minimal 1,6 detik antarkalimat; panel bersebelahan dijelaskan bergantian. Saat melayang ia memakai frame `jet_talk` (6 frame: mulut buka/bulat/tutup digambar di wajah 3/4 `jet_4`/`jet_5` oleh `build_sheet.py`); di lantai hero/footer memakai frame `talk` biasa.
+- **Pijakan di jalan hero** *(versi lama; kini lantai `.stage-floor`, lihat bagian atas)*: selama trotoar pada latar hero terlihat, companion berdiri dan berjalan di atasnya (`window.ARSYA_FLOOR` di `main.js` menghitung posisi lantai dari ukuran `background-size: cover`; baris piksel pijakan di lantai kayu gambar 1776×894: **770** untuk siang dan malam). Saat trotoar keluar layar, companion terpeleset kaget lalu jatuh ke dasar layar (animasi `slip`, 5 frame: kehilangan pijakan, melayang ×2, mendarat jongkok, lega); saat kembali, ia melompat naik ke jalan (animasi `jump`, 6 frame: ancang-ancang, menolak, naik, puncak, turun, mendarat). Frame dipilih dari fase dan kecepatan vertikal (`airPose` di `companion.js`).
+- **Berbalik arah:** saat arah jalan berganti, companion berbalik lewat animasi `turn` (3/4 → depan → 3/4 dicerminkan, ±¼ detik) alih-alih langsung dicerminkan.
+- Jika latar kamar diganti, perbarui baris lantai di `HERO_IMG` (`assets/js/main.js`) dan `IMG.floor` (`assets/js/game.js`), koordinat benda `.gspot` di `index.html`, serta posisi berdiri `at` di `SPOTS` (`game.js`).
+- Tanah footer (`.ground`) kini lantai ubin piksel CSS yang sama dengan panggung hero (`.stage-floor`), warna ikut token tema; gambar `ground-{day,night}.webp` dihapus karena masih bergambar kamar.
 - Balon dialog memakai gaya `.dialog-box` yang sama dengan Chat Log.
 - Pemicu scroll: masuk **Quests** → menunjuk ("My projects are right here!"), **Skill Tree** → menunjuk ("This is my tech stack"; dicerminkan bila companion di separuh kanan layar), **Party** → melambai, form terkirim → senang.
 - CSS companion dipindah ke `companion.css`; teks balon pindah ke `i18n.js`.
@@ -521,7 +549,7 @@ No batik pattern, no military / weapon elements, no text unless specified.
 
 | Prioritas | Aset | Tool Canva | Ukuran ekspor | Tujuan di repo | Catatan |
 |---|---|---|---|---|---|
-| 1 | Logo pixel "AR" / ARSYAWALFA | generate-image + remove-background | 512×512 PNG transparan | `assets/img/ui/logo.png` | dipakai nav & boot screen |
+| 1 | Logo pixel "A" | **`tools/make_logo.py`** (grid 32×32, bukan Canva) | 256 / 180 / 32 PNG | `assets/img/ui/logo.png`, `apple-touch-icon.png`, `favicon.png` | huruf A oranye, palang kursor teal, kilau emas, ubin ungu lo-fi |
 | 1 | Ikon section (Main Menu, Player Card, Stats, Profile, Skill Tree, Quests, Commissions, Adventure Log, Achievements, Party, Message, Chat) | generate-image (satu set) + remove-background | 512×512 per ikon → 32 px | `assets/img/icons/*.png` | gaya seragam, 1 warna aksen per ikon |
 | 1 | Latar hero **siang** (langit · kota futuristik · tanah) | generate-image 2:1 + separate-image-layers | 1920×960 → WebP | `assets/img/bg/hero-day-{sky,city,ground}.webp` | 3 lapis untuk parallax |
 | 1 | Latar hero **malam** (versi neon) | generate-image (referensi versi siang) | 1920×960 → WebP | `assets/img/bg/hero-night-*.webp` | komposisi sama dengan siang |
@@ -553,14 +581,17 @@ Semua hasil `generate-image` ditempatkan di satu desain wadah **"Portfolio Arsya
 
 | Aset | Media ID Canva | Halaman di `DAHWwPd3-pA` | Tanggal | File di repo | Status |
 |---|---|---|---|---|---|
-| Latar hero siang (1776×896) | `MAHWwAxMJr8` | 2 | 1 Okt 2026 | `assets/img/bg/hero-day.webp` (76 KB) | dipakai |
-| Latar hero malam (1776×896) | `MAHWwBIyifE` | 3 | 1 Okt 2026 | `assets/img/bg/hero-night.webp` (34 KB) | dipakai |
-| Logo "AR" (1264×1264) | `MAHWwD9hEFI` | 4 | 1 Okt 2026 | `assets/img/ui/logo.png` (256 px, latar dihapus lokal), `favicon.png`, `assets/img/ui/apple-touch-icon.png` | dipakai |
+| Latar hero siang (1776×896), kota futuristik | `MAHWwAxMJr8` | 2 | 1 Okt 2026 | — | diganti (2 Okt) |
+| Latar hero malam (1776×896), kota futuristik | `MAHWwBIyifE` | 3 | 1 Okt 2026 | — | diganti (2 Okt) |
+| Latar hero siang **Lo-fi Dev Room** (1776×896) | `MAHW2PsuQsU` | 6 | 2 Okt 2026 | `assets/img/bg/hero-day.webp` (63 KB) | dipakai |
+| Latar hero malam **Lo-fi Dev Room** (referensi versi siang) | `MAHW2EVBwuk` | 7 | 2 Okt 2026 | `assets/img/bg/hero-night.webp` (55 KB) | dipakai |
+| Logo "AR" (1264×1264) | `MAHWwD9hEFI` | 4 | 1 Okt 2026 | — | diganti logo "A" dari `tools/make_logo.py` (2 Okt 2026) |
 | Set 12 ikon section (1456×1088, grid 4×3) | `MAHWwD9XnaE` | 5 | 1 Okt 2026 | `assets/img/icons/*.png` (96 px per ikon) | dipakai |
-| Tanah siang / malam | dipotong dari latar hero (baris bawah) | 2, 3 | 1 Okt 2026 | `assets/img/bg/ground-{day,night}.webp` | dipakai; versi tileable khusus menyusul |
+| Tanah siang / malam (lantai kayu) | dipotong dari latar hero (baris 700–896) | 6, 7 | 2 Okt 2026 | `assets/img/bg/ground-{day,night}.webp` | dipakai |
 
 **Catatan implementasi**
 - Kuota kredit Canva habis setelah 4 gambar. Aset tanah dipotong dari latar hero alih-alih dibuat terpisah. Aset prioritas 2–3 (badge tier, thumbnail quest, ikon layanan/kontak, OG cover) dibuat saat kuota tersedia.
+- Gambar Canva hasil generate agak lembut: latar hero diperkecil ke grid piksel aslinya (592×298, filter box) lalu diperbesar 3× *nearest-neighbor* → 1776×894, agar tajam sebagai pixel art.
 - Latar hero dipakai sebagai **1 lapis** parallax (bukan 3 lapis): `separate-image-layers` juga memakai kredit.
 - Latar putih logo dan ikon dihapus lokal dengan *floodfill* ImageMagick (bukan `remove-background`) untuk menghemat kredit; hasilnya bersih karena latar polos.
 - Ikon ditampilkan tanpa `pixelated` karena hasil Canva bukan grid piksel bulat; dikecilkan dengan resampling biasa.

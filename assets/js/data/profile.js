@@ -6,7 +6,7 @@ export const profile = {
     { value: '6+', label: { en: 'years building', id: 'tahun berkarya' } },
     { value: '10+', label: { en: 'systems shipped', id: 'sistem dibangun' } },
     { value: '5', label: { en: 'certifications', id: 'sertifikasi' } },
-    { value: '2', label: { en: 'stacks: Go & PHP', id: 'stack: Go & PHP' } }
+    { value: '15+', label: { en: 'tools in the stack', id: 'teknologi dikuasai' } }
   ],
   links: [
     { key: 'github', label: 'GitHub', handle: 'Arsyawalfa98', url: 'https://github.com/Arsyawalfa98' },
